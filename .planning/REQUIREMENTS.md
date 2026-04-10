@@ -17,12 +17,12 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Camera Management
 
-- [ ] **CAM-01**: Admin can register a camera with device ID, name, location label, and GPS coordinates
-- [ ] **CAM-02**: Admin can edit and delete camera records
+- [x] **CAM-01**: Admin can register a camera with device ID, name, location label, and GPS coordinates
+- [x] **CAM-02**: Admin can edit and delete camera records
 - [ ] **CAM-03**: System tracks camera online/offline state via MQTT heartbeat messages
 - [ ] **CAM-04**: System marks camera offline when heartbeat absent for more than 90 seconds
-- [ ] **CAM-05**: Camera list page shows all cameras with online/offline state and last seen time
-- [ ] **CAM-06**: Camera detail page shows camera configuration and list of enrolled personnel
+- [x] **CAM-05**: Camera list page shows all cameras with online/offline state and last seen time
+- [x] **CAM-06**: Camera detail page shows camera configuration and list of enrolled personnel
 
 ### Map & Dashboard
 
@@ -145,12 +145,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | INFRA-03 | Phase 1 | Complete |
 | INFRA-04 | Phase 1 | Complete |
 | INFRA-05 | Phase 1 | Complete |
-| CAM-01 | Phase 2 | Pending |
-| CAM-02 | Phase 2 | Pending |
+| CAM-01 | Phase 2 | Complete |
+| CAM-02 | Phase 2 | Complete |
 | CAM-03 | Phase 2 | Pending |
 | CAM-04 | Phase 2 | Pending |
-| CAM-05 | Phase 2 | Pending |
-| CAM-06 | Phase 2 | Pending |
+| CAM-05 | Phase 2 | Complete |
+| CAM-06 | Phase 2 | Complete |
 | DASH-01 | Phase 6 | Pending |
 | DASH-02 | Phase 6 | Pending |
 | DASH-03 | Phase 6 | Pending |
