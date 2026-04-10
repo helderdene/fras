@@ -21,9 +21,14 @@ class PersonnelController extends Controller
         $personnel = Personnel::orderBy('name')->get();
         $totalPersonnel = $personnel->count();
 
+        // Eager-load all enrollments in a single query to avoid N+1
+        $enrollmentsByPersonnel = CameraEnrollment::whereIn('personnel_id', $personnel->pluck('id'))
+            ->get()
+            ->groupBy('personnel_id');
+
         // Compute per-personnel sync status (worst across all cameras)
-        $personnelWithSync = $personnel->map(function (Personnel $p) {
-            $enrollments = CameraEnrollment::where('personnel_id', $p->id)->get();
+        $personnelWithSync = $personnel->map(function (Personnel $p) use ($enrollmentsByPersonnel) {
+            $enrollments = $enrollmentsByPersonnel->get($p->id, collect());
 
             if ($enrollments->isEmpty()) {
                 $syncStatus = 'not-synced';
