@@ -83,8 +83,8 @@ return [
 
                 // Credentials used for authentication and authorization.
                 'auth' => [
-                    'username' => env('MQTT_USERNAME', ''),
-                    'password' => env('MQTT_PASSWORD', ''),
+                    'username' => env('MQTT_USERNAME') ?: null,
+                    'password' => env('MQTT_PASSWORD') ?: null,
                 ],
 
                 // Can be used to declare a last will during connection. The last will
@@ -109,9 +109,9 @@ return [
 
                 // Additional settings for the optional auto-reconnect. The delay between reconnect attempts is in seconds.
                 'auto_reconnect' => [
-                    'enabled' => env('MQTT_AUTO_RECONNECT_ENABLED', false),
-                    'max_reconnect_attempts' => env('MQTT_AUTO_RECONNECT_MAX_RECONNECT_ATTEMPTS', 3),
-                    'delay_between_reconnect_attempts' => env('MQTT_AUTO_RECONNECT_DELAY_BETWEEN_RECONNECT_ATTEMPTS', 0),
+                    'enabled' => true,
+                    'max_reconnect_attempts' => (int) env('MQTT_MAX_RECONNECT_ATTEMPTS', 10),
+                    'delay_between_reconnect_attempts' => (int) env('MQTT_RECONNECT_DELAY', 5),
                 ],
 
             ],

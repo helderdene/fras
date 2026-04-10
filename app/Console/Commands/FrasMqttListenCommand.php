@@ -17,11 +17,6 @@ class FrasMqttListenCommand extends Command
     {
         $mqtt = MQTT::connection();
 
-        // Enable auto-reconnect with backoff (D-06)
-        $mqtt->setReconnectAutomatically(true);
-        $mqtt->setMaxReconnectAttempts(config('hds.mqtt.max_reconnect_attempts'));
-        $mqtt->setDelayBetweenReconnectAttempts(config('hds.mqtt.reconnect_delay'));
-
         $prefix = config('hds.mqtt.topic_prefix');
 
         // Subscribe to all topic patterns (QoS 0 per spec section 3.1)
