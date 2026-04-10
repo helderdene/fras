@@ -28,8 +28,8 @@ Operators see every matched-face recognition event in real time on a map-based d
 - ✓ Camera offline detection: mark cameras offline when heartbeat absent >90 seconds — Validated in Phase 2
 
 ### Active
-- [ ] Personnel CRUD: create, edit, delete personnel with photo, custom ID, person type (allow/block)
-- [ ] Photo preprocessing: resize to 1080p max, compress to <1MB JPEG, compute MD5 hash
+- [x] Personnel CRUD: create, edit, delete personnel with photo, custom ID, person type (allow/block) — Validated in Phase 3: Personnel Management
+- [x] Photo preprocessing: resize to 1080p max, compress to <1MB JPEG, compute MD5 hash — Validated in Phase 3
 - [ ] Enrollment sync: push personnel to all cameras via MQTT EditPersonsNew, track per-camera status
 - [ ] Enrollment ACK handling: correlate EditPersonsNew-Ack responses, update camera_enrollments with success/failure
 - [ ] Delete sync: remove personnel from cameras via MQTT DeletePersons
@@ -41,7 +41,7 @@ Operators see every matched-face recognition event in real time on a map-based d
 - [ ] Map interaction: camera markers pulse/flash on recognition events, dark/light map style toggle
 - [ ] Alert feed: reverse-chronological with severity coloring, click for detail modal with face crop and metadata
 - [ ] Audio alert: play sound on critical (block-list) recognition events
-- [ ] Personnel admin: list with sync status dots, detail with per-camera enrollment status, retry failed enrollments
+- [x] Personnel admin: list with sync status dots, detail with per-camera enrollment status — Validated in Phase 3 (retry enrollment is Phase 4)
 - [ ] Event history: searchable, filterable recognition log page
 - [ ] Storage retention: scheduled cleanup — scene images after 30 days, face crops after 90 days
 - [ ] Camera offline detection: mark cameras offline when heartbeat absent >90 seconds
