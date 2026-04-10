@@ -7,6 +7,10 @@ use Carbon\CarbonImmutable;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
+beforeEach(function () {
+    $this->withoutVite();
+});
+
 test('camera model has correct fillable attributes', function () {
     $camera = Camera::create([
         'device_id' => '9999999',
@@ -139,4 +143,106 @@ test('update camera request allows same device_id for own camera', function () {
             'longitude' => 125.54,
         ])
         ->assertSessionHasNoErrors();
+});
+
+test('can list cameras', function () {
+    $user = User::factory()->create();
+    Camera::factory()->count(3)->create();
+
+    $this->actingAs($user)
+        ->get(route('cameras.index'))
+        ->assertSuccessful()
+        ->assertInertia(fn ($page) => $page
+            ->component('cameras/Index')
+            ->has('cameras', 3)
+        );
+});
+
+test('can view create form', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->get(route('cameras.create'))
+        ->assertSuccessful()
+        ->assertInertia(fn ($page) => $page
+            ->component('cameras/Create')
+            ->has('mapboxToken')
+        );
+});
+
+test('can store a camera', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->post(route('cameras.store'), [
+            'device_id' => '5550001',
+            'name' => 'New Camera',
+            'location_label' => 'Test Location',
+            'latitude' => 8.9475,
+            'longitude' => 125.5406,
+        ])
+        ->assertRedirect(route('cameras.index'));
+
+    expect(Camera::where('device_id', '5550001')->exists())->toBeTrue();
+});
+
+test('can view a camera', function () {
+    $user = User::factory()->create();
+    $camera = Camera::factory()->create();
+
+    $this->actingAs($user)
+        ->get(route('cameras.show', $camera))
+        ->assertSuccessful()
+        ->assertInertia(fn ($page) => $page
+            ->component('cameras/Show')
+            ->has('camera')
+            ->has('mapboxToken')
+        );
+});
+
+test('can view edit form', function () {
+    $user = User::factory()->create();
+    $camera = Camera::factory()->create();
+
+    $this->actingAs($user)
+        ->get(route('cameras.edit', $camera))
+        ->assertSuccessful()
+        ->assertInertia(fn ($page) => $page
+            ->component('cameras/Edit')
+            ->has('camera')
+            ->has('mapboxToken')
+        );
+});
+
+test('can update a camera', function () {
+    $user = User::factory()->create();
+    $camera = Camera::factory()->create();
+
+    $this->actingAs($user)
+        ->put(route('cameras.update', $camera), [
+            'device_id' => $camera->device_id,
+            'name' => 'Renamed Camera',
+            'location_label' => 'New Location',
+            'latitude' => 8.95,
+            'longitude' => 125.54,
+        ])
+        ->assertRedirect(route('cameras.show', $camera));
+
+    expect($camera->fresh()->name)->toBe('Renamed Camera');
+});
+
+test('can delete a camera', function () {
+    $user = User::factory()->create();
+    $camera = Camera::factory()->create();
+
+    $this->actingAs($user)
+        ->delete(route('cameras.destroy', $camera))
+        ->assertRedirect(route('cameras.index'));
+
+    expect(Camera::find($camera->id))->toBeNull();
+});
+
+test('requires authentication for camera routes', function () {
+    $this->get(route('cameras.index'))
+        ->assertRedirect(route('login'));
 });
