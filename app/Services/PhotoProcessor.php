@@ -20,7 +20,7 @@ class PhotoProcessor
         $quality = config('hds.photo.jpeg_quality');
         $maxBytes = config('hds.photo.max_size_bytes');
 
-        $image = Image::decode(file_get_contents($file->path()));
+        $image = Image::decodePath($file->path());
         $image->orient();
         $image->scaleDown(width: $maxDim, height: $maxDim);
 
