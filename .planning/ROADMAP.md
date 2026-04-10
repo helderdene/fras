@@ -72,7 +72,7 @@ Plans:
 
 Plans:
 - [x] 03-01-PLAN.md -- Personnel model, factory, seeder, PersonnelController CRUD, form requests, PhotoProcessor service, routes, tests
-- [ ] 03-02-PLAN.md -- SyncStatusDot component, sidebar nav update, Index and Show Vue pages
+- [x] 03-02-PLAN.md -- SyncStatusDot component, sidebar nav update, Index and Show Vue pages
 - [ ] 03-03-PLAN.md -- PhotoDropzone component, Create and Edit Vue pages with grouped form sections
 
 ### Phase 4: Enrollment Sync

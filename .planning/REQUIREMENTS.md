@@ -40,11 +40,11 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **PERS-01**: Admin can create a personnel record with name, custom ID, person type (allow/block), and photo
 - [x] **PERS-02**: Admin can edit personnel details and replace photo
 - [x] **PERS-03**: Admin can delete a personnel record (propagates delete to all cameras)
-- [ ] **PERS-04**: Personnel list page shows all personnel with avatar, name, custom ID, list type, and sync status dot
-- [ ] **PERS-05**: Personnel detail page shows edit form (left) and per-camera enrollment status sidebar (right)
+- [x] **PERS-04**: Personnel list page shows all personnel with avatar, name, custom ID, list type, and sync status dot
+- [x] **PERS-05**: Personnel detail page shows edit form (left) and per-camera enrollment status sidebar (right)
 - [ ] **PERS-06**: Photo upload uses a dropzone with client-side preview and displays size constraints as help text
 - [x] **PERS-07**: System preprocesses photos: resize to max 1080p, compress to JPEG <1MB, compute MD5 hash
-- [ ] **PERS-08**: Sync status dot on personnel list summarizes camera enrollment: green (all enrolled), amber (pending), red (failed)
+- [x] **PERS-08**: Sync status dot on personnel list summarizes camera enrollment: green (all enrolled), amber (pending), red (failed)
 
 ### Enrollment Sync
 
@@ -162,11 +162,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PERS-01 | Phase 3 | Complete |
 | PERS-02 | Phase 3 | Complete |
 | PERS-03 | Phase 3 | Complete |
-| PERS-04 | Phase 3 | Pending |
-| PERS-05 | Phase 3 | Pending |
+| PERS-04 | Phase 3 | Complete |
+| PERS-05 | Phase 3 | Complete |
 | PERS-06 | Phase 3 | Pending |
 | PERS-07 | Phase 3 | Complete |
-| PERS-08 | Phase 3 | Pending |
+| PERS-08 | Phase 3 | Complete |
 | ENRL-01 | Phase 4 | Pending |
 | ENRL-02 | Phase 4 | Pending |
 | ENRL-03 | Phase 4 | Pending |
