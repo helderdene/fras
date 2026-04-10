@@ -107,7 +107,7 @@ class CameraEnrollmentService
             ];
 
             if ($personnel->photo_path) {
-                $entry['picURI'] = url('storage/'.$personnel->photo_path);
+                $entry['picURI'] = $personnel->photo_url;
             }
 
             if ($personnel->gender !== null) {
