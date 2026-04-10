@@ -22,18 +22,18 @@ Operators see every matched-face recognition event in real time on a map-based d
 - ✓ Reverb WebSocket broadcasting with private channel auth — Validated in Phase 1
 - ✓ Supervisor production process configs (MQTT, Reverb, queue) — Validated in Phase 1
 - ✓ Dev orchestration: single command starts all 5 processes — Validated in Phase 1
+- ✓ Camera management: register cameras with device ID, name, location, GPS coordinates — Validated in Phase 2: Camera Management & Liveness
+- ✓ Camera liveness: track online/offline state via MQTT heartbeat and Online/Offline events — Validated in Phase 2
+- ✓ Camera map view: display cameras as pins on a Mapbox GL JS map with status indicators — Validated in Phase 2
+- ✓ Camera offline detection: mark cameras offline when heartbeat absent >90 seconds — Validated in Phase 2
 
 ### Active
-
-- [ ] Camera management: register cameras with device ID, name, location, GPS coordinates
-- [ ] Camera liveness: track online/offline state via MQTT heartbeat and Online/Offline events
-- [ ] Camera map view: display cameras as pins on a Mapbox GL JS map with status indicators
 - [ ] Personnel CRUD: create, edit, delete personnel with photo, custom ID, person type (allow/block)
 - [ ] Photo preprocessing: resize to 1080p max, compress to <1MB JPEG, compute MD5 hash
 - [ ] Enrollment sync: push personnel to all cameras via MQTT EditPersonsNew, track per-camera status
 - [ ] Enrollment ACK handling: correlate EditPersonsNew-Ack responses, update camera_enrollments with success/failure
 - [ ] Delete sync: remove personnel from cameras via MQTT DeletePersons
-- [x] MQTT listener: long-running artisan command subscribing to camera topics (Rec, Ack, basic, heartbeat) — handler stubs ready for Phase 2+ implementations
+- [x] MQTT listener: long-running artisan command subscribing to camera topics (Rec, Ack, basic, heartbeat) — handlers implemented in Phase 2
 - [ ] RecPush event processing: parse recognition events, save face/scene images, insert recognition_events rows
 - [ ] Alert classification: critical (block-list), warning (refused), info (normal allowed)
 - [ ] Real-time broadcast: push RecognitionAlert events to browsers via Laravel Reverb WebSocket
@@ -110,4 +110,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-10 after Phase 1 completion*
+*Last updated: 2026-04-10 after Phase 2 completion*
