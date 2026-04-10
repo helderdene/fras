@@ -17,6 +17,11 @@ Operators see every matched-face recognition event in real time on a map-based d
 - ✓ Dark/light theme with system preference detection — existing
 - ✓ Inertia SPA navigation with Wayfinder typed routes — existing
 - ✓ CI pipeline (lint, format, type-check, tests) — existing
+- ✓ MQTT listener: long-running artisan command subscribing to camera topics (Rec, Ack, basic, heartbeat) — Validated in Phase 1: Infrastructure & MQTT Foundation
+- ✓ MySQL database with FRAS tables (cameras, personnel, recognition_events, camera_enrollments) — Validated in Phase 1
+- ✓ Reverb WebSocket broadcasting with private channel auth — Validated in Phase 1
+- ✓ Supervisor production process configs (MQTT, Reverb, queue) — Validated in Phase 1
+- ✓ Dev orchestration: single command starts all 5 processes — Validated in Phase 1
 
 ### Active
 
@@ -28,7 +33,7 @@ Operators see every matched-face recognition event in real time on a map-based d
 - [ ] Enrollment sync: push personnel to all cameras via MQTT EditPersonsNew, track per-camera status
 - [ ] Enrollment ACK handling: correlate EditPersonsNew-Ack responses, update camera_enrollments with success/failure
 - [ ] Delete sync: remove personnel from cameras via MQTT DeletePersons
-- [ ] MQTT listener: long-running artisan command subscribing to camera topics (Rec, Ack, basic, heartbeat)
+- [x] MQTT listener: long-running artisan command subscribing to camera topics (Rec, Ack, basic, heartbeat) — handler stubs ready for Phase 2+ implementations
 - [ ] RecPush event processing: parse recognition events, save face/scene images, insert recognition_events rows
 - [ ] Alert classification: critical (block-list), warning (refused), info (normal allowed)
 - [ ] Real-time broadcast: push RecognitionAlert events to browsers via Laravel Reverb WebSocket
@@ -105,4 +110,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-10 after initialization*
+*Last updated: 2026-04-10 after Phase 1 completion*
