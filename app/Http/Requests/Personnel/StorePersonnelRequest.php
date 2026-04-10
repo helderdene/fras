@@ -7,7 +7,14 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StorePersonnelRequest extends FormRequest
 {
-    /** Determine if the user is authorized to make this request. */
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * Authorization is intentionally open to all authenticated users.
+     * This is a single-site, single-operator facility; role-based
+     * access control should be added here if multi-role support is
+     * introduced in the future.
+     */
     public function authorize(): bool
     {
         return true;
