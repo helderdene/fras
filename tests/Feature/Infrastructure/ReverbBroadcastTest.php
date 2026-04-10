@@ -3,11 +3,13 @@
 use App\Events\TestBroadcastEvent;
 use App\Models\User;
 use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Event;
 
 test('TestBroadcastEvent implements ShouldBroadcast', function () {
     $event = new TestBroadcastEvent;
-    expect($event)->toBeInstanceOf(\Illuminate\Contracts\Broadcasting\ShouldBroadcast::class);
+    expect($event)->toBeInstanceOf(ShouldBroadcast::class);
 });
 
 test('TestBroadcastEvent broadcasts on fras.alerts private channel', function () {
@@ -25,6 +27,17 @@ test('TestBroadcastEvent broadcastWith has message and timestamp', function () {
 });
 
 test('authenticated user can authorize on fras.alerts channel', function () {
+    config()->set('broadcasting.default', 'reverb');
+    config()->set('broadcasting.connections.reverb.key', 'test-key');
+    config()->set('broadcasting.connections.reverb.secret', 'test-secret');
+    config()->set('broadcasting.connections.reverb.app_id', 'test-app-id');
+    Broadcast::purge();
+
+    // Re-register channel on the fresh reverb driver
+    Broadcast::channel('fras.alerts', function ($user) {
+        return $user !== null;
+    });
+
     $user = User::factory()->create();
 
     $this->actingAs($user)
@@ -36,10 +49,21 @@ test('authenticated user can authorize on fras.alerts channel', function () {
 });
 
 test('unauthenticated user cannot authorize on fras.alerts channel', function () {
+    config()->set('broadcasting.default', 'reverb');
+    config()->set('broadcasting.connections.reverb.key', 'test-key');
+    config()->set('broadcasting.connections.reverb.secret', 'test-secret');
+    config()->set('broadcasting.connections.reverb.app_id', 'test-app-id');
+    Broadcast::purge();
+
+    // Re-register channel on the fresh reverb driver
+    Broadcast::channel('fras.alerts', function ($user) {
+        return $user !== null;
+    });
+
     $this->post('/broadcasting/auth', [
-            'channel_name' => 'private-fras.alerts',
-            'socket_id' => '12345.67890',
-        ])
+        'channel_name' => 'private-fras.alerts',
+        'socket_id' => '12345.67890',
+    ])
         ->assertStatus(403);
 });
 
