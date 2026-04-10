@@ -18,8 +18,50 @@ class PersonnelController extends Controller
     /** Display a listing of personnel. */
     public function index(): Response
     {
+        $personnel = Personnel::orderBy('name')->get();
+        $totalPersonnel = $personnel->count();
+
+        // Compute per-personnel sync status (worst across all cameras)
+        $personnelWithSync = $personnel->map(function (Personnel $p) {
+            $enrollments = CameraEnrollment::where('personnel_id', $p->id)->get();
+
+            if ($enrollments->isEmpty()) {
+                $syncStatus = 'not-synced';
+            } elseif ($enrollments->contains('status', CameraEnrollment::STATUS_FAILED)) {
+                $syncStatus = 'failed';
+            } elseif ($enrollments->contains('status', CameraEnrollment::STATUS_PENDING)) {
+                $syncStatus = 'pending';
+            } elseif ($enrollments->every(fn ($e) => $e->status === CameraEnrollment::STATUS_ENROLLED)) {
+                $syncStatus = 'synced';
+            } else {
+                $syncStatus = 'not-synced';
+            }
+
+            return array_merge($p->toArray(), ['sync_status' => $syncStatus]);
+        });
+
+        // Per-camera enrollment summary (D-10)
+        $cameraSummary = Camera::select('cameras.id', 'cameras.name', 'cameras.is_online')
+            ->withCount([
+                'enrollments as enrolled_count' => fn ($q) => $q->where('status', CameraEnrollment::STATUS_ENROLLED),
+                'enrollments as pending_count' => fn ($q) => $q->where('status', CameraEnrollment::STATUS_PENDING),
+                'enrollments as failed_count' => fn ($q) => $q->where('status', CameraEnrollment::STATUS_FAILED),
+            ])
+            ->orderBy('name')
+            ->get()
+            ->map(fn ($camera) => [
+                'id' => $camera->id,
+                'name' => $camera->name,
+                'is_online' => $camera->is_online,
+                'enrolled_count' => $camera->enrolled_count,
+                'pending_count' => $camera->pending_count,
+                'failed_count' => $camera->failed_count,
+                'total_count' => $totalPersonnel,
+            ]);
+
         return Inertia::render('personnel/Index', [
-            'personnel' => Personnel::orderBy('name')->get(),
+            'personnel' => $personnelWithSync,
+            'cameraSummary' => $cameraSummary,
         ]);
     }
 

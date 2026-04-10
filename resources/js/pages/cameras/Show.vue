@@ -7,6 +7,9 @@ import CameraController from '@/actions/App/Http/Controllers/CameraController';
 import CameraStatusDot from '@/components/CameraStatusDot.vue';
 import Heading from '@/components/Heading.vue';
 import MapboxMap from '@/components/MapboxMap.vue';
+import SyncStatusDot from '@/components/SyncStatusDot.vue';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -21,11 +24,13 @@ import {
 } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
 import { useAppearance } from '@/composables/useAppearance';
+import { getInitials } from '@/composables/useInitials';
 import { index, show, edit } from '@/routes/cameras';
-import type { Camera, CameraStatusPayload } from '@/types';
+import type { Camera, CameraStatusPayload, EnrolledPerson } from '@/types';
 
 type Props = {
     camera: Camera;
+    enrolledPersonnel: EnrolledPerson[];
     mapboxToken: string;
     mapboxDarkStyle: string;
     mapboxLightStyle: string;
@@ -203,11 +208,20 @@ function formatRelativeTime(dateString: string | null): string {
 
             <!-- Enrolled Personnel (right, 2/5 width) per D-13, D-16 -->
             <Card class="lg:col-span-2">
-                <CardHeader>
+                <CardHeader
+                    class="flex flex-row items-center justify-between space-y-0"
+                >
                     <CardTitle>Enrolled Personnel</CardTitle>
+                    <Badge
+                        v-if="props.enrolledPersonnel.length > 0"
+                        variant="secondary"
+                    >
+                        {{ props.enrolledPersonnel.length }}
+                    </Badge>
                 </CardHeader>
                 <CardContent>
                     <div
+                        v-if="props.enrolledPersonnel.length === 0"
                         class="flex flex-col items-center justify-center py-12 text-center"
                     >
                         <Users class="size-10 text-muted-foreground/40" />
@@ -215,9 +229,39 @@ function formatRelativeTime(dateString: string | null): string {
                             No personnel enrolled
                         </h3>
                         <p class="mt-1 text-xs text-muted-foreground">
-                            Personnel will appear here once enrollment is
-                            configured in a future update.
+                            Personnel will appear here after enrollment sync.
                         </p>
+                    </div>
+                    <div v-else>
+                        <div
+                            v-for="person in props.enrolledPersonnel"
+                            :key="person.id"
+                            class="flex items-center justify-between border-b border-border py-2 last:border-0"
+                        >
+                            <div class="flex items-center gap-2">
+                                <Avatar class="size-6">
+                                    <AvatarImage
+                                        v-if="person.photo_url"
+                                        :src="person.photo_url"
+                                        :alt="person.name"
+                                    />
+                                    <AvatarFallback class="text-xs">
+                                        {{ getInitials(person.name) }}
+                                    </AvatarFallback>
+                                </Avatar>
+                                <span class="text-sm text-foreground">
+                                    {{ person.name }}
+                                </span>
+                            </div>
+                            <SyncStatusDot
+                                :status="
+                                    person.enrollment_status === 'enrolled'
+                                        ? 'synced'
+                                        : person.enrollment_status
+                                "
+                                :labels="{ synced: 'Enrolled' }"
+                            />
+                        </div>
                     </div>
                 </CardContent>
             </Card>

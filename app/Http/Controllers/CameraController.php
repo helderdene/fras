@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Camera\StoreCameraRequest;
 use App\Http\Requests\Camera\UpdateCameraRequest;
 use App\Models\Camera;
+use App\Models\CameraEnrollment;
 use App\Services\CameraEnrollmentService;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -47,8 +48,22 @@ class CameraController extends Controller
     /** Display the specified camera. */
     public function show(Camera $camera): Response
     {
+        $enrolledPersonnel = CameraEnrollment::where('camera_id', $camera->id)
+            ->with('personnel:id,name,custom_id,photo_path')
+            ->orderBy('status')
+            ->get()
+            ->map(fn (CameraEnrollment $e) => [
+                'id' => $e->personnel->id,
+                'name' => $e->personnel->name,
+                'photo_url' => $e->personnel->photo_url,
+                'custom_id' => $e->personnel->custom_id,
+                'enrollment_status' => $e->status,
+                'enrolled_at' => $e->enrolled_at?->toIso8601String(),
+            ]);
+
         return Inertia::render('cameras/Show', [
             'camera' => $camera,
+            'enrolledPersonnel' => $enrolledPersonnel,
             'mapboxToken' => config('hds.mapbox.token'),
             'mapboxDarkStyle' => config('hds.mapbox.dark_style'),
             'mapboxLightStyle' => config('hds.mapbox.light_style'),

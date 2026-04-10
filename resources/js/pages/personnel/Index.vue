@@ -3,6 +3,7 @@ import { Head, Link } from '@inertiajs/vue3';
 import { Plus, Users } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 
+import EnrollmentSummaryPanel from '@/components/EnrollmentSummaryPanel.vue';
 import Heading from '@/components/Heading.vue';
 import SyncStatusDot from '@/components/SyncStatusDot.vue';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -12,10 +13,11 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { getInitials } from '@/composables/useInitials';
 import { index, create, show } from '@/routes/personnel';
-import type { Personnel } from '@/types';
+import type { CameraEnrollmentSummary, PersonnelWithSync } from '@/types';
 
 type Props = {
-    personnel: Personnel[];
+    personnel: PersonnelWithSync[];
+    cameraSummary: CameraEnrollmentSummary[];
 };
 
 const props = defineProps<Props>();
@@ -56,6 +58,12 @@ const filtered = computed(() => {
                 </Link>
             </Button>
         </div>
+
+        <!-- Enrollment Summary Panel (D-10) -->
+        <EnrollmentSummaryPanel
+            v-if="props.cameraSummary.length > 0 && props.personnel.length > 0"
+            :cameras="props.cameraSummary"
+        />
 
         <!-- Empty state -->
         <Card v-if="props.personnel.length === 0" class="p-12">
@@ -172,7 +180,10 @@ const filtered = computed(() => {
                                 </Badge>
                             </td>
                             <td class="px-4 py-3">
-                                <SyncStatusDot status="not-synced" />
+                                <SyncStatusDot
+                                    :status="p.sync_status"
+                                    :labels="{ synced: 'Enrolled' }"
+                                />
                             </td>
                         </tr>
                     </tbody>
