@@ -140,70 +140,70 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| INFRA-01 | TBD | Pending |
-| INFRA-02 | TBD | Pending |
-| INFRA-03 | TBD | Pending |
-| INFRA-04 | TBD | Pending |
-| INFRA-05 | TBD | Pending |
-| CAM-01 | TBD | Pending |
-| CAM-02 | TBD | Pending |
-| CAM-03 | TBD | Pending |
-| CAM-04 | TBD | Pending |
-| CAM-05 | TBD | Pending |
-| CAM-06 | TBD | Pending |
-| DASH-01 | TBD | Pending |
-| DASH-02 | TBD | Pending |
-| DASH-03 | TBD | Pending |
-| DASH-04 | TBD | Pending |
-| DASH-05 | TBD | Pending |
-| DASH-06 | TBD | Pending |
-| DASH-07 | TBD | Pending |
-| DASH-08 | TBD | Pending |
-| PERS-01 | TBD | Pending |
-| PERS-02 | TBD | Pending |
-| PERS-03 | TBD | Pending |
-| PERS-04 | TBD | Pending |
-| PERS-05 | TBD | Pending |
-| PERS-06 | TBD | Pending |
-| PERS-07 | TBD | Pending |
-| PERS-08 | TBD | Pending |
-| ENRL-01 | TBD | Pending |
-| ENRL-02 | TBD | Pending |
-| ENRL-03 | TBD | Pending |
-| ENRL-04 | TBD | Pending |
-| ENRL-05 | TBD | Pending |
-| ENRL-06 | TBD | Pending |
-| ENRL-07 | TBD | Pending |
-| ENRL-08 | TBD | Pending |
-| ENRL-09 | TBD | Pending |
-| ENRL-10 | TBD | Pending |
-| REC-01 | TBD | Pending |
-| REC-02 | TBD | Pending |
-| REC-03 | TBD | Pending |
-| REC-04 | TBD | Pending |
-| REC-05 | TBD | Pending |
-| REC-06 | TBD | Pending |
-| REC-07 | TBD | Pending |
-| REC-08 | TBD | Pending |
-| REC-09 | TBD | Pending |
-| REC-10 | TBD | Pending |
-| REC-11 | TBD | Pending |
-| REC-12 | TBD | Pending |
-| REC-13 | TBD | Pending |
-| HIST-01 | TBD | Pending |
-| HIST-02 | TBD | Pending |
-| HIST-03 | TBD | Pending |
-| OPS-01 | TBD | Pending |
-| OPS-02 | TBD | Pending |
-| OPS-03 | TBD | Pending |
-| OPS-04 | TBD | Pending |
-| OPS-05 | TBD | Pending |
+| INFRA-01 | Phase 1 | Pending |
+| INFRA-02 | Phase 1 | Pending |
+| INFRA-03 | Phase 1 | Pending |
+| INFRA-04 | Phase 1 | Pending |
+| INFRA-05 | Phase 1 | Pending |
+| CAM-01 | Phase 2 | Pending |
+| CAM-02 | Phase 2 | Pending |
+| CAM-03 | Phase 2 | Pending |
+| CAM-04 | Phase 2 | Pending |
+| CAM-05 | Phase 2 | Pending |
+| CAM-06 | Phase 2 | Pending |
+| DASH-01 | Phase 6 | Pending |
+| DASH-02 | Phase 6 | Pending |
+| DASH-03 | Phase 6 | Pending |
+| DASH-04 | Phase 6 | Pending |
+| DASH-05 | Phase 6 | Pending |
+| DASH-06 | Phase 6 | Pending |
+| DASH-07 | Phase 6 | Pending |
+| DASH-08 | Phase 6 | Pending |
+| PERS-01 | Phase 3 | Pending |
+| PERS-02 | Phase 3 | Pending |
+| PERS-03 | Phase 3 | Pending |
+| PERS-04 | Phase 3 | Pending |
+| PERS-05 | Phase 3 | Pending |
+| PERS-06 | Phase 3 | Pending |
+| PERS-07 | Phase 3 | Pending |
+| PERS-08 | Phase 3 | Pending |
+| ENRL-01 | Phase 4 | Pending |
+| ENRL-02 | Phase 4 | Pending |
+| ENRL-03 | Phase 4 | Pending |
+| ENRL-04 | Phase 4 | Pending |
+| ENRL-05 | Phase 4 | Pending |
+| ENRL-06 | Phase 4 | Pending |
+| ENRL-07 | Phase 4 | Pending |
+| ENRL-08 | Phase 4 | Pending |
+| ENRL-09 | Phase 4 | Pending |
+| ENRL-10 | Phase 4 | Pending |
+| REC-01 | Phase 5 | Pending |
+| REC-02 | Phase 5 | Pending |
+| REC-03 | Phase 5 | Pending |
+| REC-04 | Phase 5 | Pending |
+| REC-05 | Phase 5 | Pending |
+| REC-06 | Phase 5 | Pending |
+| REC-07 | Phase 5 | Pending |
+| REC-08 | Phase 5 | Pending |
+| REC-09 | Phase 5 | Pending |
+| REC-10 | Phase 5 | Pending |
+| REC-11 | Phase 5 | Pending |
+| REC-12 | Phase 5 | Pending |
+| REC-13 | Phase 5 | Pending |
+| HIST-01 | Phase 7 | Pending |
+| HIST-02 | Phase 7 | Pending |
+| HIST-03 | Phase 7 | Pending |
+| OPS-01 | Phase 7 | Pending |
+| OPS-02 | Phase 7 | Pending |
+| OPS-03 | Phase 7 | Pending |
+| OPS-04 | Phase 2 | Pending |
+| OPS-05 | Phase 2 | Pending |
 
 **Coverage:**
-- v1 requirements: 53 total
-- Mapped to phases: 0
-- Unmapped: 53
+- v1 requirements: 58 total
+- Mapped to phases: 58
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-04-10*
-*Last updated: 2026-04-10 after initial definition*
+*Last updated: 2026-04-10 after roadmap creation*
