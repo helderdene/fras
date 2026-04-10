@@ -67,13 +67,13 @@ Plans:
   3. Uploaded photos are automatically resized to max 1080p, compressed to JPEG under 1MB, and have MD5 hash computed
   4. Personnel list shows avatar, name, custom ID, list type, and sync status dot (green/amber/red)
   5. Personnel detail page shows edit form on the left and per-camera enrollment status sidebar on the right
-**Plans**: TBD
+**Plans**: 3 plans
 **UI hint**: yes
 
 Plans:
-- [ ] 03-01: TBD
-- [ ] 03-02: TBD
-- [ ] 03-03: TBD
+- [ ] 03-01-PLAN.md -- Personnel model, factory, seeder, PersonnelController CRUD, form requests, PhotoProcessor service, routes, tests
+- [ ] 03-02-PLAN.md -- SyncStatusDot component, sidebar nav update, Index and Show Vue pages
+- [ ] 03-03-PLAN.md -- PhotoDropzone component, Create and Edit Vue pages with grouped form sections
 
 ### Phase 4: Enrollment Sync
 **Goal**: Personnel records are automatically pushed to all cameras via MQTT with reliable ACK tracking, retry capability, and delete propagation
