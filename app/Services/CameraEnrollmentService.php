@@ -51,10 +51,12 @@ class CameraEnrollmentService
             );
         }
 
-        $batchSize = config('hds.enrollment.batch_size');
+        if ($camera->is_online) {
+            $batchSize = config('hds.enrollment.batch_size');
 
-        foreach (array_chunk($personnelIds, $batchSize) as $chunk) {
-            EnrollPersonnelBatch::dispatch($camera, $chunk);
+            foreach (array_chunk($personnelIds, $batchSize) as $chunk) {
+                EnrollPersonnelBatch::dispatch($camera, $chunk);
+            }
         }
     }
 
