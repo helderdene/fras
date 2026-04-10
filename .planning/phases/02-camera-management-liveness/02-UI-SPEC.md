@@ -47,12 +47,11 @@ Exceptions: Map container height on form page uses 256px (h-64). Map container o
 
 | Role | Size | Weight | Line Height | Usage |
 |------|------|--------|-------------|-------|
-| Body | 14px (text-sm) | 400 (normal) | 1.43 (20px) | Table cells, form descriptions, metadata text |
-| Label | 14px (text-sm) | 500 (medium) | 1.43 (20px) | Form labels, table headers, sidebar nav items |
+| Body | 14px (text-sm) | 400 (normal) | 1.43 (20px) | Table cells, form descriptions, metadata text, form labels, table headers, sidebar nav items |
 | Heading | 20px (text-xl) | 600 (semibold) | 1.2 (24px) | Page titles ("Cameras", "Add Camera", camera name) |
-| Subheading | 16px (text-base) | 500 (medium) | 1.5 (24px) | Section headers ("Camera Information", "Enrolled Personnel") |
+| Subheading | 16px (text-base) | 600 (semibold) | 1.5 (24px) | Section headers ("Camera Information", "Enrolled Personnel") |
 
-Source: Matches existing `Heading.vue` component which uses `text-xl font-semibold tracking-tight` for default and `text-base font-medium` for small variant.
+Source: Matches existing `Heading.vue` component which uses `text-xl font-semibold tracking-tight` for default variant. Subheading uses 600 (semibold) to maintain visual hierarchy without introducing a third weight. Form labels and table headers use 400 (normal) at 14px -- the size difference between body (14px) and subheading (16px) provides sufficient visual distinction without needing an intermediate weight.
 
 ---
 
@@ -62,12 +61,13 @@ Source: Matches existing `Heading.vue` component which uses `text-xl font-semibo
 |------|-------|-------------|------------|-------|
 | Dominant (60%) | `--background` | hsl(0 0% 100%) | hsl(0 0% 3.9%) | Page background, content area |
 | Secondary (30%) | `--card` / `--muted` | hsl(0 0% 100%) / hsl(0 0% 96.1%) | hsl(0 0% 3.9%) / hsl(0 0% 16.08%) | Cards, table header row, detail info section |
-| Accent (10%) | `--primary` | hsl(0 0% 9%) | hsl(0 0% 98%) | Primary CTA button ("Add Camera", "Save"), active breadcrumb |
+| Accent (10%) | `--primary` | hsl(0 0% 9%) | hsl(0 0% 98%) | Primary CTA button ("Add Camera", "Create Camera"), active breadcrumb |
 | Destructive | `--destructive` | hsl(0 84.2% 60.2%) | hsl(0 84% 60%) | Delete button, delete confirmation dialog button |
 
 Accent reserved for:
 - "Add Camera" primary button on the list page
-- "Save" / "Update" submit button on create/edit forms
+- "Create Camera" submit button on create form
+- "Update Camera" submit button on edit form
 - Active sidebar nav item for Cameras
 
 ### Status Colors (Phase-Specific)
@@ -142,12 +142,12 @@ The status indicator is a custom composite element: a `6px` filled circle (`size
 
 **Table:**
 - HTML `<table>` with classes: `w-full text-sm`
-- Table header: `<thead>` row with `text-left text-muted-foreground font-medium` on `<th>` elements
+- Table header: `<thead>` row with `text-left text-muted-foreground` on `<th>` elements
 - Table header cells: `px-4 py-3`
 - Table body rows: `border-b border-border` on each `<tr>`, `hover:bg-muted/50` for hover state
 - Table body cells: `px-4 py-3`
 - Columns:
-  1. **Name** -- clickable link (`<Link>`) to camera show page, `font-medium text-foreground hover:underline`
+  1. **Name** -- clickable link (`<Link>`) to camera show page, `text-foreground hover:underline`
   2. **Device ID** -- `text-muted-foreground font-mono text-xs` (monospace for readability)
   3. **Location** -- plain text, truncated with `truncate max-w-[200px]`
   4. **Status** -- `CameraStatusDot` component (green/gray dot + label)
@@ -157,7 +157,7 @@ The status indicator is a custom composite element: a `6px` filled circle (`size
 - Centered within the table area
 - Card with padding `p-12`, centered content
 - Icon: `Camera` from lucide-vue-next at `size-12 text-muted-foreground/50`
-- Heading: "No cameras registered" at `text-lg font-medium`
+- Heading: "No cameras registered" at `text-lg font-semibold`
 - Body: "Add your first camera to start monitoring." at `text-sm text-muted-foreground`
 - Button: "Add Camera" (variant="default") below the body text, `mt-4`
 
@@ -192,7 +192,7 @@ The status indicator is a custom composite element: a `6px` filled circle (`size
 |   |         Mapbox Map (256px)          |                   |
 |   |    Click to set camera location     |                   |
 |   +------------------------------------+                   |
-|   [Save]                                                   |
+|   [Create Camera]                                          |
 +----------------------------------------------------------+
 ```
 
@@ -225,7 +225,7 @@ The status indicator is a custom composite element: a `6px` filled circle (`size
 - `<InputError>` component below each field group, using `errors.field_name` from Inertia form slot
 
 **Submit:**
-- `Button` (variant="default") with text "Save", disabled while `processing`
+- `Button` (variant="default") with text "Create Camera", disabled while `processing`
 - On success: redirects to `cameras.index` with toast "Camera added."
 
 ---
@@ -241,7 +241,7 @@ The status indicator is a custom composite element: a `6px` filled circle (`size
 - Heading description: "Update camera details and location"
 - Form action: `v-bind="CameraController.update.form(camera)"`
 - Fields pre-populated with `:default-value="camera.field_name"`
-- Submit button text: "Update"
+- Submit button text: "Update Camera"
 - On success: redirects to `cameras.show` with toast "Camera updated."
 
 ---
@@ -279,7 +279,7 @@ The status indicator is a custom composite element: a `6px` filled circle (`size
 - `Card` > `CardHeader` > `CardTitle` "Camera Information"
 - `CardContent` with vertical layout `space-y-4`
 - Each field displayed as definition-list style:
-  - Label: `text-sm font-medium text-muted-foreground`
+  - Label: `text-sm text-muted-foreground`
   - Value: `text-sm text-foreground` (below label, not inline)
 - Fields displayed: Name, Device ID (monospace `font-mono`), Location, Status (`CameraStatusDot`), Last Seen (relative time or "Never")
 - `Separator` after the fields
@@ -293,7 +293,7 @@ The status indicator is a custom composite element: a `6px` filled circle (`size
 - `Card` > `CardHeader` > `CardTitle` "Enrolled Personnel"
 - `CardContent` with empty state (D-16):
   - Icon: `Users` from lucide-vue-next at `size-10 text-muted-foreground/40`
-  - Heading: "No personnel enrolled" at `text-sm font-medium`
+  - Heading: "No personnel enrolled" at `text-sm font-semibold`
   - Body: "Personnel will appear here once enrollment is configured in a future update." at `text-xs text-muted-foreground`
   - All centered: `flex flex-col items-center justify-center py-12 text-center`
 
@@ -304,7 +304,7 @@ The status indicator is a custom composite element: a `6px` filled circle (`size
   - `DialogTitle`: "Delete camera?"
   - `DialogDescription`: "This will permanently remove {camera.name} and all associated enrollment records. This action cannot be undone."
 - `DialogFooter` with `gap-2`:
-  - "Cancel" `Button` (variant="secondary") via `DialogClose`
+  - "Keep Camera" `Button` (variant="secondary") via `DialogClose`
   - "Delete camera" `Button` (variant="destructive", disabled while processing)
 - On confirm: `Form` with `v-bind="CameraController.destroy.form(camera)"`, redirects to `cameras.index` with toast "Camera deleted."
 
@@ -334,8 +334,8 @@ Position: Second item in `mainNavItems`, after "Dashboard".
 | Element | Copy |
 |---------|------|
 | Primary CTA (list page) | "Add Camera" |
-| Primary CTA (create form) | "Save" |
-| Primary CTA (edit form) | "Update" |
+| Primary CTA (create form) | "Create Camera" |
+| Primary CTA (edit form) | "Update Camera" |
 | Page title (list) | "Cameras" |
 | Page title (create) | "Add Camera" |
 | Page title (edit) | "Edit Camera" |
@@ -351,7 +351,7 @@ Position: Second item in `mainNavItems`, after "Dashboard".
 | Delete confirmation title | "Delete camera?" |
 | Delete confirmation body | "This will permanently remove {camera.name} and all associated enrollment records. This action cannot be undone." |
 | Delete confirm button | "Delete camera" |
-| Delete cancel button | "Cancel" |
+| Delete cancel button | "Keep Camera" |
 | Toast: camera created | "Camera added." |
 | Toast: camera updated | "Camera updated." |
 | Toast: camera deleted | "Camera deleted." |
@@ -403,7 +403,7 @@ No third-party registries are used in this phase. No new shadcn components need 
 |-------|----------|
 | Dialog closed | Delete button shows normally |
 | Dialog open | Modal overlay, focus trapped inside dialog |
-| Confirm processing | "Delete camera" button disabled, "Cancel" button still functional |
+| Confirm processing | "Delete camera" button disabled, "Keep Camera" button still functional |
 | Success | Dialog closes, redirect to camera list + toast "Camera deleted." |
 
 ### Real-Time Status Updates
@@ -435,7 +435,7 @@ Camera pages are admin-only and primarily used on desktop at the command center,
 | Table | Use semantic `<table>`, `<thead>`, `<tbody>`, `<th scope="col">` elements |
 | Status dot | `CameraStatusDot` includes `aria-label="Camera is online"` or `"Camera is offline"` |
 | Map | `role="application"` on map container, `aria-label="Camera location map"` |
-| Delete dialog | Focus trapped inside dialog (handled by reka-ui Dialog). Focus moves to "Cancel" button on open. |
+| Delete dialog | Focus trapped inside dialog (handled by reka-ui Dialog). Focus moves to "Keep Camera" button on open. |
 | Form errors | `aria-invalid="true"` on invalid inputs (handled by shadcn Input component) |
 | Camera name links | Descriptive link text (camera name itself is the link text -- no "click here") |
 
