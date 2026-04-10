@@ -91,7 +91,7 @@ Plans:
 Plans:
 - [x] 04-01-PLAN.md -- CameraEnrollmentService, EnrollPersonnelBatch job, migration, model, TypeScript types, controller hooks
 - [x] 04-02-PLAN.md -- AckHandler ACK correlation, EnrollmentStatusChanged broadcast, timeout command, OnlineOfflineHandler extension
-- [ ] 04-03-PLAN.md -- EnrollmentController retry/resync routes, Personnel Show sidebar wiring with Echo, SyncStatusDot labels
+- [x] 04-03-PLAN.md -- EnrollmentController retry/resync routes, Personnel Show sidebar wiring with Echo, SyncStatusDot labels
 - [ ] 04-04-PLAN.md -- EnrollmentSummaryPanel component, Personnel Index summary panel, Camera Show enrolled personnel sidebar
 
 ### Phase 5: Recognition & Alerting
