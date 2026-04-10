@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
-import { BookOpen, Camera, FolderGit2, LayoutGrid } from 'lucide-vue-next';
+import {
+    BookOpen,
+    Camera,
+    FolderGit2,
+    LayoutGrid,
+    Users,
+} from 'lucide-vue-next';
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
@@ -16,6 +22,7 @@ import {
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
 import { index as camerasIndex } from '@/routes/cameras';
+import { index as personnelIndex } from '@/routes/personnel';
 import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
@@ -28,6 +35,11 @@ const mainNavItems: NavItem[] = [
         title: 'Cameras',
         href: camerasIndex(),
         icon: Camera,
+    },
+    {
+        title: 'Personnel',
+        href: personnelIndex(),
+        icon: Users,
     },
 ];
 
