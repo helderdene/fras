@@ -51,9 +51,9 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **ENRL-01**: Saving a personnel record dispatches enrollment jobs to all cameras via MQTT EditPersonsNew
 - [x] **ENRL-02**: Enrollment batches are limited to 1000 entries; larger sets are chunked
 - [x] **ENRL-03**: Only one enrollment batch may be in-flight per camera at a time (WithoutOverlapping middleware)
-- [ ] **ENRL-04**: System correlates EditPersonsNew-Ack responses to pending enrollments via cached message IDs
-- [ ] **ENRL-05**: Per-camera enrollment status shows enrolled/pending/failed state with last sync time or error message
-- [ ] **ENRL-06**: Failed enrollments show translated operator-friendly error messages (from camera error codes)
+- [x] **ENRL-04**: System correlates EditPersonsNew-Ack responses to pending enrollments via cached message IDs
+- [x] **ENRL-05**: Per-camera enrollment status shows enrolled/pending/failed state with last sync time or error message
+- [x] **ENRL-06**: Failed enrollments show translated operator-friendly error messages (from camera error codes)
 - [ ] **ENRL-07**: Admin can retry failed enrollments per camera with a single click
 - [ ] **ENRL-08**: "Re-sync all" button on personnel detail page forces re-push to all cameras without editing fields
 - [ ] **ENRL-09**: Deleting a personnel record sends MQTT DeletePersons to all cameras
@@ -170,9 +170,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ENRL-01 | Phase 4 | Complete |
 | ENRL-02 | Phase 4 | Complete |
 | ENRL-03 | Phase 4 | Complete |
-| ENRL-04 | Phase 4 | Pending |
-| ENRL-05 | Phase 4 | Pending |
-| ENRL-06 | Phase 4 | Pending |
+| ENRL-04 | Phase 4 | Complete |
+| ENRL-05 | Phase 4 | Complete |
+| ENRL-06 | Phase 4 | Complete |
 | ENRL-07 | Phase 4 | Pending |
 | ENRL-08 | Phase 4 | Pending |
 | ENRL-09 | Phase 4 | Pending |
