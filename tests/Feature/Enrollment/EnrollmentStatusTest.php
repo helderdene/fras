@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\CameraStatusChanged;
 use App\Events\EnrollmentStatusChanged;
 use App\Jobs\EnrollPersonnelBatch;
 use App\Models\Camera;
@@ -7,6 +8,7 @@ use App\Models\CameraEnrollment;
 use App\Models\Personnel;
 use App\Mqtt\Handlers\OnlineOfflineHandler;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 
 test('timeout command marks old pending enrollments as failed', function () {
@@ -20,8 +22,8 @@ test('timeout command marks old pending enrollments as failed', function () {
         'status' => CameraEnrollment::STATUS_PENDING,
     ]);
 
-    // Simulate enrollment created 10 minutes ago
-    $enrollment->update(['updated_at' => now()->subMinutes(10)]);
+    // Simulate enrollment created 10 minutes ago (bypass Eloquent auto-timestamps)
+    DB::table('camera_enrollments')->where('id', $enrollment->id)->update(['updated_at' => now()->subMinutes(10)]);
 
     $this->artisan('enrollment:check-timeouts')
         ->expectsOutputToContain('1 enrollment(s) as timed out')
@@ -45,7 +47,7 @@ test('timeout command ignores already enrolled records', function () {
         'enrolled_at' => now()->subMinutes(10),
     ]);
 
-    $enrollment->update(['updated_at' => now()->subMinutes(10)]);
+    DB::table('camera_enrollments')->where('id', $enrollment->id)->update(['updated_at' => now()->subMinutes(10)]);
 
     $this->artisan('enrollment:check-timeouts')
         ->expectsOutputToContain('No timed-out enrollments found')
@@ -68,7 +70,7 @@ test('timeout command dispatches EnrollmentStatusChanged', function () {
         'status' => CameraEnrollment::STATUS_PENDING,
     ]);
 
-    $enrollment->update(['updated_at' => now()->subMinutes(10)]);
+    DB::table('camera_enrollments')->where('id', $enrollment->id)->update(['updated_at' => now()->subMinutes(10)]);
 
     $this->artisan('enrollment:check-timeouts')->assertSuccessful();
 
@@ -82,7 +84,7 @@ test('timeout command dispatches EnrollmentStatusChanged', function () {
 
 test('online handler dispatches pending enrollments when camera comes online', function () {
     Bus::fake([EnrollPersonnelBatch::class]);
-    Event::fake([EnrollmentStatusChanged::class, \App\Events\CameraStatusChanged::class]);
+    Event::fake([EnrollmentStatusChanged::class, CameraStatusChanged::class]);
 
     $camera = Camera::factory()->offline()->create();
     $personnel = Personnel::factory()->create();
@@ -105,7 +107,7 @@ test('online handler dispatches pending enrollments when camera comes online', f
 
 test('online handler does not dispatch when camera goes offline', function () {
     Bus::fake([EnrollPersonnelBatch::class]);
-    Event::fake([\App\Events\CameraStatusChanged::class]);
+    Event::fake([CameraStatusChanged::class]);
 
     $camera = Camera::factory()->online()->create();
     $personnel = Personnel::factory()->create();

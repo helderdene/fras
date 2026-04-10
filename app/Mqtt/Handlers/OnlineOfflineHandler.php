@@ -3,7 +3,9 @@
 namespace App\Mqtt\Handlers;
 
 use App\Events\CameraStatusChanged;
+use App\Jobs\EnrollPersonnelBatch;
 use App\Models\Camera;
+use App\Models\CameraEnrollment;
 use App\Mqtt\Contracts\MqttHandler;
 use Illuminate\Support\Facades\Log;
 
@@ -68,6 +70,26 @@ class OnlineOfflineHandler implements MqttHandler
                 $isOnline,
                 $camera->last_seen_at?->toIso8601String(),
             );
+        }
+
+        // Dispatch pending enrollments when camera comes online (D-03)
+        if ($isOnline && ! $wasOnline) {
+            $pendingPersonnelIds = CameraEnrollment::where('camera_id', $camera->id)
+                ->where('status', CameraEnrollment::STATUS_PENDING)
+                ->pluck('personnel_id')
+                ->toArray();
+
+            if (! empty($pendingPersonnelIds)) {
+                $batchSize = config('hds.enrollment.batch_size');
+                foreach (array_chunk($pendingPersonnelIds, $batchSize) as $chunk) {
+                    EnrollPersonnelBatch::dispatch($camera, $chunk);
+                }
+
+                Log::info('Dispatched pending enrollments for camera online', [
+                    'camera_id' => $camera->id,
+                    'count' => count($pendingPersonnelIds),
+                ]);
+            }
         }
     }
 }
