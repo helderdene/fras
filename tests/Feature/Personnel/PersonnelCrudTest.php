@@ -219,8 +219,8 @@ test('can delete a personnel record and photo file is cleaned up', function () {
         ->delete(route('personnel.destroy', $personnel))
         ->assertRedirect(route('personnel.index'));
 
-    expect(Personnel::find($personnel->id))->toBeNull()
-        ->and(Storage::disk('public')->exists('personnel/test-photo.jpg'))->toBeFalse();
+    $this->assertModelMissing($personnel);
+    expect(Storage::disk('public')->exists('personnel/test-photo.jpg'))->toBeFalse();
 });
 
 test('requires authentication for personnel routes', function () {
