@@ -85,14 +85,14 @@ Plans:
   3. Failed enrollments display operator-friendly error messages and admin can retry with a single click
   4. Deleting a personnel record sends MQTT DeletePersons to all cameras and removes per-camera enrollment records
   5. Bulk enrollment status dashboard shows per-camera counts (X/Y enrolled, Z failed) and admin can force re-sync all
-**Plans**: TBD
+**Plans**: 4 plans
 **UI hint**: yes
 
 Plans:
-- [ ] 04-01: TBD
-- [ ] 04-02: TBD
-- [ ] 04-03: TBD
-- [ ] 04-04: TBD
+- [ ] 04-01-PLAN.md -- CameraEnrollmentService, EnrollPersonnelBatch job, migration, model, TypeScript types, controller hooks
+- [ ] 04-02-PLAN.md -- AckHandler ACK correlation, EnrollmentStatusChanged broadcast, timeout command, OnlineOfflineHandler extension
+- [ ] 04-03-PLAN.md -- EnrollmentController retry/resync routes, Personnel Show sidebar wiring with Echo, SyncStatusDot labels
+- [ ] 04-04-PLAN.md -- EnrollmentSummaryPanel component, Personnel Index summary panel, Camera Show enrolled personnel sidebar
 
 ### Phase 5: Recognition & Alerting
 **Goal**: The system processes face recognition events from cameras in real time, classifies them by severity, broadcasts them to browsers, and presents a live alert feed with audio notifications for critical events
