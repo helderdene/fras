@@ -117,7 +117,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <div class="relative w-full">
+    <div class="relative h-full w-full">
         <Skeleton v-if="!isLoaded && !hasError" class="absolute inset-0" />
         <div
             v-if="hasError"
