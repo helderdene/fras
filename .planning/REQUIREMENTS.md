@@ -57,7 +57,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **ENRL-07**: Admin can retry failed enrollments per camera with a single click
 - [x] **ENRL-08**: "Re-sync all" button on personnel detail page forces re-push to all cameras without editing fields
 - [x] **ENRL-09**: Deleting a personnel record sends MQTT DeletePersons to all cameras
-- [ ] **ENRL-10**: Bulk enrollment status dashboard shows per-camera enrollment counts (X/Y enrolled, Z failed)
+- [x] **ENRL-10**: Bulk enrollment status dashboard shows per-camera enrollment counts (X/Y enrolled, Z failed)
 
 ### Recognition & Alerting
 
@@ -176,7 +176,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ENRL-07 | Phase 4 | Complete |
 | ENRL-08 | Phase 4 | Complete |
 | ENRL-09 | Phase 4 | Complete |
-| ENRL-10 | Phase 4 | Pending |
+| ENRL-10 | Phase 4 | Complete |
 | REC-01 | Phase 5 | Pending |
 | REC-02 | Phase 5 | Pending |
 | REC-03 | Phase 5 | Pending |
