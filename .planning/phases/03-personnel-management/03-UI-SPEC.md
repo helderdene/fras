@@ -52,11 +52,15 @@ Exceptions: none
 | Role | Size | Weight | Line Height | Tailwind Class |
 |------|------|--------|-------------|----------------|
 | Body | 14px | 400 (regular) | 1.5 | `text-sm` |
-| Label | 14px | 500 (medium) | 1.5 | `text-sm font-medium` (via Label component) |
+| Label | 14px | 600 (semibold) | 1.5 | `text-sm font-semibold` |
 | Heading | 20px | 600 (semibold) | 1.2 | `text-xl font-semibold tracking-tight` |
-| Display | 18px | 600 (semibold) | 1.3 | `text-lg font-semibold` (empty state heading) |
+| Display | 16px | 600 (semibold) | 1.3 | `text-base font-semibold` (empty state heading) |
 
-**Source:** Extracted from `Heading.vue` (text-xl font-semibold tracking-tight), camera pages (text-sm body), Label UI component (text-sm font-medium), empty state pattern (text-lg font-semibold).
+**Weights used:** 2 -- regular (400) and semibold (600).
+
+**Revision note:** Label promoted from weight 500 (medium) to weight 600 (semibold) to comply with the 2-weight maximum. Display reduced from 18px to 16px to create a more discernible typographic step: 14 (body/label) -> 16 (display) -> 20 (heading).
+
+**Source:** Extracted from `Heading.vue` (text-xl font-semibold tracking-tight), camera pages (text-sm body), Label UI component. Form section headers (`<h3>`) and empty state headings now use `text-base font-semibold` for display role.
 
 ---
 
@@ -86,11 +90,15 @@ Accent reserved for:
 | Sync dot: pending | amber-500 | `bg-amber-500` |
 | Sync dot: failed | red-500 | `bg-red-500` |
 | Sync dot: not synced | neutral-400 / neutral-500 dark | `bg-neutral-400 dark:bg-neutral-500` |
+| Sync label: synced | emerald-700 / emerald-400 dark | `text-emerald-700 dark:text-emerald-400` |
+| Sync label: pending | amber-700 / amber-400 dark | `text-amber-700 dark:text-amber-400` |
+| Sync label: failed | red-700 / red-400 dark | `text-red-700 dark:text-red-400` |
+| Sync label: not synced | muted-foreground | `text-muted-foreground` |
 | Dropzone border (idle) | border | `border-dashed border-2 border-border` |
 | Dropzone border (drag over) | primary | `border-dashed border-2 border-primary` |
 | Dropzone border (error) | destructive | `border-dashed border-2 border-destructive` |
 
-**Source:** CameraStatusDot.vue pattern for status dot colors. Badge component variants (secondary, destructive) from `components/ui/badge/index.ts`. Dropzone states are new but follow existing border/primary/destructive token pattern.
+**Source:** CameraStatusDot.vue pattern for status dot and label colors (verified: online uses `text-emerald-700 dark:text-emerald-400`, offline uses `text-muted-foreground`). Badge component variants (secondary, destructive) from `components/ui/badge/index.ts`. Dropzone states follow existing border/primary/destructive token pattern.
 
 ---
 
@@ -160,6 +168,8 @@ Accent reserved for:
 
 **Search behavior (D-07):** Client-side filter-as-you-type. `computed` filters `personnel` array by `name` or `custom_id` containing search string (case-insensitive). No debounce needed for ~200 records.
 
+**Search no-results state:** When `filtered` array is empty and `search` is non-empty, render a single `<tr>` with a `<td colspan="5" class="py-12 text-center text-sm text-muted-foreground">` containing: "No personnel match your search."
+
 ### Personnel Show (`pages/personnel/Show.vue`)
 
 **Layout:** 3/5 + 2/5 grid at lg breakpoint -- `grid grid-cols-1 gap-6 lg:grid-cols-5`
@@ -199,20 +209,20 @@ Accent reserved for:
 - `InputError` below dropzone for server errors
 
 **Section 2: Identity** (D-02 grouped)
-- Section label: `<h3 class="text-sm font-medium text-foreground">Identity</h3>`
+- Section label: `<h3 class="text-base font-semibold text-foreground">Identity</h3>`
 - Row 1: Name (full width) -- `grid gap-2`
 - Row 2: Custom ID + Person Type -- `grid grid-cols-2 gap-4`
 - Person Type: Select with "Allow" and "Block" options
 
 **Section 3: Details** (optional fields)
-- Section label: `<h3 class="text-sm font-medium text-foreground">Details</h3>`
+- Section label: `<h3 class="text-base font-semibold text-foreground">Details</h3>`
 - Row 1: Gender + Birthday -- `grid grid-cols-2 gap-4`
 - Gender: Select with "Male" and "Female" options
 - Birthday: Input type="date"
 - Row 2: ID Card (full width) -- `grid gap-2`
 
 **Section 4: Contact** (optional fields)
-- Section label: `<h3 class="text-sm font-medium text-foreground">Contact</h3>`
+- Section label: `<h3 class="text-base font-semibold text-foreground">Contact</h3>`
 - Row 1: Phone (full width)
 - Row 2: Address (full width)
 
@@ -264,7 +274,7 @@ Accent reserved for:
 **Constraint help text:** `<p class="mt-2 text-xs text-muted-foreground">JPEG or PNG, max 1MB after processing. Photos are automatically resized.</p>`
 
 **Client-side validation (D-05):**
-- Reject non-image files: Show "Please select a JPEG or PNG image"
+- Reject non-image files: Show "Please select a JPEG or PNG image."
 - Reject files over 10MB: Show "File is too large. Maximum upload size is 10MB."
 - Valid file: Show preview thumbnail, clear any error
 
@@ -294,6 +304,8 @@ Accent reserved for:
 
 **Structure:** `<span class="inline-flex items-center gap-1.5">` with `<span class="size-1.5 rounded-full">` dot + `<span class="text-sm">` label.
 
+**Label color rule:** Active statuses (synced, pending, failed) use status-specific semantic colors matching CameraStatusDot's pattern (online = colored label, offline = muted). The "not-synced" status uses `text-muted-foreground` as a neutral/inactive state.
+
 **Phase 3 default:** Always render with `status="not-synced"` (gray). Phase 4 will compute actual status from enrollment records.
 
 ---
@@ -308,6 +320,7 @@ Accent reserved for:
 | Empty state heading (Index) | "No personnel registered" |
 | Empty state body (Index) | "Add your first person to start building the enrollment roster." |
 | Empty state CTA (Index) | "Add Personnel" |
+| Search no-results (table) | "No personnel match your search." |
 | Empty state heading (enrollment sidebar) | "No cameras registered" |
 | Empty state body (enrollment sidebar) | "Register cameras to enable enrollment." |
 | Search placeholder | "Search by name or ID..." |
@@ -366,7 +379,7 @@ Accent reserved for:
 - Input above table, `max-w-sm`
 - Filters `personnel` array client-side by name or custom_id (case-insensitive contains)
 - Instant results (no debounce needed for ~200 records)
-- No results: table body shows empty, no special empty state
+- No results: table body shows a single row spanning all columns with centered "No personnel match your search." text (`text-sm text-muted-foreground`)
 
 ---
 
