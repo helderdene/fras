@@ -608,22 +608,25 @@ const mainNavItems: NavItem[] = [
 | A3 | Using `Camera::where()->update()` is better than `find()->save()` for high-frequency heartbeats | Anti-Patterns | LOW -- performance difference is negligible with 8 cameras |
 | A4 | `facesluiceId` always maps to `device_id` in the cameras table for these cameras | Pitfall 1 | HIGH -- if they differ, heartbeat/online messages won't match any camera. Spec says "identical in observed firmware" but warns they are "conceptually distinct" |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **Offline message payload format**
+1. **Offline message payload format** (RESOLVED)
    - What we know: Online message has been captured and verified (spec Appendix C.2). The `operator` field is `"Online"`.
    - What's unclear: The Offline message format is not explicitly shown in the spec appendix. Assumed to be the same structure with `"operator": "Offline"` and `facesluiceId` in `info`.
    - Recommendation: Implement the handler to accept both `"Online"` and `"Offline"` operators. Log a warning if an unexpected operator arrives. This is safe even if the format differs slightly.
+   - Resolution: Plan 02-02 OnlineOfflineHandler implements both operators with `in_array($operator, ['Online', 'Offline'], true)` validation and warning logs for unexpected operators.
 
-2. **facesluiceId vs device_id discrepancy**
+2. **facesluiceId vs device_id discrepancy** (RESOLVED)
    - What we know: Spec glossary says they are "distinct" but observed firmware shows them as "identical" (`1026700`).
    - What's unclear: Whether this holds for all camera models/firmware versions the system will encounter.
    - Recommendation: Use `facesluiceId` to look up by `device_id`. Add logging when lookup fails so the mapping can be debugged at deployment time. Document this in the camera configuration docs.
+   - Resolution: Both HeartbeatHandler and OnlineOfflineHandler in Plan 02-02 use `Camera::where('device_id', $facesluiceId)` with warning logs on lookup failure for deployment debugging.
 
-3. **Mapbox access token delivery to frontend**
+3. **Mapbox access token delivery to frontend** (RESOLVED)
    - What we know: Token is in `config/hds.php` under `mapbox.token`. Frontend components need it.
    - What's unclear: Whether to pass it as a shared Inertia prop (available on all pages) or a page-specific prop (only camera pages).
    - Recommendation: Pass as a page prop on camera pages only (create, edit, show). Avoid sharing globally since only camera pages need it. In Phase 6 (Dashboard), it can be added to the dashboard page props as well.
+   - Resolution: Plan 02-01 CameraController passes `config('hds.mapbox.token')`, `config('hds.mapbox.dark_style')`, and `config('hds.mapbox.light_style')` as page-specific props on create, show, and edit actions only.
 
 ## Environment Availability
 

@@ -2,7 +2,7 @@
 phase: 2
 slug: camera-management-liveness
 status: draft
-nyquist_compliant: false
+nyquist_compliant: true
 wave_0_complete: false
 created: 2026-04-10
 ---
@@ -38,14 +38,14 @@ created: 2026-04-10
 
 | Task ID | Plan | Wave | Requirement | Threat Ref | Secure Behavior | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|------------|-----------------|-----------|-------------------|-------------|--------|
-| 02-01-01 | 01 | 1 | CAM-01 | — | N/A | feature | `php artisan test --compact --filter=CameraControllerTest` | ❌ W0 | ⬜ pending |
-| 02-01-02 | 01 | 1 | CAM-02 | — | N/A | feature | `php artisan test --compact --filter=CameraControllerTest` | ❌ W0 | ⬜ pending |
-| 02-02-01 | 02 | 1 | OPS-04 | — | N/A | feature | `php artisan test --compact --filter=OnlineOfflineHandlerTest` | ❌ W0 | ⬜ pending |
-| 02-02-02 | 02 | 1 | OPS-05 | — | N/A | feature | `php artisan test --compact --filter=HeartbeatHandlerTest` | ❌ W0 | ⬜ pending |
-| 02-02-03 | 02 | 1 | CAM-03 | — | N/A | feature | `php artisan test --compact --filter=DetectOfflineCamerasTest` | ❌ W0 | ⬜ pending |
-| 02-02-04 | 02 | 1 | CAM-04 | — | N/A | feature | `php artisan test --compact --filter=DetectOfflineCamerasTest` | ❌ W0 | ⬜ pending |
-| 02-03-01 | 03 | 2 | CAM-05 | — | N/A | feature | `php artisan test --compact --filter=CameraListPageTest` | ❌ W0 | ⬜ pending |
-| 02-03-02 | 03 | 2 | CAM-06 | — | N/A | feature | `php artisan test --compact --filter=CameraDetailPageTest` | ❌ W0 | ⬜ pending |
+| 02-01-01 | 01 | 1 | CAM-01, CAM-02, CAM-05, CAM-06 | T-02-01..03 | Auth gating, validation, unique constraint | feature | `php artisan test --compact --filter=CameraCrud` | ❌ W0 | ⬜ pending |
+| 02-01-02 | 01 | 1 | CAM-01, CAM-02 | T-02-01..04 | Auth + verified middleware, CSRF | feature | `php artisan test --compact --filter=CameraCrud` | ❌ W0 | ⬜ pending |
+| 02-02-01 | 02 | 1 | OPS-04, CAM-03 | T-02-05..08 | Payload validation, state transition gating | feature | `php artisan test --compact --filter=CameraStatus` | ❌ W0 | ⬜ pending |
+| 02-02-02 | 02 | 1 | OPS-05, CAM-04 | T-02-09 | Configurable threshold, no duplicate broadcasts | feature | `php artisan test --compact --filter=CameraStatus` | ❌ W0 | ⬜ pending |
+| 02-03-01 | 03 | 2 | CAM-05 | T-02-10..12 | — | lint+build | `npm run lint:check && npm run format:check` | n/a | ⬜ pending |
+| 02-03-02 | 03 | 2 | CAM-05 | — | — | lint+build | `npm run lint:check && npm run format:check` | n/a | ⬜ pending |
+| 02-03-03 | 03 | 2 | CAM-06 | — | — | build | `npm run build 2>&1 \| tail -5` | n/a | ⬜ pending |
+| 02-03-04 | 03 | 2 | CAM-05, CAM-06 | — | — | checkpoint:human-verify | Human visual verification of full CRUD flow | n/a | ⬜ pending |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
@@ -53,14 +53,22 @@ created: 2026-04-10
 
 ## Wave 0 Requirements
 
-- [ ] `tests/Feature/Camera/CameraControllerTest.php` — stubs for CAM-01, CAM-02
-- [ ] `tests/Feature/Camera/OnlineOfflineHandlerTest.php` — stubs for OPS-04
-- [ ] `tests/Feature/Camera/HeartbeatHandlerTest.php` — stubs for OPS-05
-- [ ] `tests/Feature/Camera/DetectOfflineCamerasTest.php` — stubs for CAM-03, CAM-04
-- [ ] `tests/Feature/Camera/CameraListPageTest.php` — stubs for CAM-05
-- [ ] `tests/Feature/Camera/CameraDetailPageTest.php` — stubs for CAM-06
+- [ ] `tests/Feature/Camera/CameraCrudTest.php` — TDD test-first for Camera model, factory, validation, controller CRUD (Plan 01, Tasks 1-2)
+- [ ] `tests/Feature/Camera/CameraStatusTest.php` — TDD test-first for HeartbeatHandler, OnlineOfflineHandler, CheckOfflineCamerasCommand (Plan 02, Tasks 1-2)
+- [ ] `tests/Feature/Camera/CameraStatusBroadcastTest.php` — TDD test-first for broadcast dispatch/non-dispatch on state transitions (Plan 02, Task 1)
 
 *Existing test infrastructure (Pest v4) covers all phase requirements.*
+
+---
+
+## Wave 2 Behavioral Coverage Note
+
+Plan 02-03 (Wave 2) implements Vue frontend pages. Tasks 1-3 use lint/build/format checks as automated verification because:
+- Vue page rendering requires a full browser context not available in Pest PHP tests
+- Inertia page-render assertions for basic route-level rendering are covered in Plan 02-01 Task 2 (CameraCrudTest includes `it('can list cameras')`, `it('can view create form')`, `it('can view a camera')`, `it('can view edit form')` which assert Inertia page rendering returns 200)
+- Task 4 (`checkpoint:human-verify`) provides the behavioral verification gate: human visually verifies the full camera CRUD flow including Mapbox rendering, form submission, real-time Echo updates, and delete confirmation
+
+This satisfies Nyquist because: (1) backend route rendering is automated in Plan 01, (2) frontend compilation correctness is automated in Plan 03 Tasks 1-3, and (3) visual/interactive behavior is verified by the human checkpoint in Task 4.
 
 ---
 
@@ -76,11 +84,12 @@ created: 2026-04-10
 
 ## Validation Sign-Off
 
-- [ ] All tasks have `<automated>` verify or Wave 0 dependencies
-- [ ] Sampling continuity: no 3 consecutive tasks without automated verify
-- [ ] Wave 0 covers all MISSING references
-- [ ] No watch-mode flags
-- [ ] Feedback latency < 15s
-- [ ] `nyquist_compliant: true` set in frontmatter
+- [x] All tasks have `<automated>` verify or Wave 0 dependencies
+- [x] Sampling continuity: no 3 consecutive tasks without automated verify
+- [x] Wave 0 covers all MISSING references
+- [x] No watch-mode flags
+- [x] Feedback latency < 15s
+- [x] `nyquist_compliant: true` set in frontmatter
+- [x] Wave 2 behavioral coverage acknowledged via human checkpoint gate
 
 **Approval:** pending
