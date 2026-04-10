@@ -5,6 +5,7 @@ namespace App\Services;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Intervention\Image\Encoders\JpegEncoder;
 use Intervention\Image\Laravel\Facades\Image;
 
 class PhotoProcessor
@@ -24,11 +25,11 @@ class PhotoProcessor
         $image->orient();
         $image->scaleDown(width: $maxDim, height: $maxDim);
 
-        $encoded = $image->encodeUsingFileExtension('jpg', quality: $quality);
+        $encoded = $image->encode(new JpegEncoder(quality: $quality));
 
         while (strlen((string) $encoded) > $maxBytes && $quality > 40) {
             $quality -= 10;
-            $encoded = $image->encodeUsingFileExtension('jpg', quality: $quality);
+            $encoded = $image->encode(new JpegEncoder(quality: $quality));
         }
 
         $filename = Str::uuid().'.jpg';
