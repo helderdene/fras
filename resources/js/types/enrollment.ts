@@ -3,7 +3,7 @@ export interface CameraWithEnrollment {
     name: string;
     is_online: boolean;
     enrollment: {
-        status: 'enrolled' | 'pending' | 'failed' | 'not-synced';
+        status: 'enrolled' | 'synced' | 'pending' | 'failed' | 'not-synced';
         enrolled_at: string | null;
         last_error: string | null;
     } | null;

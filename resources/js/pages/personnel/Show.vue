@@ -49,8 +49,21 @@ setLayoutProps({
     ],
 });
 
-// Local reactive copy for real-time updates
-const cameras = ref<CameraWithEnrollment[]>([...props.cameras]);
+// Local reactive copy for real-time updates — normalize 'enrolled' -> 'synced'
+const cameras = ref<CameraWithEnrollment[]>(
+    props.cameras.map((cam) => ({
+        ...cam,
+        enrollment: cam.enrollment
+            ? {
+                  ...cam.enrollment,
+                  status:
+                      cam.enrollment.status === 'enrolled'
+                          ? 'synced'
+                          : cam.enrollment.status,
+              }
+            : null,
+    })),
+);
 
 const enrollmentLabels = { synced: 'Enrolled', 'not-synced': 'Not synced' };
 
