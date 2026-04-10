@@ -9,7 +9,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Infrastructure
 
-- [ ] **INFRA-01**: Application uses MySQL database for all FRAS data (cameras, personnel, events, enrollments)
+- [x] **INFRA-01**: Application uses MySQL database for all FRAS data (cameras, personnel, events, enrollments)
 - [ ] **INFRA-02**: MQTT broker (Mosquitto) is accessible from Laravel and camera subnet
 - [ ] **INFRA-03**: Laravel Reverb WebSocket server runs and broadcasts events to connected browsers
 - [ ] **INFRA-04**: Long-running processes (MQTT listener, Reverb, queue worker) are managed by Supervisor with autostart/autorestart
@@ -140,7 +140,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| INFRA-01 | Phase 1 | Pending |
+| INFRA-01 | Phase 1 | Complete |
 | INFRA-02 | Phase 1 | Pending |
 | INFRA-03 | Phase 1 | Pending |
 | INFRA-04 | Phase 1 | Pending |
