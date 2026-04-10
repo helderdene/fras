@@ -4,8 +4,8 @@ milestone: v1.0
 milestone_name: milestone
 status: executing
 stopped_at: Phase 2 UI-SPEC approved
-last_updated: "2026-04-10T08:47:38.312Z"
-last_activity: 2026-04-10 -- Phase 2 planning complete
+last_updated: "2026-04-10T08:48:55.495Z"
+last_activity: 2026-04-10 -- Phase 02 execution started
 progress:
   total_phases: 7
   completed_phases: 1
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-10)
 
 **Core value:** Operators see every matched-face recognition event in real time on a map-based dashboard with severity-classified alerts, so critical events are never missed.
-**Current focus:** Phase 01 — infrastructure-mqtt-foundation
+**Current focus:** Phase 02 — Camera Management & Liveness
 
 ## Current Position
 
-Phase: 2
-Plan: Not started
-Status: Ready to execute
-Last activity: 2026-04-10 -- Phase 2 planning complete
+Phase: 02 (Camera Management & Liveness) — EXECUTING
+Plan: 1 of 3
+Status: Executing Phase 02
+Last activity: 2026-04-10 -- Phase 02 execution started
 
 Progress: [░░░░░░░░░░] 0%
 
