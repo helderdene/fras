@@ -21,5 +21,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call(CameraSeeder::class);
+        $this->call(PersonnelSeeder::class);
     }
 }
