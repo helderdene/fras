@@ -6,6 +6,7 @@ use App\Http\Requests\Personnel\StorePersonnelRequest;
 use App\Http\Requests\Personnel\UpdatePersonnelRequest;
 use App\Models\Camera;
 use App\Models\Personnel;
+use App\Services\CameraEnrollmentService;
 use App\Services\PhotoProcessor;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -39,7 +40,9 @@ class PersonnelController extends Controller
 
         unset($data['photo']);
 
-        Personnel::create($data);
+        $personnel = Personnel::create($data);
+
+        app(CameraEnrollmentService::class)->enrollPersonnel($personnel);
 
         Inertia::flash('toast', ['type' => 'success', 'message' => __('Personnel added.')]);
 
@@ -81,6 +84,8 @@ class PersonnelController extends Controller
 
         $personnel->update($data);
 
+        app(CameraEnrollmentService::class)->enrollPersonnel($personnel);
+
         Inertia::flash('toast', ['type' => 'success', 'message' => __('Personnel updated.')]);
 
         return to_route('personnel.show', $personnel);
@@ -89,11 +94,13 @@ class PersonnelController extends Controller
     /** Remove the specified personnel. */
     public function destroy(Personnel $personnel): RedirectResponse
     {
+        app(CameraEnrollmentService::class)->deleteFromAllCameras($personnel);
+
         app(PhotoProcessor::class)->delete($personnel->photo_path);
 
         $personnel->delete();
 
-        Inertia::flash('toast', ['type' => 'success', 'message' => __('Personnel deleted.')]);
+        Inertia::flash('toast', ['type' => 'success', 'message' => __('Personnel deleted and removed from cameras.')]);
 
         return to_route('personnel.index');
     }

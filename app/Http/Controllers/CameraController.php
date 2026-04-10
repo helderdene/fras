@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Camera\StoreCameraRequest;
 use App\Http\Requests\Camera\UpdateCameraRequest;
 use App\Models\Camera;
+use App\Services\CameraEnrollmentService;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -34,7 +35,9 @@ class CameraController extends Controller
     /** Store a newly created camera. */
     public function store(StoreCameraRequest $request): RedirectResponse
     {
-        Camera::create($request->validated());
+        $camera = Camera::create($request->validated());
+
+        app(CameraEnrollmentService::class)->enrollAllToCamera($camera);
 
         Inertia::flash('toast', ['type' => 'success', 'message' => __('Camera added.')]);
 
