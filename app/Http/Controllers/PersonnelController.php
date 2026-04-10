@@ -69,9 +69,12 @@ class PersonnelController extends Controller
         $data = $request->validated();
 
         if ($request->hasFile('photo')) {
-            app(PhotoProcessor::class)->delete($personnel->photo_path);
+            $oldPath = $personnel->photo_path;
             $result = app(PhotoProcessor::class)->process($request->file('photo'));
             $data = array_merge($data, $result);
+
+            // Only delete old file after new file is confirmed stored
+            app(PhotoProcessor::class)->delete($oldPath);
         }
 
         unset($data['photo']);
