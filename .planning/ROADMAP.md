@@ -49,13 +49,13 @@ Plans:
   3. When a camera sends an MQTT heartbeat, its last_seen_at updates within seconds; when heartbeat is absent for >90 seconds, the camera shows as offline
   4. Camera detail page displays camera configuration and a list of personnel enrolled on that camera
   5. MQTT listener processes Online/Offline messages and HeartBeat messages to maintain camera state
-**Plans**: TBD
+**Plans**: 3 plans
 **UI hint**: yes
 
 Plans:
-- [ ] 02-01: TBD
-- [ ] 02-02: TBD
-- [ ] 02-03: TBD
+- [ ] 02-01-PLAN.md -- Camera model, factory, seeder, CameraController CRUD, form requests, routes, CameraStatusChanged event
+- [ ] 02-02-PLAN.md -- HeartbeatHandler, OnlineOfflineHandler implementations, CheckOfflineCamerasCommand, scheduler
+- [ ] 02-03-PLAN.md -- Mapbox GL JS, TypeScript types, MapboxMap component, 4 camera pages, sidebar nav, real-time Echo
 
 ### Phase 3: Personnel Management
 **Goal**: Admin can manage a personnel roster with photos that are automatically preprocessed to meet camera enrollment constraints
@@ -156,8 +156,8 @@ Note: Phases 2 and 3 share only a Phase 1 dependency and could theoretically ove
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Infrastructure & MQTT Foundation | 0/3 | Planned | - |
-| 2. Camera Management & Liveness | 0/3 | Not started | - |
+| 1. Infrastructure & MQTT Foundation | 3/3 | Complete | 2026-04-10 |
+| 2. Camera Management & Liveness | 0/3 | Planned | - |
 | 3. Personnel Management | 0/3 | Not started | - |
 | 4. Enrollment Sync | 0/4 | Not started | - |
 | 5. Recognition & Alerting | 0/4 | Not started | - |
