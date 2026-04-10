@@ -11,6 +11,8 @@ return new class extends Migration
     {
         Schema::table('camera_enrollments', function (Blueprint $table) {
             $table->string('status', 20)->default('pending')->after('personnel_id');
+            $table->index(['camera_id', 'status']);
+            $table->index(['personnel_id', 'status']);
         });
     }
 
@@ -18,6 +20,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('camera_enrollments', function (Blueprint $table) {
+            $table->dropIndex(['camera_id', 'status']);
+            $table->dropIndex(['personnel_id', 'status']);
             $table->dropColumn('status');
         });
     }
