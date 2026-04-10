@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 01-01-PLAN.md
-last_updated: "2026-04-10T06:59:12.810Z"
+stopped_at: Completed 01-02-PLAN.md
+last_updated: "2026-04-10T07:07:00.324Z"
 last_activity: 2026-04-10
 progress:
   total_phases: 7
   completed_phases: 0
   total_plans: 3
-  completed_plans: 1
-  percent: 33
+  completed_plans: 2
+  percent: 67
 ---
 
 # Project State
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-04-10)
 ## Current Position
 
 Phase: 01 (infrastructure-mqtt-foundation) — EXECUTING
-Plan: 2 of 3
+Plan: 3 of 3
 Status: Ready to execute
 Last activity: 2026-04-10
 
@@ -53,6 +53,7 @@ Progress: [░░░░░░░░░░] 0%
 
 *Updated after each plan completion*
 | Phase 01 P01 | 5min | 2 tasks | 14 files |
+| Phase 01 P02 | 5min | 2 tasks | 17 files |
 
 ## Accumulated Context
 
@@ -67,6 +68,10 @@ Recent decisions affecting current work:
 - [Roadmap]: Enrollment sync (Phase 4) is highest complexity -- ACK correlation, batching, concurrency control
 - [Phase 01]: HdsConfigTest placed in Feature (not Unit) directory; config() requires booted Laravel app
 - [Phase 01]: CI uses SQLite override (DB_CONNECTION=sqlite) since .env.example now defaults to MySQL
+- [Phase 01]: TopicRouter tests in Feature (not Unit) -- requires app container for service resolution
+- [Phase 01]: MQTT protocol v3.1.1 (not v3.1) to match camera firmware spec
+- [Phase 01]: clean_session hardcoded false (auto-reconnect requirement per Pitfall #4)
+- [Phase 01]: Auth env vars MQTT_USERNAME/MQTT_PASSWORD (not MQTT_AUTH_USERNAME) matching hds.php
 
 ### Pending Todos
 
@@ -78,6 +83,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-10T06:59:12.806Z
-Stopped at: Completed 01-01-PLAN.md
+Last session: 2026-04-10T07:07:00.321Z
+Stopped at: Completed 01-02-PLAN.md
 Resume file: None

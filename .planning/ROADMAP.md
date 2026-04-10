@@ -36,7 +36,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 Plans:
 - [x] 01-01-PLAN.md -- Packages, MySQL switch, 4 FRAS migrations, config/hds.php
-- [ ] 01-02-PLAN.md -- MQTT listener command, topic router, handlers, Supervisor configs, dev script
+- [x] 01-02-PLAN.md -- MQTT listener command, topic router, handlers, Supervisor configs, dev script
 - [ ] 01-03-PLAN.md -- Reverb broadcasting, Echo client, fras.alerts channel, broadcast test
 
 ### Phase 2: Camera Management & Liveness
