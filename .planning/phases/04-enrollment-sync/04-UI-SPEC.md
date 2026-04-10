@@ -5,6 +5,7 @@ status: draft
 shadcn_initialized: true
 preset: new-york-v4
 created: 2026-04-10
+revised: 2026-04-10
 ---
 
 # Phase 4 — UI Design Contract
@@ -55,6 +56,8 @@ Exceptions: none
 | Label | 14px | 600 (semibold) | 1.5 | `text-sm font-semibold` |
 | Heading | 20px | 600 (semibold) | 1.2 | `text-xl font-semibold tracking-tight` |
 | Display | 16px | 600 (semibold) | 1.3 | `text-base font-semibold` (summary panel card titles) |
+
+**Distinct sizes:** 3 -- 14px, 16px, 20px. All page specifications below use ONLY these three sizes. No `text-xs` (12px) or `text-2xl` (24px) anywhere.
 
 **Weights used:** 2 -- regular (400) and semibold (600).
 
@@ -129,12 +132,20 @@ Accent reserved for:
 | Page | Location | Modification |
 |------|----------|-------------|
 | Personnel Index | `pages/personnel/Index.vue` | Add EnrollmentSummaryPanel above search bar; wire SyncStatusDot to real enrollment data |
-| Personnel Show | `pages/personnel/Show.vue` | Wire enrollment sidebar to real data, add Retry button per camera, add Re-sync All button, add Echo listener for EnrollmentStatusChanged, show error messages for failed enrollments, show enrolled_at timestamps |
+| Personnel Show | `pages/personnel/Show.vue` | Wire enrollment sidebar to real data, add Retry Enrollment button per camera, add Re-sync All button, add Echo listener for EnrollmentStatusChanged, show error messages for failed enrollments, show enrolled_at timestamps |
 | Camera Show | `pages/cameras/Show.vue` | Wire enrolled personnel sidebar to real enrollment data (replace placeholder) |
 
 ---
 
 ## Page Specifications
+
+### Focal Points
+
+| Screen | Focal Point | Rationale |
+|--------|-------------|-----------|
+| Personnel Index | EnrollmentSummaryPanel cards row | First thing the operator scans to assess system-wide enrollment health across cameras |
+| Personnel Show | Enrollment sidebar "Re-sync All" button and per-camera status list | The operator's primary action area for managing a specific person's enrollment state |
+| Camera Show | Enrolled Personnel list with status dots | Shows the operator which personnel are synced to this specific camera |
 
 ### Personnel Index -- EnrollmentSummaryPanel Addition (`pages/personnel/Index.vue`)
 
@@ -156,9 +167,9 @@ Accent reserved for:
 1. **Header row:** Camera name (text-sm font-semibold text-foreground, truncate) + CameraStatusDot (inline-flex, right-aligned)
    - Layout: `flex items-center justify-between gap-2`
 2. **Counts row:** Three stacked count items
-   - Enrolled: `<span class="text-2xl font-semibold text-emerald-600 dark:text-emerald-400">{enrolled}</span> <span class="text-xs text-muted-foreground">/ {total} enrolled</span>`
-   - Failed (only if > 0): `<span class="text-sm font-semibold text-red-600 dark:text-red-400">{failed}</span> <span class="text-xs text-muted-foreground">failed</span>`
-   - Pending (only if > 0): `<span class="text-sm font-semibold text-amber-600 dark:text-amber-400">{pending}</span> <span class="text-xs text-muted-foreground">pending</span>`
+   - Enrolled: `<span class="text-xl font-semibold text-emerald-600 dark:text-emerald-400">{enrolled}</span> <span class="text-sm text-muted-foreground">/ {total} enrolled</span>`
+   - Failed (only if > 0): `<span class="text-sm font-semibold text-red-600 dark:text-red-400">{failed}</span> <span class="text-sm text-muted-foreground">failed</span>`
+   - Pending (only if > 0): `<span class="text-sm font-semibold text-amber-600 dark:text-amber-400">{pending}</span> <span class="text-sm text-muted-foreground">pending</span>`
 
 **Conditional rendering:** Only show the summary panel when at least one camera exists AND at least one personnel exists. If either is zero, the summary panel is hidden (no empty state for the panel itself).
 
@@ -198,18 +209,18 @@ type CameraEnrollmentSummary = {
 
 2. **Per-camera enrollment row structure:**
    ```
-   [Camera Name]   [SyncStatusDot]   [Retry] (if failed)
+   [Camera Name]   [SyncStatusDot]   [Retry Enrollment] (if failed)
    [Error message or enrolled_at timestamp]
    ```
    - Container: `<div class="space-y-1 border-b border-border py-3 last:border-0">`
    - Row 1: `<div class="flex items-center justify-between gap-2">`
      - Left: Camera name `<span class="text-sm text-foreground">{name}</span>`
      - Center: `<SyncStatusDot :status="enrollment.status" />`
-     - Right (if failed): `<Button variant="outline" size="sm" :disabled="retryProcessing">Retry</Button>`
+     - Right (if failed): `<Button variant="outline" size="sm" :disabled="retryProcessing">Retry Enrollment</Button>`
    - Row 2 (conditional): Additional detail below the main row
-     - If enrolled: `<p class="text-xs text-muted-foreground">Enrolled {relativeTime(enrollment.enrolled_at)}</p>`
-     - If failed: `<p class="text-xs text-red-600 dark:text-red-400">{enrollment.last_error}</p>`
-     - If pending: `<p class="text-xs text-muted-foreground">Syncing...</p>` with optional Spinner (size-3) inline
+     - If enrolled: `<p class="text-sm text-muted-foreground">Enrolled {relativeTime(enrollment.enrolled_at)}</p>`
+     - If failed: `<p class="text-sm text-red-600 dark:text-red-400">{enrollment.last_error}</p>`
+     - If pending: `<p class="text-sm text-muted-foreground">Syncing...</p>` with optional Spinner (size-3) inline
 
 3. **Echo listener for real-time updates:**
    ```typescript
@@ -267,7 +278,7 @@ type EnrolledPerson = {
 | Element | Copy |
 |---------|------|
 | Primary CTA (Show page) | "Re-sync All" |
-| Retry button label | "Retry" |
+| Retry button label | "Retry Enrollment" |
 | Summary panel: enrolled suffix | "/ {total} enrolled" |
 | Summary panel: failed suffix | "failed" |
 | Summary panel: pending suffix | "pending" |
@@ -277,6 +288,7 @@ type EnrolledPerson = {
 | Empty state body (camera Show, no enrollments) | "Personnel will appear here after enrollment sync." |
 | Enrolled timestamp | "Enrolled {relativeTime}" (e.g., "Enrolled 2 min ago") |
 | Pending status detail | "Syncing..." |
+| Delete dialog warning line | "This person will also be removed from all enrolled cameras." |
 | Error: ACK timeout | "Enrollment timed out. The camera did not respond within the expected window. Try again." |
 | Error: 463 | "Photo required for first enrollment" |
 | Error: 464 | "Camera could not resolve photo host" |
@@ -296,6 +308,8 @@ type EnrolledPerson = {
 | Sync status: failed label | "Failed" |
 | Sync status: not-synced label | "Not synced" |
 
+**Delete dialog copy update:** The existing delete confirmation dialog (from Phase 3) should append a warning line below the standard confirmation text: "This person will also be removed from all enrolled cameras." This informs the operator that the MQTT DeletePersons command will be dispatched to all cameras where the person was enrolled.
+
 **Note on SyncStatusDot label change:** The existing `SyncStatusDot.vue` uses "Synced" for the `synced` status. In Phase 4, the enrollment context uses "Enrolled" instead. The component prop value remains `synced` but the displayed label should be updated to "Enrolled" to match the enrollment domain language. Implementation options: (a) add an optional `label` prop override, or (b) rename the `synced` variant to `enrolled` throughout. Recommendation: add an optional `labels` prop map so the component remains reusable across domains (camera sync vs enrollment sync).
 
 ---
@@ -304,7 +318,7 @@ type EnrolledPerson = {
 
 ### Retry Failed Enrollment (ENRL-07)
 1. Admin sees failed SyncStatusDot with red error message on the personnel Show page enrollment sidebar
-2. Clicks "Retry" button (variant="outline", size="sm") next to the failed camera row
+2. Clicks "Retry Enrollment" button (variant="outline", size="sm") next to the failed camera row
 3. Button shows disabled + Spinner during processing
 4. POST request dispatched to `EnrollmentController.retry(personnel, camera)` via Wayfinder
 5. Server re-dispatches enrollment job; returns with toast "Retrying enrollment to {camera_name}."
@@ -328,9 +342,10 @@ type EnrolledPerson = {
 
 ### Delete with Enrollment Propagation (ENRL-09, D-12)
 1. Existing delete dialog flow unchanged (Phase 3 pattern)
-2. Server-side: `PersonnelController::destroy` now also dispatches MQTT DeletePersons to all enrolled cameras
-3. Fire-and-forget -- no ACK tracking for deletes
-4. Toast changes to: "Personnel deleted and removed from cameras."
+2. Delete dialog body includes the additional warning line: "This person will also be removed from all enrolled cameras."
+3. Server-side: `PersonnelController::destroy` now also dispatches MQTT DeletePersons to all enrolled cameras
+4. Fire-and-forget -- no ACK tracking for deletes
+5. Toast changes to: "Personnel deleted and removed from cameras."
 
 ### Summary Panel Navigation (D-10)
 1. Admin sees per-camera summary cards at the top of the personnel Index page
@@ -365,12 +380,13 @@ All components are from the official shadcn-vue registry. Tooltip and Alert were
 
 ## Accessibility Notes
 
-- Retry and Re-sync All buttons include `aria-label` attributes when icon-only or when context is ambiguous
+- "Retry Enrollment" and "Re-sync All" buttons include `aria-label` attributes when context is ambiguous (e.g., `aria-label="Retry enrollment to Camera A"`)
 - SyncStatusDot retains `aria-label` describing the status (from Phase 3)
 - Error messages associated with failed enrollment rows are visible text (not tooltip-only) to ensure screen reader access
 - Enrolled timestamp uses `<time>` element with `datetime` attribute for machine-readable dates
 - Summary panel cards are keyboard-navigable (as `<Link>` wrapping the Card, or `@click` with `role="link" tabindex="0"`)
 - Button disabled states include `aria-disabled` (shadcn Button handles this automatically)
+- Delete dialog includes the camera-side warning line as visible text, ensuring screen readers announce the full consequence
 
 ---
 
