@@ -55,7 +55,7 @@ Plans:
 Plans:
 - [x] 02-01-PLAN.md -- Camera model, factory, seeder, CameraController CRUD, form requests, routes, CameraStatusChanged event
 - [x] 02-02-PLAN.md -- HeartbeatHandler, OnlineOfflineHandler implementations, CheckOfflineCamerasCommand, scheduler
-- [ ] 02-03-PLAN.md -- Mapbox GL JS, TypeScript types, MapboxMap component, 4 camera pages, sidebar nav, real-time Echo
+- [x] 02-03-PLAN.md -- Mapbox GL JS, TypeScript types, MapboxMap component, 4 camera pages, sidebar nav, real-time Echo
 
 ### Phase 3: Personnel Management
 **Goal**: Admin can manage a personnel roster with photos that are automatically preprocessed to meet camera enrollment constraints
