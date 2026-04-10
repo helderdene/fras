@@ -1,7 +1,32 @@
 <script setup lang="ts">
-defineProps<{
-    status: 'synced' | 'pending' | 'failed' | 'not-synced';
-}>();
+type StatusLabels = Partial<
+    Record<'synced' | 'pending' | 'failed' | 'not-synced', string>
+>;
+
+const props = withDefaults(
+    defineProps<{
+        status: 'synced' | 'pending' | 'failed' | 'not-synced';
+        labels?: StatusLabels;
+    }>(),
+    {
+        labels: () => ({}),
+    },
+);
+
+const defaultLabels: Record<string, string> = {
+    synced: 'Synced',
+    pending: 'Pending',
+    failed: 'Failed',
+    'not-synced': 'Not synced',
+};
+
+function getLabel(status: string): string {
+    return (
+        props.labels?.[status as keyof StatusLabels] ??
+        defaultLabels[status] ??
+        status
+    );
+}
 </script>
 
 <template>
@@ -14,7 +39,7 @@ defineProps<{
                 'bg-red-500': status === 'failed',
                 'bg-neutral-400 dark:bg-neutral-500': status === 'not-synced',
             }"
-            :aria-label="`Sync status: ${status === 'synced' ? 'Synced' : status === 'pending' ? 'Pending' : status === 'failed' ? 'Failed' : 'Not synced'}`"
+            :aria-label="`Sync status: ${getLabel(status)}`"
         />
         <span
             class="text-sm"
@@ -25,15 +50,7 @@ defineProps<{
                 'text-muted-foreground': status === 'not-synced',
             }"
         >
-            {{
-                status === 'synced'
-                    ? 'Synced'
-                    : status === 'pending'
-                      ? 'Pending'
-                      : status === 'failed'
-                        ? 'Failed'
-                        : 'Not synced'
-            }}
+            {{ getLabel(status) }}
         </span>
     </span>
 </template>

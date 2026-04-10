@@ -37,9 +37,10 @@ test('resync all resets all enrollments and dispatches to online cameras', funct
 
     $enrollments = CameraEnrollment::where('personnel_id', $personnel->id)->get();
 
-    expect($enrollments)->each(fn ($enrollment) => $enrollment->status->toBe(CameraEnrollment::STATUS_PENDING)
-        ->and($enrollment->last_error)->toBeNull()
-    );
+    foreach ($enrollments as $enrollment) {
+        expect($enrollment->status)->toBe(CameraEnrollment::STATUS_PENDING)
+            ->and($enrollment->last_error)->toBeNull();
+    }
 
     // Only online camera should have a job dispatched
     Bus::assertDispatched(EnrollPersonnelBatch::class, function ($job) use ($onlineCamera) {

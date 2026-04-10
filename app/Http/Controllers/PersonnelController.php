@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Personnel\StorePersonnelRequest;
 use App\Http\Requests\Personnel\UpdatePersonnelRequest;
 use App\Models\Camera;
+use App\Models\CameraEnrollment;
 use App\Models\Personnel;
 use App\Services\CameraEnrollmentService;
 use App\Services\PhotoProcessor;
@@ -52,9 +53,28 @@ class PersonnelController extends Controller
     /** Display the specified personnel. */
     public function show(Personnel $personnel): Response
     {
+        $cameras = Camera::orderBy('name')
+            ->get(['id', 'name', 'is_online'])
+            ->map(function (Camera $camera) use ($personnel) {
+                $enrollment = CameraEnrollment::where('camera_id', $camera->id)
+                    ->where('personnel_id', $personnel->id)
+                    ->first();
+
+                return [
+                    'id' => $camera->id,
+                    'name' => $camera->name,
+                    'is_online' => $camera->is_online,
+                    'enrollment' => $enrollment ? [
+                        'status' => $enrollment->status,
+                        'enrolled_at' => $enrollment->enrolled_at?->toIso8601String(),
+                        'last_error' => $enrollment->last_error,
+                    ] : null,
+                ];
+            });
+
         return Inertia::render('personnel/Show', [
             'personnel' => $personnel,
-            'cameras' => Camera::orderBy('name')->get(['id', 'name']),
+            'cameras' => $cameras,
         ]);
     }
 

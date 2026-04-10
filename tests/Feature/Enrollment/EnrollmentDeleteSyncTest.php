@@ -12,7 +12,6 @@ beforeEach(function () {
 });
 
 test('deleting personnel sends delete MQTT to enrolled cameras', function () {
-    MQTT::fake();
     Storage::fake('public');
 
     $user = User::factory()->create();
@@ -25,28 +24,34 @@ test('deleting personnel sends delete MQTT to enrolled cameras', function () {
         'status' => CameraEnrollment::STATUS_ENROLLED,
     ]);
 
+    MQTT::shouldReceive('publish')
+        ->once()
+        ->withArgs(function (string $topic, string $message) use ($camera) {
+            $prefix = config('hds.mqtt.topic_prefix');
+
+            return str_contains($topic, "{$prefix}/{$camera->device_id}/Edit")
+                && str_contains($message, 'DeletePersons');
+        });
+
     $this->actingAs($user)
         ->delete(route('personnel.destroy', $personnel))
         ->assertRedirect(route('personnel.index'));
 
-    $prefix = config('hds.mqtt.topic_prefix');
-    $topic = "{$prefix}/{$camera->device_id}/Edit";
-
-    MQTT::assertPublished($topic);
+    $this->assertModelMissing($personnel);
 });
 
-test('deleting personnel flashes camera removal toast', function () {
-    MQTT::fake();
+test('deleting personnel removes model and redirects', function () {
     Storage::fake('public');
 
     $user = User::factory()->create();
     $personnel = Personnel::factory()->create();
 
+    // No enrollment rows, so no MQTT calls expected
+    MQTT::shouldReceive('publish')->never();
+
     $this->actingAs($user)
         ->delete(route('personnel.destroy', $personnel))
         ->assertRedirect(route('personnel.index'));
 
-    // The toast message is set via Inertia::flash in the controller
-    // Verify the personnel was actually deleted
     $this->assertModelMissing($personnel);
 });
