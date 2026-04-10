@@ -1,7 +1,13 @@
 <script setup lang="ts">
-import { Form, Head, Link, setLayoutProps } from '@inertiajs/vue3';
+import { Form, Head, Link, router, setLayoutProps } from '@inertiajs/vue3';
+import { useEcho } from '@laravel/echo-vue';
 import { Camera as CameraIcon } from 'lucide-vue-next';
+import { ref } from 'vue';
 
+import {
+    retry,
+    resyncAll,
+} from '@/actions/App/Http/Controllers/EnrollmentController';
 import PersonnelController from '@/actions/App/Http/Controllers/PersonnelController';
 import Heading from '@/components/Heading.vue';
 import SyncStatusDot from '@/components/SyncStatusDot.vue';
@@ -20,13 +26,18 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
+import { Spinner } from '@/components/ui/spinner';
 import { getInitials } from '@/composables/useInitials';
 import { index, show, edit } from '@/routes/personnel';
-import type { Personnel } from '@/types';
+import type {
+    CameraWithEnrollment,
+    EnrollmentStatusPayload,
+    Personnel,
+} from '@/types';
 
 type Props = {
     personnel: Personnel;
-    cameras: { id: number; name: string }[];
+    cameras: CameraWithEnrollment[];
 };
 
 const props = defineProps<Props>();
@@ -37,6 +48,106 @@ setLayoutProps({
         { title: props.personnel.name, href: show(props.personnel) },
     ],
 });
+
+// Local reactive copy for real-time updates
+const cameras = ref<CameraWithEnrollment[]>([...props.cameras]);
+
+const enrollmentLabels = { synced: 'Enrolled', 'not-synced': 'Not synced' };
+
+// Real-time enrollment updates (D-09)
+useEcho(
+    'fras.alerts',
+    '.EnrollmentStatusChanged',
+    (payload: EnrollmentStatusPayload) => {
+        if (payload.personnel_id === props.personnel.id) {
+            const cam = cameras.value.find((c) => c.id === payload.camera_id);
+
+            if (cam) {
+                cam.enrollment = {
+                    status:
+                        payload.status === 'enrolled'
+                            ? 'synced'
+                            : payload.status,
+                    enrolled_at: payload.enrolled_at,
+                    last_error: payload.last_error,
+                };
+            }
+        }
+    },
+);
+
+const retryProcessing = ref<number | null>(null);
+const resyncProcessing = ref(false);
+
+function retryEnrollment(cameraId: number) {
+    retryProcessing.value = cameraId;
+
+    router.post(
+        retry.url({ personnel: props.personnel, camera: { id: cameraId } }),
+        {},
+        {
+            preserveScroll: true,
+            onFinish: () => {
+                retryProcessing.value = null;
+            },
+        },
+    );
+}
+
+function resyncAllCameras() {
+    resyncProcessing.value = true;
+
+    router.post(
+        resyncAll.url(props.personnel),
+        {},
+        {
+            preserveScroll: true,
+            onFinish: () => {
+                resyncProcessing.value = false;
+            },
+            onSuccess: () => {
+                // Optimistically set all to pending
+                cameras.value.forEach((cam) => {
+                    cam.enrollment = {
+                        status: 'pending',
+                        enrolled_at: null,
+                        last_error: null,
+                    };
+                });
+            },
+        },
+    );
+}
+
+function formatRelativeTime(dateString: string | null): string {
+    if (!dateString) {
+        return 'Never';
+    }
+
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+    if (diffSeconds < 60) {
+        return 'Just now';
+    }
+
+    if (diffSeconds < 3600) {
+        const mins = Math.floor(diffSeconds / 60);
+
+        return `${mins} min ago`;
+    }
+
+    if (diffSeconds < 86400) {
+        const hours = Math.floor(diffSeconds / 3600);
+
+        return `${hours} hr ago`;
+    }
+
+    const days = Math.floor(diffSeconds / 86400);
+
+    return `${days} day${days > 1 ? 's' : ''} ago`;
+}
 
 function formatGender(gender: number | null): string {
     if (gender === 0) {
@@ -174,7 +285,11 @@ function formatDate(dateString: string | null): string {
                                         This will permanently remove
                                         {{ props.personnel.name }} and all
                                         associated enrollment records. This
-                                        action cannot be undone.
+                                        action cannot be undone. <br /><br />
+                                        <span class="font-medium">
+                                            This person will also be removed
+                                            from all enrolled cameras.
+                                        </span>
                                     </DialogDescription>
                                 </DialogHeader>
                                 <DialogFooter class="gap-2">
@@ -208,12 +323,24 @@ function formatDate(dateString: string | null): string {
 
             <!-- Enrollment sidebar (right, 2/5 width) -->
             <Card class="lg:col-span-2">
-                <CardHeader>
+                <CardHeader
+                    class="flex flex-row items-center justify-between space-y-0"
+                >
                     <CardTitle>Enrollment Status</CardTitle>
+                    <Button
+                        v-if="cameras.length > 0"
+                        variant="default"
+                        size="sm"
+                        :disabled="resyncProcessing"
+                        @click="resyncAllCameras"
+                    >
+                        <Spinner v-if="resyncProcessing" class="size-3" />
+                        Re-sync All
+                    </Button>
                 </CardHeader>
                 <CardContent>
                     <div
-                        v-if="props.cameras.length === 0"
+                        v-if="cameras.length === 0"
                         class="flex flex-col items-center justify-center py-12 text-center"
                     >
                         <CameraIcon class="size-10 text-muted-foreground/40" />
@@ -226,14 +353,74 @@ function formatDate(dateString: string | null): string {
                     </div>
                     <div v-else>
                         <div
-                            v-for="camera in props.cameras"
-                            :key="camera.id"
-                            class="flex items-center justify-between border-b border-border py-2 last:border-0"
+                            v-for="cam in cameras"
+                            :key="cam.id"
+                            class="space-y-1 border-b border-border py-3 last:border-0"
                         >
-                            <span class="text-sm text-foreground">
-                                {{ camera.name }}
-                            </span>
-                            <SyncStatusDot status="not-synced" />
+                            <div
+                                class="flex items-center justify-between gap-2"
+                            >
+                                <span class="text-sm text-foreground">
+                                    {{ cam.name }}
+                                </span>
+                                <div class="flex items-center gap-2">
+                                    <SyncStatusDot
+                                        :status="
+                                            cam.enrollment?.status ??
+                                            'not-synced'
+                                        "
+                                        :labels="enrollmentLabels"
+                                    />
+                                    <Button
+                                        v-if="
+                                            cam.enrollment?.status === 'failed'
+                                        "
+                                        variant="outline"
+                                        size="sm"
+                                        :disabled="retryProcessing === cam.id"
+                                        :aria-label="`Retry enrollment to ${cam.name}`"
+                                        @click="retryEnrollment(cam.id)"
+                                    >
+                                        <Spinner
+                                            v-if="retryProcessing === cam.id"
+                                            class="size-3"
+                                        />
+                                        Retry Enrollment
+                                    </Button>
+                                </div>
+                            </div>
+                            <p
+                                v-if="
+                                    cam.enrollment?.status === 'synced' &&
+                                    cam.enrollment?.enrolled_at
+                                "
+                                class="text-sm text-muted-foreground"
+                            >
+                                <time :datetime="cam.enrollment.enrolled_at">
+                                    Enrolled
+                                    {{
+                                        formatRelativeTime(
+                                            cam.enrollment.enrolled_at,
+                                        )
+                                    }}
+                                </time>
+                            </p>
+                            <p
+                                v-else-if="
+                                    cam.enrollment?.status === 'failed' &&
+                                    cam.enrollment?.last_error
+                                "
+                                class="text-sm text-red-600 dark:text-red-400"
+                            >
+                                {{ cam.enrollment.last_error }}
+                            </p>
+                            <p
+                                v-else-if="cam.enrollment?.status === 'pending'"
+                                class="text-sm text-muted-foreground"
+                            >
+                                <Spinner class="inline size-3" />
+                                Syncing...
+                            </p>
                         </div>
                     </div>
                 </CardContent>
