@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-01-PLAN.md
-last_updated: "2026-04-10T08:56:55.320Z"
+stopped_at: Completed 02-02-PLAN.md
+last_updated: "2026-04-10T09:02:00.519Z"
 last_activity: 2026-04-10
 progress:
   total_phases: 7
   completed_phases: 1
   total_plans: 6
-  completed_plans: 4
-  percent: 67
+  completed_plans: 5
+  percent: 83
 ---
 
 # Project State
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-04-10)
 ## Current Position
 
 Phase: 02 (Camera Management & Liveness) — EXECUTING
-Plan: 2 of 3
+Plan: 3 of 3
 Status: Ready to execute
 Last activity: 2026-04-10
 
@@ -56,6 +56,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01 P02 | 5min | 2 tasks | 17 files |
 | Phase 01 P03 | 7min | 2 tasks | 9 files |
 | Phase 02-camera-management-liveness P01 | 5min | 2 tasks | 14 files |
+| Phase 02-camera-management-liveness P02 | 3min | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -78,6 +79,9 @@ Recent decisions affecting current work:
 - [Phase 02-camera-management-liveness]: CarbonImmutable for datetime cast assertion (Laravel 13 default)
 - [Phase 02-camera-management-liveness]: Stub Vue page components created for Inertia v3 test resolution; full implementation in Plan 02-02
 - [Phase 02-camera-management-liveness]: Used test() convention (not it()) matching existing project Pest test style
+- [Phase 02-camera-management-liveness]: HeartbeatHandler uses bulk update query for efficiency under high-frequency heartbeats
+- [Phase 02-camera-management-liveness]: OnlineOfflineHandler broadcasts only on state transitions to prevent WebSocket flooding
+- [Phase 02-camera-management-liveness]: Offline detection threshold configurable via config('hds.alerts.camera_offline_threshold') defaulting to 90s
 
 ### Pending Todos
 
@@ -89,6 +93,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-10T08:56:55.317Z
-Stopped at: Completed 02-01-PLAN.md
+Last session: 2026-04-10T09:02:00.515Z
+Stopped at: Completed 02-02-PLAN.md
 Resume file: None

@@ -19,8 +19,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [x] **CAM-01**: Admin can register a camera with device ID, name, location label, and GPS coordinates
 - [x] **CAM-02**: Admin can edit and delete camera records
-- [ ] **CAM-03**: System tracks camera online/offline state via MQTT heartbeat messages
-- [ ] **CAM-04**: System marks camera offline when heartbeat absent for more than 90 seconds
+- [x] **CAM-03**: System tracks camera online/offline state via MQTT heartbeat messages
+- [x] **CAM-04**: System marks camera offline when heartbeat absent for more than 90 seconds
 - [x] **CAM-05**: Camera list page shows all cameras with online/offline state and last seen time
 - [x] **CAM-06**: Camera detail page shows camera configuration and list of enrolled personnel
 
@@ -86,8 +86,8 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **OPS-01**: Scheduled job deletes scene images older than 30 days while keeping recognition_events row and face crop
 - [ ] **OPS-02**: Scheduled job deletes face crops older than 90 days while keeping recognition_events row
 - [ ] **OPS-03**: Retention windows are configurable in config/hds.php
-- [ ] **OPS-04**: MQTT listener handles Online/Offline messages to update camera is_online state
-- [ ] **OPS-05**: MQTT listener handles HeartBeat messages to update camera last_seen_at
+- [x] **OPS-04**: MQTT listener handles Online/Offline messages to update camera is_online state
+- [x] **OPS-05**: MQTT listener handles HeartBeat messages to update camera last_seen_at
 
 ## v2 Requirements
 
@@ -147,8 +147,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | INFRA-05 | Phase 1 | Complete |
 | CAM-01 | Phase 2 | Complete |
 | CAM-02 | Phase 2 | Complete |
-| CAM-03 | Phase 2 | Pending |
-| CAM-04 | Phase 2 | Pending |
+| CAM-03 | Phase 2 | Complete |
+| CAM-04 | Phase 2 | Complete |
 | CAM-05 | Phase 2 | Complete |
 | CAM-06 | Phase 2 | Complete |
 | DASH-01 | Phase 6 | Pending |
@@ -196,8 +196,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | OPS-01 | Phase 7 | Pending |
 | OPS-02 | Phase 7 | Pending |
 | OPS-03 | Phase 7 | Pending |
-| OPS-04 | Phase 2 | Pending |
-| OPS-05 | Phase 2 | Pending |
+| OPS-04 | Phase 2 | Complete |
+| OPS-05 | Phase 2 | Complete |
 
 **Coverage:**
 - v1 requirements: 58 total
