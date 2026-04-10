@@ -12,7 +12,7 @@ This roadmap delivers a Face Recognition Alert System from infrastructure throug
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Infrastructure & MQTT Foundation** - MySQL, MQTT broker, Reverb, Supervisor, and dev orchestration
+- [x] **Phase 1: Infrastructure & MQTT Foundation** - MySQL, MQTT broker, Reverb, Supervisor, and dev orchestration (completed 2026-04-10)
 - [ ] **Phase 2: Camera Management & Liveness** - Camera CRUD, MQTT listener with heartbeat/online-offline handlers, camera pages
 - [ ] **Phase 3: Personnel Management** - Personnel CRUD with photo upload, preprocessing, list and detail pages
 - [ ] **Phase 4: Enrollment Sync** - Push personnel to cameras via MQTT, ACK correlation, retry, delete sync
