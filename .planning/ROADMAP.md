@@ -32,12 +32,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Laravel Reverb WebSocket server starts and a browser client can connect and receive a test broadcast
   4. Supervisor config starts and auto-restarts MQTT listener, Reverb, and queue worker processes
   5. Running the dev command starts all processes (Vite, queue, Reverb, MQTT listener) concurrently
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 01-01: TBD
-- [ ] 01-02: TBD
-- [ ] 01-03: TBD
+- [ ] 01-01-PLAN.md -- Packages, MySQL switch, 4 FRAS migrations, config/hds.php
+- [ ] 01-02-PLAN.md -- MQTT listener command, topic router, handlers, Supervisor configs, dev script
+- [ ] 01-03-PLAN.md -- Reverb broadcasting, Echo client, fras.alerts channel, broadcast test
 
 ### Phase 2: Camera Management & Liveness
 **Goal**: Admin can register and manage cameras, and the system tracks each camera's online/offline state in real time via MQTT
@@ -156,7 +156,7 @@ Note: Phases 2 and 3 share only a Phase 1 dependency and could theoretically ove
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Infrastructure & MQTT Foundation | 0/3 | Not started | - |
+| 1. Infrastructure & MQTT Foundation | 0/3 | Planned | - |
 | 2. Camera Management & Liveness | 0/3 | Not started | - |
 | 3. Personnel Management | 0/3 | Not started | - |
 | 4. Enrollment Sync | 0/4 | Not started | - |
