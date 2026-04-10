@@ -1,8 +1,10 @@
 <?php
 
+use App\Events\CameraStatusChanged;
 use App\Models\Camera;
 use App\Mqtt\Handlers\HeartbeatHandler;
 use App\Mqtt\Handlers\OnlineOfflineHandler;
+use Illuminate\Support\Facades\Event;
 
 test('heartbeat handler updates last_seen_at for known camera', function () {
     $camera = Camera::factory()->create(['device_id' => '1026700']);
@@ -138,4 +140,100 @@ test('online offline handler ignores messages with unexpected operator', functio
 
     $camera->refresh();
     expect($camera->is_online)->toBeFalse();
+});
+
+// --- Offline Detection Command Tests ---
+
+test('marks stale online cameras as offline', function () {
+    $camera = Camera::factory()->create([
+        'is_online' => true,
+        'last_seen_at' => now()->subSeconds(100),
+    ]);
+
+    $this->artisan('fras:check-offline-cameras')->assertSuccessful();
+
+    $camera->refresh();
+    expect($camera->is_online)->toBeFalse();
+});
+
+test('does not mark fresh online cameras as offline', function () {
+    $camera = Camera::factory()->create([
+        'is_online' => true,
+        'last_seen_at' => now()->subSeconds(30),
+    ]);
+
+    $this->artisan('fras:check-offline-cameras')->assertSuccessful();
+
+    $camera->refresh();
+    expect($camera->is_online)->toBeTrue();
+});
+
+test('dispatches CameraStatusChanged for newly offline cameras', function () {
+    Event::fake([CameraStatusChanged::class]);
+
+    $camera = Camera::factory()->create([
+        'is_online' => true,
+        'last_seen_at' => now()->subSeconds(100),
+    ]);
+
+    $this->artisan('fras:check-offline-cameras')->assertSuccessful();
+
+    Event::assertDispatched(CameraStatusChanged::class, function ($event) use ($camera) {
+        return $event->camera_id === $camera->id
+            && $event->is_online === false;
+    });
+});
+
+test('does not dispatch events for already offline cameras', function () {
+    Event::fake([CameraStatusChanged::class]);
+
+    Camera::factory()->create([
+        'is_online' => false,
+        'last_seen_at' => now()->subSeconds(200),
+    ]);
+
+    $this->artisan('fras:check-offline-cameras')->assertSuccessful();
+
+    Event::assertNotDispatched(CameraStatusChanged::class);
+});
+
+test('uses configurable offline threshold', function () {
+    // With a 30-second threshold, a camera last seen 50 seconds ago should go offline
+    config(['hds.alerts.camera_offline_threshold' => 30]);
+
+    $staleCamera = Camera::factory()->create([
+        'is_online' => true,
+        'last_seen_at' => now()->subSeconds(50),
+    ]);
+
+    $this->artisan('fras:check-offline-cameras')->assertSuccessful();
+
+    $staleCamera->refresh();
+    expect($staleCamera->is_online)->toBeFalse();
+
+    // With a 120-second threshold, a camera last seen 50 seconds ago should remain online
+    config(['hds.alerts.camera_offline_threshold' => 120]);
+
+    $freshCamera = Camera::factory()->create([
+        'is_online' => true,
+        'last_seen_at' => now()->subSeconds(50),
+    ]);
+
+    $this->artisan('fras:check-offline-cameras')->assertSuccessful();
+
+    $freshCamera->refresh();
+    expect($freshCamera->is_online)->toBeTrue();
+});
+
+test('does not affect cameras with null last_seen_at that are already offline', function () {
+    $camera = Camera::factory()->create([
+        'is_online' => false,
+        'last_seen_at' => null,
+    ]);
+
+    $this->artisan('fras:check-offline-cameras')->assertSuccessful();
+
+    $camera->refresh();
+    expect($camera->is_online)->toBeFalse()
+        ->and($camera->last_seen_at)->toBeNull();
 });
