@@ -48,9 +48,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Enrollment Sync
 
-- [ ] **ENRL-01**: Saving a personnel record dispatches enrollment jobs to all cameras via MQTT EditPersonsNew
-- [ ] **ENRL-02**: Enrollment batches are limited to 1000 entries; larger sets are chunked
-- [ ] **ENRL-03**: Only one enrollment batch may be in-flight per camera at a time (WithoutOverlapping middleware)
+- [x] **ENRL-01**: Saving a personnel record dispatches enrollment jobs to all cameras via MQTT EditPersonsNew
+- [x] **ENRL-02**: Enrollment batches are limited to 1000 entries; larger sets are chunked
+- [x] **ENRL-03**: Only one enrollment batch may be in-flight per camera at a time (WithoutOverlapping middleware)
 - [ ] **ENRL-04**: System correlates EditPersonsNew-Ack responses to pending enrollments via cached message IDs
 - [ ] **ENRL-05**: Per-camera enrollment status shows enrolled/pending/failed state with last sync time or error message
 - [ ] **ENRL-06**: Failed enrollments show translated operator-friendly error messages (from camera error codes)
@@ -167,9 +167,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PERS-06 | Phase 3 | Complete |
 | PERS-07 | Phase 3 | Complete |
 | PERS-08 | Phase 3 | Complete |
-| ENRL-01 | Phase 4 | Pending |
-| ENRL-02 | Phase 4 | Pending |
-| ENRL-03 | Phase 4 | Pending |
+| ENRL-01 | Phase 4 | Complete |
+| ENRL-02 | Phase 4 | Complete |
+| ENRL-03 | Phase 4 | Complete |
 | ENRL-04 | Phase 4 | Pending |
 | ENRL-05 | Phase 4 | Pending |
 | ENRL-06 | Phase 4 | Pending |
