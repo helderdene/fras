@@ -515,22 +515,25 @@ stopwaitsecs=10
 | A4 | pcntl extension is available in PHP 8.4.19 for signal handling in MQTT listener | Code Examples | If missing, graceful shutdown on SIGTERM won't work; Supervisor will need to force-kill |
 | A5 | @laravel/echo-vue's configureEcho() works with Inertia v3 SSR (no window reference in SSR context) | Standard Stack | May need to conditionally initialize Echo only on client side |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **MySQL credentials for local development**
+1. **MySQL credentials for local development** (RESOLVED)
    - What we know: MySQL 9.6.0 is running via Homebrew. Root access requires a password.
    - What's unclear: What are the MySQL credentials? Does a `fras` database already exist?
    - Recommendation: Ask the user for MySQL root password, or create a dedicated `fras` user. The migration step will need a working database connection.
+   - **Resolution:** Plan 01-01 Task 1 Step 4 sets `.env` with `DB_USERNAME=root` and `DB_PASSWORD=` (empty). Step 10 creates the `fras` database if it does not exist via `mysql -u root -e "CREATE DATABASE IF NOT EXISTS fras"`. If the user's MySQL requires a password, the executor will encounter a connection error and prompt the user for credentials.
 
-2. **php-mqtt/laravel-client config integration with hds.php**
+2. **php-mqtt/laravel-client config integration with hds.php** (RESOLVED)
    - What we know: The package publishes `config/mqtt-client.php` and its facade reads from that file. Decision D-07 says MQTT config goes in `config/hds.php`.
    - What's unclear: Whether the MQTT facade can be told to read from a different config key, or whether we need to keep `mqtt-client.php` as a thin proxy.
    - Recommendation: Keep `config/mqtt-client.php` but have its values reference `config('hds.mqtt.*')`. This lets the facade work normally while centralizing config. Alternatively, bypass the facade and construct MqttClient manually in the artisan command.
+   - **Resolution:** Plan 01-02 Task 1 Step 5 keeps `config/mqtt-client.php` as a thin proxy. It publishes the vendor config, then modifies its `connections.default` section to read from the same `env()` calls as `config/hds.php` (e.g., `env('MQTT_HOST', '127.0.0.1')`). Both config files share the same env vars, avoiding `config()` cross-references which break during config loading. The MQTT facade works normally.
 
-3. **CI workflow after MySQL switch**
+3. **CI workflow after MySQL switch** (RESOLVED)
    - What we know: CI uses `.env.example` which will default to MySQL after D-04. CI runners don't have MySQL.
    - What's unclear: Whether to add a MySQL service to CI or keep tests on SQLite.
    - Recommendation: Keep CI on SQLite by setting `DB_CONNECTION=sqlite` in the test workflow env. All FRAS tables use standard MySQL-compatible column types that work on SQLite too. Only add MySQL to CI if MySQL-specific features (JSON queries, spatial indexes) are used.
+   - **Resolution:** Plan 01-01 Task 1 Step 5 adds `DB_CONNECTION: sqlite` and `DB_DATABASE: ':memory:'` to the CI test step's `env` block in `.github/workflows/tests.yml`. CI continues using SQLite. No MySQL service container needed because all FRAS migration column types are SQLite-compatible.
 
 ## Environment Availability
 
