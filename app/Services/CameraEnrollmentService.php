@@ -8,7 +8,6 @@ use App\Models\CameraEnrollment;
 use App\Models\Personnel;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use PhpMqtt\Client\Facades\MQTT;
 
@@ -88,15 +87,7 @@ class CameraEnrollmentService
             );
 
             $prefix = config('hds.mqtt.topic_prefix');
-            $topic = "{$prefix}/{$camera->device_id}";
-            Log::info('Publishing enrollment MQTT', [
-                'topic' => $topic,
-                'messageId' => $messageId,
-                'camera_id' => $camera->id,
-                'personnel_count' => $chunk->count(),
-                'picURI' => $payload['info'][0]['picURI'] ?? 'none',
-            ]);
-            MQTT::connection('publisher')->publish($topic, json_encode($payload, JSON_UNESCAPED_SLASHES));
+            MQTT::connection('publisher')->publish("{$prefix}/{$camera->device_id}", json_encode($payload, JSON_UNESCAPED_SLASHES));
         }
     }
 

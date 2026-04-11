@@ -127,7 +127,7 @@ class AckHandler implements MqttHandler
             }
 
             $errorMessage = app(CameraEnrollmentService::class)
-                ->translateErrorCode($item['errcode'] ?? 0);
+                ->translateErrorCode((int) ($item['errcode'] ?? 0));
 
             $enrollment = CameraEnrollment::where('camera_id', $cameraId)
                 ->whereHas('personnel', fn ($q) => $q->where('custom_id', $customId))

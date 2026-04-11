@@ -21,6 +21,12 @@ class EnrollmentStatusChanged implements ShouldBroadcast
         public ?string $last_error,
     ) {}
 
+    /** Get the event's broadcast name. */
+    public function broadcastAs(): string
+    {
+        return 'EnrollmentStatusChanged';
+    }
+
     /** Get the channels the event should broadcast on. */
     public function broadcastOn(): PrivateChannel
     {
