@@ -168,7 +168,7 @@ Plans:
 - [x] 08-02-PLAN.md -- Component polish: glow effects on severity/status indicators, dense data grid tables, shadcn-vue UI enhancements
 - [x] 08-03-PLAN.md -- Layout rework: AuthCardLayout switch, glassmorphism sidebar, FRAS branding, navigation polish, DashboardTopNav
 - [x] 08-04-PLAN.md -- Dashboard Tier 1 ops center styling, Camera and Personnel admin page Tier 2 styling
-- [ ] 08-05-PLAN.md -- Welcome page rewrite, auth pages, alerts/events/settings styling, font-medium sweep, visual checkpoint
+- [x] 08-05-PLAN.md -- Welcome page rewrite, auth pages, alerts/events/settings styling, font-medium sweep, visual checkpoint
 
 ## Progress
 
