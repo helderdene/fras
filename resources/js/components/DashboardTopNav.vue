@@ -24,7 +24,12 @@ import {
 } from '@/components/ui/tooltip';
 import UserMenuContent from '@/components/UserMenuContent.vue';
 import { useAppearance } from '@/composables/useAppearance';
+import { useCurrentUrl } from '@/composables/useCurrentUrl';
 import { dashboard } from '@/routes';
+import { index as alertsIndex } from '@/routes/alerts';
+import { index as camerasIndex } from '@/routes/cameras';
+import { index as eventsIndex } from '@/routes/events';
+import { index as personnelIndex } from '@/routes/personnel';
 import { edit } from '@/routes/profile';
 import type { Auth } from '@/types';
 
@@ -46,6 +51,18 @@ const page = usePage<{ auth: Auth }>();
 const user = page.props.auth.user;
 
 const { resolvedAppearance, updateAppearance } = useAppearance();
+const currentUrl = useCurrentUrl();
+
+const navItems = [
+    { label: 'Cameras', href: camerasIndex },
+    { label: 'Personnel', href: personnelIndex },
+    { label: 'Alerts', href: alertsIndex },
+    { label: 'Events', href: eventsIndex },
+];
+
+function isActive(href: () => { url: string }): boolean {
+    return currentUrl.value.startsWith(href().url);
+}
 
 function toggleTheme() {
     updateAppearance(resolvedAppearance.value === 'dark' ? 'light' : 'dark');
@@ -65,6 +82,25 @@ function toggleTheme() {
                     >FRAS</span
                 >
             </Link>
+
+            <div class="mx-2 h-6 w-px bg-border" />
+
+            <nav class="flex items-center gap-1">
+                <Link
+                    v-for="item in navItems"
+                    :key="item.label"
+                    :href="item.href()"
+                    class="rounded-md px-3 py-1.5 text-xs font-semibold transition-colors"
+                    :class="isActive(item.href)
+                        ? 'bg-primary/10 text-primary'
+                        : 'text-muted-foreground hover:bg-accent hover:text-foreground'"
+                >
+                    {{ item.label }}
+                </Link>
+            </nav>
+
+            <div class="mx-2 h-6 w-px bg-border" />
+
             <Button
                 variant="ghost"
                 size="icon-sm"
