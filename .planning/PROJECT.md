@@ -42,8 +42,8 @@ Operators see every matched-face recognition event in real time on a map-based d
 - [ ] Alert feed: reverse-chronological with severity coloring, click for detail modal with face crop and metadata
 - [ ] Audio alert: play sound on critical (block-list) recognition events
 - [x] Personnel admin: list with sync status dots, detail with per-camera enrollment status — Validated in Phase 3 (retry enrollment is Phase 4)
-- [ ] Event history: searchable, filterable recognition log page
-- [ ] Storage retention: scheduled cleanup — scene images after 30 days, face crops after 90 days
+- [x] Event history: searchable, filterable recognition log page — Validated in Phase 7: Event History & Operations
+- [x] Storage retention: scheduled cleanup — scene images after 30 days, face crops after 90 days — Validated in Phase 7
 - [ ] Camera offline detection: mark cameras offline when heartbeat absent >90 seconds
 
 ### Out of Scope
