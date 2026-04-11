@@ -9,7 +9,7 @@ import {
     ShieldCheck,
 } from 'lucide-vue-next';
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
-import { dashboard, login, register } from '@/routes';
+import { dashboard, login } from '@/routes';
 
 withDefaults(
     defineProps<{
@@ -63,7 +63,7 @@ withDefaults(
                     </Link>
                     <Link
                         v-if="canRegister"
-                        :href="register()"
+                        href="/register"
                         class="inline-flex h-9 items-center rounded-md bg-primary px-4 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
                     >
                         Get Started
@@ -120,7 +120,7 @@ withDefaults(
                         </Link>
                         <Link
                             v-if="canRegister"
-                            :href="register()"
+                            href="/register"
                             class="inline-flex h-11 items-center gap-2 rounded-md border border-border bg-card/50 px-6 text-sm font-semibold backdrop-blur-sm transition-colors hover:bg-accent"
                         >
                             Register Account
