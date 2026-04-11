@@ -81,10 +81,10 @@ function onMapCoordinatesUpdate(lat: number, lng: number): void {
 
         <Form
             v-bind="CameraController.update.form(props.camera)"
-            class="space-y-6"
+            class="grid gap-6"
             v-slot="{ errors, processing }"
         >
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-2 gap-6">
                 <div class="grid gap-2">
                     <Label for="device_id">Device ID</Label>
                     <Input
@@ -121,7 +121,7 @@ function onMapCoordinatesUpdate(lat: number, lng: number): void {
                 <InputError :message="errors.location_label" />
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-2 gap-6">
                 <div class="grid gap-2">
                     <Label for="latitude">Latitude</Label>
                     <Input

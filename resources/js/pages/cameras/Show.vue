@@ -101,36 +101,46 @@ function formatRelativeTime(dateString: string | null): string {
 
         <div class="grid grid-cols-1 gap-6 lg:grid-cols-5">
             <!-- Camera Information (left, 3/5 width) per D-13 -->
-            <Card class="lg:col-span-3">
+            <Card class="lg:col-span-3 dark:border-border/50">
                 <CardHeader>
                     <CardTitle>Camera Information</CardTitle>
                 </CardHeader>
                 <CardContent class="space-y-4">
                     <div>
-                        <p class="text-sm text-muted-foreground">Name</p>
+                        <p class="text-xs font-semibold text-muted-foreground">
+                            Name
+                        </p>
                         <p class="text-sm text-foreground">
                             {{ camera.name }}
                         </p>
                     </div>
                     <div>
-                        <p class="text-sm text-muted-foreground">Device ID</p>
-                        <p class="font-mono text-sm text-foreground">
+                        <p class="text-xs font-semibold text-muted-foreground">
+                            Device ID
+                        </p>
+                        <p class="font-mono text-xs text-foreground">
                             {{ camera.device_id }}
                         </p>
                     </div>
                     <div>
-                        <p class="text-sm text-muted-foreground">Location</p>
+                        <p class="text-xs font-semibold text-muted-foreground">
+                            Location
+                        </p>
                         <p class="text-sm text-foreground">
                             {{ camera.location_label }}
                         </p>
                     </div>
                     <div>
-                        <p class="text-sm text-muted-foreground">Status</p>
+                        <p class="text-xs font-semibold text-muted-foreground">
+                            Status
+                        </p>
                         <CameraStatusDot :is-online="camera.is_online" />
                     </div>
                     <div>
-                        <p class="text-sm text-muted-foreground">Last Seen</p>
-                        <p class="text-sm text-foreground">
+                        <p class="text-xs font-semibold text-muted-foreground">
+                            Last Seen
+                        </p>
+                        <p class="font-mono text-xs text-foreground">
                             {{ formatRelativeTime(camera.last_seen_at) }}
                         </p>
                     </div>

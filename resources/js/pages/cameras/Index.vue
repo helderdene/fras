@@ -104,36 +104,36 @@ function formatRelativeTime(dateString: string | null): string {
 
         <!-- Camera table (D-09) -->
         <div v-else class="overflow-x-auto">
-            <table class="w-full text-sm">
+            <table class="w-full text-xs">
                 <thead>
-                    <tr class="border-b border-border">
+                    <tr class="border-b border-border bg-muted/50">
                         <th
                             scope="col"
-                            class="px-4 py-3 text-left text-muted-foreground"
+                            class="px-2 py-1 text-left font-semibold tracking-wider text-muted-foreground uppercase"
                         >
                             Name
                         </th>
                         <th
                             scope="col"
-                            class="px-4 py-3 text-left text-muted-foreground"
+                            class="px-2 py-1 text-left font-semibold tracking-wider text-muted-foreground uppercase"
                         >
                             Device ID
                         </th>
                         <th
                             scope="col"
-                            class="px-4 py-3 text-left text-muted-foreground"
+                            class="px-2 py-1 text-left font-semibold tracking-wider text-muted-foreground uppercase"
                         >
                             Location
                         </th>
                         <th
                             scope="col"
-                            class="px-4 py-3 text-left text-muted-foreground"
+                            class="px-2 py-1 text-left font-semibold tracking-wider text-muted-foreground uppercase"
                         >
                             Status
                         </th>
                         <th
                             scope="col"
-                            class="px-4 py-3 text-left text-muted-foreground"
+                            class="px-2 py-1 text-left font-semibold tracking-wider text-muted-foreground uppercase"
                         >
                             Last Seen
                         </th>
@@ -143,28 +143,26 @@ function formatRelativeTime(dateString: string | null): string {
                     <tr
                         v-for="camera in cameras"
                         :key="camera.id"
-                        class="border-b border-border hover:bg-muted/50"
+                        class="border-b border-border/50 transition-colors duration-150 hover:bg-accent/50"
                     >
-                        <td class="px-4 py-3">
+                        <td class="px-2 py-1">
                             <Link
                                 :href="show(camera)"
-                                class="text-foreground hover:underline"
+                                class="font-semibold text-foreground hover:underline"
                             >
                                 {{ camera.name }}
                             </Link>
                         </td>
-                        <td
-                            class="px-4 py-3 font-mono text-xs text-muted-foreground"
-                        >
+                        <td class="px-2 py-1 font-mono text-muted-foreground">
                             {{ camera.device_id }}
                         </td>
-                        <td class="max-w-[200px] truncate px-4 py-3">
+                        <td class="max-w-[200px] truncate px-2 py-1">
                             {{ camera.location_label }}
                         </td>
-                        <td class="px-4 py-3">
+                        <td class="px-2 py-1">
                             <CameraStatusDot :is-online="camera.is_online" />
                         </td>
-                        <td class="px-4 py-3 text-muted-foreground">
+                        <td class="px-2 py-1 font-mono text-muted-foreground">
                             {{ formatRelativeTime(camera.last_seen_at) }}
                         </td>
                     </tr>
