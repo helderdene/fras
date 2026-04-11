@@ -54,12 +54,14 @@ function toggleTheme() {
 
 <template>
     <header
-        class="relative z-10 flex h-14 shrink-0 items-center justify-between border-b border-border bg-card px-4 shadow-sm"
+        class="relative z-10 flex h-14 shrink-0 items-center justify-between border-b border-border bg-card px-4 text-foreground shadow-sm"
     >
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-3">
             <Link :href="dashboard()" class="flex items-center gap-2">
-                <AppLogoIcon class="size-5 text-primary" />
-                <span class="text-sm font-semibold tracking-wide text-primary"
+                <div class="flex size-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
+                    <AppLogoIcon class="text-sm" />
+                </div>
+                <span class="text-sm font-semibold tracking-wide"
                     >FRAS</span
                 >
             </Link>
@@ -70,7 +72,7 @@ function toggleTheme() {
                 aria-label="Toggle camera rail"
                 @click="emit('toggle-left-rail')"
             >
-                <PanelLeft class="size-4" />
+                <PanelLeft class="size-5 text-foreground" />
             </Button>
         </div>
         <div class="flex items-center gap-1">
@@ -81,7 +83,7 @@ function toggleTheme() {
                 aria-label="Toggle alert feed"
                 @click="emit('toggle-right-feed')"
             >
-                <PanelRight class="size-4" />
+                <PanelRight class="size-5 text-foreground" />
             </Button>
             <TooltipProvider>
                 <Tooltip>
@@ -98,9 +100,9 @@ function toggleTheme() {
                         >
                             <Sun
                                 v-if="resolvedAppearance === 'dark'"
-                                class="size-4"
+                                class="size-5 text-foreground"
                             />
-                            <Moon v-else class="size-4" />
+                            <Moon v-else class="size-5 text-foreground" />
                         </Button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -125,8 +127,8 @@ function toggleTheme() {
                             "
                             @click="emit('toggle-sound')"
                         >
-                            <BellRing v-if="soundEnabled" class="size-4" />
-                            <Bell v-else class="size-4" />
+                            <BellRing v-if="soundEnabled" class="size-5 text-foreground" />
+                            <Bell v-else class="size-5 text-foreground" />
                         </Button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -140,13 +142,13 @@ function toggleTheme() {
             </TooltipProvider>
             <Button variant="ghost" size="icon-sm" :as-child="true">
                 <Link :href="edit()" aria-label="Settings" prefetch>
-                    <Settings class="size-4" />
+                    <Settings class="size-5 text-foreground" />
                 </Link>
             </Button>
             <DropdownMenu>
                 <DropdownMenuTrigger as-child>
                     <Button variant="ghost" size="sm" class="gap-2">
-                        <span class="text-xs">{{ user.name }}</span>
+                        <span class="text-sm text-foreground">{{ user.name }}</span>
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" class="w-56">
