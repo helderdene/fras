@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\AlertSeverity;
 use App\Models\RecognitionEvent;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -34,16 +34,17 @@ class AlertController extends Controller
      * This is intentional for a single command center with trusted operators.
      * If role-based access is needed later, add a RecognitionEventPolicy.
      */
-    public function acknowledge(RecognitionEvent $event): RedirectResponse
+    public function acknowledge(RecognitionEvent $event): JsonResponse
     {
         $event->update([
             'acknowledged_by' => auth()->id(),
             'acknowledged_at' => now(),
         ]);
 
-        Inertia::flash('toast', ['type' => 'success', 'message' => __('Alert acknowledged.')]);
-
-        return back();
+        return response()->json([
+            'acknowledged_at' => $event->acknowledged_at->toISOString(),
+            'acknowledged_by' => auth()->id(),
+        ]);
     }
 
     /**
@@ -52,15 +53,15 @@ class AlertController extends Controller
      * Authorization: All authenticated users may dismiss any event.
      * Single command center with trusted operators -- see acknowledge() note.
      */
-    public function dismiss(RecognitionEvent $event): RedirectResponse
+    public function dismiss(RecognitionEvent $event): JsonResponse
     {
         $event->update([
             'dismissed_at' => now(),
         ]);
 
-        Inertia::flash('toast', ['type' => 'success', 'message' => __('Alert dismissed.')]);
-
-        return back();
+        return response()->json([
+            'dismissed_at' => $event->dismissed_at->toISOString(),
+        ]);
     }
 
     /**

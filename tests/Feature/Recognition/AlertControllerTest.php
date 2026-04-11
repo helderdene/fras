@@ -90,8 +90,9 @@ test('acknowledge records user and timestamp', function () {
     $event = RecognitionEvent::factory()->info()->create();
 
     $this->actingAs($user)
-        ->post(route('alerts.acknowledge', $event))
-        ->assertRedirect();
+        ->postJson(route('alerts.acknowledge', $event))
+        ->assertOk()
+        ->assertJsonStructure(['acknowledged_at', 'acknowledged_by']);
 
     $event->refresh();
 
@@ -104,8 +105,9 @@ test('dismiss records timestamp', function () {
     $event = RecognitionEvent::factory()->info()->create();
 
     $this->actingAs($user)
-        ->post(route('alerts.dismiss', $event))
-        ->assertRedirect();
+        ->postJson(route('alerts.dismiss', $event))
+        ->assertOk()
+        ->assertJsonStructure(['dismissed_at']);
 
     $event->refresh();
 
