@@ -4,6 +4,7 @@ import { useEcho } from '@laravel/echo-vue';
 import { Bell, BellRing, ShieldAlert } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 
+import AlertDetailModal from '@/components/AlertDetailModal.vue';
 import AlertFeedItem from '@/components/AlertFeedItem.vue';
 import Heading from '@/components/Heading.vue';
 import { Button } from '@/components/ui/button';
@@ -179,6 +180,15 @@ function handleDismiss(event: RecognitionEvent): void {
     });
 }
 
+// Modal state
+const selectedEvent = ref<RecognitionEvent | null>(null);
+const modalOpen = ref(false);
+
+function handleSelect(event: RecognitionEvent): void {
+    selectedEvent.value = event;
+    modalOpen.value = true;
+}
+
 // Filter pill definitions
 const filters: { key: 'all' | AlertSeverity; label: string }[] = [
     { key: 'all', label: 'All' },
@@ -263,12 +273,19 @@ const filters: { key: 'all' | AlertSeverity; label: string }[] = [
                     :key="alert.id"
                     :event="alert"
                     :highlighted="highlightedId === alert.id"
-                    @select="(e) => {}"
+                    @select="handleSelect"
                     @acknowledge="handleAcknowledge"
                     @dismiss="handleDismiss"
                 />
             </TransitionGroup>
         </div>
+        <!-- Detail modal -->
+        <AlertDetailModal
+            v-model:open="modalOpen"
+            :event="selectedEvent"
+            @acknowledge="handleAcknowledge"
+            @dismiss="handleDismiss"
+        />
     </div>
 </template>
 
