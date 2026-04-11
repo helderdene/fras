@@ -118,6 +118,36 @@ return [
 
         ],
 
+        'publisher' => [
+
+            'host' => env('MQTT_HOST', '127.0.0.1'),
+            'port' => (int) env('MQTT_PORT', 1883),
+            'protocol' => MqttClient::MQTT_3_1_1,
+            'client_id' => env('MQTT_CLIENT_ID', 'hds-fras-'.env('APP_ENV', 'local')).'-pub',
+            'use_clean_session' => true,
+            'enable_logging' => env('MQTT_ENABLE_LOGGING', true),
+            'log_channel' => env('MQTT_LOG_CHANNEL', null),
+            'repository' => MemoryRepository::class,
+
+            'connection_settings' => [
+                'tls' => [
+                    'enabled' => env('MQTT_TLS_ENABLED', false),
+                    'allow_self_signed_certificate' => env('MQTT_TLS_ALLOW_SELF_SIGNED_CERT', false),
+                    'verify_peer' => env('MQTT_TLS_VERIFY_PEER', true),
+                    'verify_peer_name' => env('MQTT_TLS_VERIFY_PEER_NAME', true),
+                ],
+                'auth' => [
+                    'username' => env('MQTT_USERNAME') ?: null,
+                    'password' => env('MQTT_PASSWORD') ?: null,
+                ],
+                'connect_timeout' => env('MQTT_CONNECT_TIMEOUT', 60),
+                'socket_timeout' => env('MQTT_SOCKET_TIMEOUT', 5),
+                'resend_timeout' => env('MQTT_RESEND_TIMEOUT', 10),
+                'keep_alive_interval' => (int) env('MQTT_KEEPALIVE', 30),
+            ],
+
+        ],
+
     ],
 
 ];

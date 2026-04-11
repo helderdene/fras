@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Storage;
+use PhpMqtt\Client\Contracts\MqttClient;
 use PhpMqtt\Client\Facades\MQTT;
 
 beforeEach(function () {
@@ -52,7 +53,7 @@ test('saving personnel dispatches job only for online cameras', function () {
     Bus::assertDispatched(EnrollPersonnelBatch::class, 1);
 });
 
-test('creating camera dispatches enrollment for all existing personnel', function () {
+test('creating camera creates pending enrollment rows for all existing personnel', function () {
     Bus::fake([EnrollPersonnelBatch::class]);
     $user = User::factory()->create();
     Personnel::factory()->count(5)->create();
@@ -67,7 +68,11 @@ test('creating camera dispatches enrollment for all existing personnel', functio
         ])
         ->assertRedirect(route('cameras.index'));
 
-    Bus::assertDispatched(EnrollPersonnelBatch::class);
+    $camera = Camera::where('device_id', '7770001')->first();
+    expect(CameraEnrollment::where('camera_id', $camera->id)->count())->toBe(5);
+    expect(CameraEnrollment::where('camera_id', $camera->id)->where('status', CameraEnrollment::STATUS_PENDING)->count())->toBe(5);
+    // New camera is offline by default — job dispatched only when camera comes online (D-03, WR-06)
+    Bus::assertNotDispatched(EnrollPersonnelBatch::class);
 });
 
 test('updating personnel dispatches enrollment to online cameras', function () {
@@ -100,14 +105,16 @@ test('deleting personnel sends delete to enrolled cameras', function () {
     ]);
 
     // Mock MQTT facade to prevent actual publish and verify the call
-    MQTT::shouldReceive('publish')
+    $mockConnection = Mockery::mock(MqttClient::class);
+    $mockConnection->shouldReceive('publish')
         ->once()
         ->withArgs(function (string $topic, string $message) use ($camera) {
             $prefix = config('hds.mqtt.topic_prefix');
 
-            return str_contains($topic, "{$prefix}/{$camera->device_id}/Edit")
+            return str_contains($topic, "{$prefix}/{$camera->device_id}")
                 && str_contains($message, 'DeletePersons');
         });
+    MQTT::shouldReceive('connection')->with('publisher')->andReturn($mockConnection);
 
     $this->actingAs($user)
         ->delete(route('personnel.destroy', $personnel))

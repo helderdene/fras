@@ -8,6 +8,7 @@ use App\Models\CameraEnrollment;
 use App\Models\Personnel;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use PhpMqtt\Client\Facades\MQTT;
 
@@ -87,7 +88,15 @@ class CameraEnrollmentService
             );
 
             $prefix = config('hds.mqtt.topic_prefix');
-            MQTT::publish("{$prefix}/{$camera->device_id}/Edit", json_encode($payload));
+            $topic = "{$prefix}/{$camera->device_id}";
+            Log::info('Publishing enrollment MQTT', [
+                'topic' => $topic,
+                'messageId' => $messageId,
+                'camera_id' => $camera->id,
+                'personnel_count' => $chunk->count(),
+                'picURI' => $payload['info'][0]['picURI'] ?? 'none',
+            ]);
+            MQTT::connection('publisher')->publish($topic, json_encode($payload, JSON_UNESCAPED_SLASHES));
         }
     }
 
@@ -178,7 +187,7 @@ class CameraEnrollmentService
                 $messageId = 'DeletePersons'.now()->format('Y-m-d\TH:i:s').'_'.Str::random(6);
                 $payload = $this->buildDeletePersonsPayload([$personnel->custom_id], $messageId);
 
-                MQTT::publish("{$prefix}/{$enrollment->camera->device_id}/Edit", json_encode($payload));
+                MQTT::connection('publisher')->publish("{$prefix}/{$enrollment->camera->device_id}", json_encode($payload, JSON_UNESCAPED_SLASHES));
             }
         }
     }

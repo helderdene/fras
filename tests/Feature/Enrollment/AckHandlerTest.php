@@ -30,10 +30,17 @@ test('ack success updates enrollment to enrolled with timestamp', function () {
     $handler = app(AckHandler::class);
     $handler->handle("mqtt/face/{$camera->device_id}/Ack", json_encode([
         'messageId' => $messageId,
-        'AddSucInfo' => [
-            ['customId' => $personnel->custom_id],
+        'operator' => 'EditPersonsNew-Ack',
+        'info' => [
+            'facesluiceId' => $camera->device_id,
+            'AddSucNum' => '1',
+            'AddErrNum' => '0',
+            'AddSucInfo' => [
+                ['customId' => $personnel->custom_id],
+            ],
+            'AddErrInfo' => [],
+            'result' => 'ok',
         ],
-        'AddErrInfo' => [],
     ]));
 
     $enrollment->refresh();
@@ -65,9 +72,16 @@ test('ack failure updates enrollment to failed with error message', function () 
     $handler = app(AckHandler::class);
     $handler->handle("mqtt/face/{$camera->device_id}/Ack", json_encode([
         'messageId' => $messageId,
-        'AddSucInfo' => [],
-        'AddErrInfo' => [
-            ['customId' => $personnel->custom_id, 'errcode' => 468],
+        'operator' => 'EditPersonsNew-Ack',
+        'info' => [
+            'facesluiceId' => $camera->device_id,
+            'AddSucNum' => '0',
+            'AddErrNum' => '1',
+            'AddSucInfo' => [],
+            'AddErrInfo' => [
+                ['customId' => $personnel->custom_id, 'errcode' => '468'],
+            ],
+            'result' => 'ok',
         ],
     ]));
 
@@ -100,10 +114,17 @@ test('ack dispatches EnrollmentStatusChanged for each update', function () {
     $handler = app(AckHandler::class);
     $handler->handle("mqtt/face/{$camera->device_id}/Ack", json_encode([
         'messageId' => $messageId,
-        'AddSucInfo' => [
-            ['customId' => $personnel->custom_id],
+        'operator' => 'EditPersonsNew-Ack',
+        'info' => [
+            'facesluiceId' => $camera->device_id,
+            'AddSucNum' => '1',
+            'AddErrNum' => '0',
+            'AddSucInfo' => [
+                ['customId' => $personnel->custom_id],
+            ],
+            'AddErrInfo' => [],
+            'result' => 'ok',
         ],
-        'AddErrInfo' => [],
     ]));
 
     Event::assertDispatched(EnrollmentStatusChanged::class, function ($event) use ($personnel, $camera) {
@@ -126,8 +147,11 @@ test('ack with unknown messageId logs warning', function () {
     $handler = app(AckHandler::class);
     $handler->handle("mqtt/face/{$camera->device_id}/Ack", json_encode([
         'messageId' => 'NonExistent123',
-        'AddSucInfo' => [],
-        'AddErrInfo' => [],
+        'operator' => 'EditPersonsNew-Ack',
+        'info' => [
+            'AddSucInfo' => [],
+            'AddErrInfo' => [],
+        ],
     ]));
 });
 
@@ -166,10 +190,17 @@ test('ack extracts camera from topic', function () {
     $handler = app(AckHandler::class);
     $handler->handle('mqtt/face/CAM001/Ack', json_encode([
         'messageId' => $messageId,
-        'AddSucInfo' => [
-            ['customId' => $personnel->custom_id],
+        'operator' => 'EditPersonsNew-Ack',
+        'info' => [
+            'facesluiceId' => 'CAM001',
+            'AddSucNum' => '1',
+            'AddErrNum' => '0',
+            'AddSucInfo' => [
+                ['customId' => $personnel->custom_id],
+            ],
+            'AddErrInfo' => [],
+            'result' => 'ok',
         ],
-        'AddErrInfo' => [],
     ]));
 
     $enrollment = CameraEnrollment::where('camera_id', $camera->id)

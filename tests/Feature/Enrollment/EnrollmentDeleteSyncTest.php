@@ -5,6 +5,7 @@ use App\Models\CameraEnrollment;
 use App\Models\Personnel;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
+use PhpMqtt\Client\Contracts\MqttClient;
 use PhpMqtt\Client\Facades\MQTT;
 
 beforeEach(function () {
@@ -24,14 +25,16 @@ test('deleting personnel sends delete MQTT to enrolled cameras', function () {
         'status' => CameraEnrollment::STATUS_ENROLLED,
     ]);
 
-    MQTT::shouldReceive('publish')
+    $mockConnection = Mockery::mock(MqttClient::class);
+    $mockConnection->shouldReceive('publish')
         ->once()
         ->withArgs(function (string $topic, string $message) use ($camera) {
             $prefix = config('hds.mqtt.topic_prefix');
 
-            return str_contains($topic, "{$prefix}/{$camera->device_id}/Edit")
+            return str_contains($topic, "{$prefix}/{$camera->device_id}")
                 && str_contains($message, 'DeletePersons');
         });
+    MQTT::shouldReceive('connection')->with('publisher')->andReturn($mockConnection);
 
     $this->actingAs($user)
         ->delete(route('personnel.destroy', $personnel))

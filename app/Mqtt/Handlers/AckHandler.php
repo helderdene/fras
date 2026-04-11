@@ -61,15 +61,17 @@ class AckHandler implements MqttHandler
             return;
         }
 
+        $info = $data['info'] ?? [];
+
         Log::info('Processing enrollment ACK', [
             'camera_id' => $camera->id,
             'messageId' => $messageId,
-            'successes' => count($data['AddSucInfo'] ?? []),
-            'failures' => count($data['AddErrInfo'] ?? []),
+            'successes' => count($info['AddSucInfo'] ?? []),
+            'failures' => count($info['AddErrInfo'] ?? []),
         ]);
 
-        $this->processSuccesses($camera->id, $data['AddSucInfo'] ?? [], $pending);
-        $this->processFailures($camera->id, $data['AddErrInfo'] ?? []);
+        $this->processSuccesses($camera->id, $info['AddSucInfo'] ?? [], $pending);
+        $this->processFailures($camera->id, $info['AddErrInfo'] ?? []);
     }
 
     /**
