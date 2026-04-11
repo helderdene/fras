@@ -14,9 +14,9 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Infrastructure & MQTT Foundation** - MySQL, MQTT broker, Reverb, Supervisor, and dev orchestration (completed 2026-04-10)
 - [x] **Phase 2: Camera Management & Liveness** - Camera CRUD, MQTT listener with heartbeat/online-offline handlers, camera pages (completed 2026-04-10)
-- [ ] **Phase 3: Personnel Management** - Personnel CRUD with photo upload, preprocessing, list and detail pages
-- [ ] **Phase 4: Enrollment Sync** - Push personnel to cameras via MQTT, ACK correlation, retry, delete sync
-- [ ] **Phase 5: Recognition & Alerting** - RecPush processing, event classification, real-time broadcast, alert feed UI
+- [x] **Phase 3: Personnel Management** - Personnel CRUD with photo upload, preprocessing, list and detail pages (completed 2026-04-10)
+- [x] **Phase 4: Enrollment Sync** - Push personnel to cameras via MQTT, ACK correlation, retry, delete sync (completed 2026-04-10)
+- [x] **Phase 5: Recognition & Alerting** - RecPush processing, event classification, real-time broadcast, alert feed UI (completed 2026-04-11)
 - [ ] **Phase 6: Dashboard & Map** - Mapbox map with camera markers, three-panel layout, status bar, live animations
 - [ ] **Phase 7: Event History & Operations** - Searchable event log, storage retention cleanup, configurable retention
 
@@ -158,8 +158,8 @@ Note: Phases 2 and 3 share only a Phase 1 dependency and could theoretically ove
 |-------|----------------|--------|-----------|
 | 1. Infrastructure & MQTT Foundation | 3/3 | Complete | 2026-04-10 |
 | 2. Camera Management & Liveness | 3/3 | Complete | 2026-04-10 |
-| 3. Personnel Management | 0/3 | Not started | - |
-| 4. Enrollment Sync | 0/4 | Not started | - |
-| 5. Recognition & Alerting | 0/4 | Not started | - |
+| 3. Personnel Management | 3/3 | Complete | 2026-04-10 |
+| 4. Enrollment Sync | 4/4 | Complete | 2026-04-10 |
+| 5. Recognition & Alerting | 4/4 | Complete | 2026-04-11 |
 | 6. Dashboard & Map | 0/3 | Not started | - |
 | 7. Event History & Operations | 0/3 | Not started | - |
