@@ -54,7 +54,7 @@ function toggleTheme() {
 
 <template>
     <header
-        class="flex h-12 shrink-0 items-center justify-between border-b border-border bg-transparent px-3 dark:bg-background/80 dark:backdrop-blur-sm"
+        class="flex h-12 shrink-0 items-center justify-between border-b border-border/50 bg-background/95 px-3 backdrop-blur-md dark:bg-background/90"
     >
         <div class="flex items-center gap-2">
             <Link :href="dashboard()" class="flex items-center gap-2">
