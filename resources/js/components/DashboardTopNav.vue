@@ -65,7 +65,7 @@ function toggleTheme() {
     <header
         class="relative z-10 flex h-14 shrink-0 items-center justify-between border-b border-border bg-card px-4 text-foreground shadow-sm"
     >
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2">
             <Link :href="dashboard()" class="flex items-center gap-2">
                 <div class="flex size-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
                     <AppLogoIcon class="text-sm" />
@@ -74,25 +74,6 @@ function toggleTheme() {
                     >FRAS</span
                 >
             </Link>
-
-            <div class="mx-2 h-6 w-px bg-border" />
-
-            <nav class="flex items-center gap-1">
-                <Link
-                    v-for="item in navItems"
-                    :key="item.label"
-                    :href="item.url"
-                    class="rounded-md px-3 py-1.5 text-xs font-semibold transition-colors"
-                    :class="isCurrentOrParentUrl(item.url)
-                        ? 'bg-primary/10 text-primary'
-                        : 'text-muted-foreground hover:bg-accent hover:text-foreground'"
-                >
-                    {{ item.label }}
-                </Link>
-            </nav>
-
-            <div class="mx-2 h-6 w-px bg-border" />
-
             <Button
                 variant="ghost"
                 size="icon-sm"
@@ -103,6 +84,20 @@ function toggleTheme() {
                 <PanelLeft class="size-5 text-foreground" />
             </Button>
         </div>
+
+        <nav class="absolute left-1/2 flex -translate-x-1/2 items-center gap-1">
+            <Link
+                v-for="item in navItems"
+                :key="item.label"
+                :href="item.url"
+                class="rounded-md px-3 py-1.5 text-xs font-semibold transition-colors"
+                :class="isCurrentOrParentUrl(item.url)
+                    ? 'bg-primary/10 text-primary'
+                    : 'text-muted-foreground hover:bg-accent hover:text-foreground'"
+            >
+                {{ item.label }}
+            </Link>
+        </nav>
         <div class="flex items-center gap-1">
             <Button
                 variant="ghost"
