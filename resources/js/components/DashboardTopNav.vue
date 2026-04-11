@@ -52,6 +52,7 @@ const { isCurrentOrParentUrl } = useCurrentUrl();
 const navItems = [
     { label: 'Cameras', url: '/cameras' },
     { label: 'Personnel', url: '/personnel' },
+    { label: 'Users', url: '/users' },
     { label: 'Alerts', url: '/alerts' },
     { label: 'Events', url: '/events' },
 ];
@@ -67,12 +68,12 @@ function toggleTheme() {
     >
         <div class="flex items-center gap-2">
             <Link :href="dashboard()" class="flex items-center gap-2">
-                <div class="flex size-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
+                <div
+                    class="flex size-8 items-center justify-center rounded-md bg-primary text-primary-foreground"
+                >
                     <AppLogoIcon class="text-sm" />
                 </div>
-                <span class="text-sm font-semibold tracking-wide"
-                    >FRAS</span
-                >
+                <span class="text-sm font-semibold tracking-wide">FRAS</span>
             </Link>
             <Button
                 variant="ghost"
@@ -91,9 +92,11 @@ function toggleTheme() {
                 :key="item.label"
                 :href="item.url"
                 class="rounded-md px-3 py-1.5 text-xs font-semibold transition-colors"
-                :class="isCurrentOrParentUrl(item.url)
-                    ? 'bg-primary/10 text-primary'
-                    : 'text-muted-foreground hover:bg-accent hover:text-foreground'"
+                :class="
+                    isCurrentOrParentUrl(item.url)
+                        ? 'bg-primary/10 text-primary'
+                        : 'text-muted-foreground hover:bg-accent hover:text-foreground'
+                "
             >
                 {{ item.label }}
             </Link>
@@ -150,7 +153,10 @@ function toggleTheme() {
                             "
                             @click="emit('toggle-sound')"
                         >
-                            <BellRing v-if="soundEnabled" class="size-5 text-foreground" />
+                            <BellRing
+                                v-if="soundEnabled"
+                                class="size-5 text-foreground"
+                            />
                             <Bell v-else class="size-5 text-foreground" />
                         </Button>
                     </TooltipTrigger>
@@ -171,7 +177,9 @@ function toggleTheme() {
             <DropdownMenu>
                 <DropdownMenuTrigger as-child>
                     <Button variant="ghost" size="sm" class="gap-2">
-                        <span class="text-sm text-foreground">{{ user.name }}</span>
+                        <span class="text-sm text-foreground">{{
+                            user.name
+                        }}</span>
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" class="w-56">

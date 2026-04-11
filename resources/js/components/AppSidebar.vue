@@ -5,6 +5,7 @@ import {
     History,
     LayoutGrid,
     ShieldAlert,
+    UserCog,
     Users,
 } from 'lucide-vue-next';
 import AppLogo from '@/components/AppLogo.vue';
@@ -25,6 +26,7 @@ import { index as alertsIndex } from '@/routes/alerts';
 import { index as camerasIndex } from '@/routes/cameras';
 import { index as eventsIndex } from '@/routes/events';
 import { index as personnelIndex } from '@/routes/personnel';
+import { index as usersIndex } from '@/routes/users';
 import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
@@ -42,6 +44,11 @@ const mainNavItems: NavItem[] = [
         title: 'Personnel',
         href: personnelIndex(),
         icon: Users,
+    },
+    {
+        title: 'Users',
+        href: usersIndex(),
+        icon: UserCog,
     },
     {
         title: 'Live Alerts',
