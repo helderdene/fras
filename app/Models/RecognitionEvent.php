@@ -5,11 +5,13 @@ namespace App\Models;
 use App\Enums\AlertSeverity;
 use Database\Factories\RecognitionEventFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+#[Hidden(['raw_payload', 'face_image_path', 'scene_image_path'])]
 #[Fillable([
     'camera_id',
     'personnel_id',
