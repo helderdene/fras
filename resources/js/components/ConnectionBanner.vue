@@ -17,9 +17,11 @@ defineProps<Props>();
     >
         <div
             v-if="visible"
-            class="border-b border-amber-500/20 bg-amber-500/10 px-4 py-1.5"
+            class="border-b border-amber-500/20 bg-amber-500/10 px-4 py-1.5 dark:shadow-[0_0_8px_rgba(239,68,68,0.2)]"
         >
-            <p class="text-center text-xs text-amber-700 dark:text-amber-400">
+            <p
+                class="text-center text-xs font-semibold text-amber-700 dark:text-amber-400"
+            >
                 Real-time connection lost. Alerts may be delayed.
             </p>
         </div>

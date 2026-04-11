@@ -10,7 +10,7 @@ defineProps<Props>();
 
 <template>
     <div
-        class="flex h-9 shrink-0 items-center gap-6 border-t border-border bg-muted px-4"
+        class="flex h-9 shrink-0 items-center gap-6 border-t border-border bg-muted px-4 dark:bg-muted/90 dark:backdrop-blur-sm"
     >
         <div class="flex items-center gap-1.5">
             <span
@@ -34,7 +34,7 @@ defineProps<Props>();
             <span class="text-xs text-muted-foreground">Reverb</span>
         </div>
         <span class="text-xs text-muted-foreground">
-            {{ queueDepth }} pending
+            <span class="font-mono text-xs">{{ queueDepth }}</span> pending
         </span>
     </div>
 </template>
