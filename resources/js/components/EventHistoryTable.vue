@@ -51,16 +51,27 @@ function formatTimestamp(dateString: string): string {
 </script>
 
 <template>
-    <div class="overflow-hidden rounded-lg border">
+    <div class="overflow-auto rounded-lg border">
         <Table>
-            <TableHeader>
+            <TableHeader class="sticky top-0 z-10 bg-card">
                 <TableRow>
-                    <TableHead class="w-[48px]" />
-                    <TableHead class="min-w-[140px]">Person</TableHead>
-                    <TableHead class="w-[140px]">Camera</TableHead>
-                    <TableHead class="w-[100px]">
+                    <TableHead
+                        class="w-[40px] px-2 py-1 text-xs font-semibold tracking-wider text-muted-foreground uppercase"
+                    />
+                    <TableHead
+                        class="min-w-[140px] px-2 py-1 text-xs font-semibold tracking-wider text-muted-foreground uppercase"
+                        >Person</TableHead
+                    >
+                    <TableHead
+                        class="w-[140px] px-2 py-1 text-xs font-semibold tracking-wider text-muted-foreground uppercase"
+                        >Camera</TableHead
+                    >
+                    <TableHead
+                        class="w-[100px] px-2 py-1 text-xs font-semibold tracking-wider text-muted-foreground uppercase"
+                    >
                         <button
                             class="inline-flex items-center gap-1"
+                            :class="{ 'text-primary': sort === 'severity' }"
                             @click="toggleSort('severity')"
                         >
                             Severity
@@ -68,19 +79,22 @@ function formatTimestamp(dateString: string): string {
                                 v-if="
                                     sort === 'severity' && direction === 'asc'
                                 "
-                                class="size-3 text-primary"
+                                class="size-3"
                             />
                             <ChevronDown
                                 v-else-if="
                                     sort === 'severity' && direction === 'desc'
                                 "
-                                class="size-3 text-primary"
+                                class="size-3"
                             />
                         </button>
                     </TableHead>
-                    <TableHead class="w-[90px]">
+                    <TableHead
+                        class="w-[90px] px-2 py-1 text-xs font-semibold tracking-wider text-muted-foreground uppercase"
+                    >
                         <button
                             class="inline-flex items-center gap-1"
+                            :class="{ 'text-primary': sort === 'similarity' }"
                             @click="toggleSort('similarity')"
                         >
                             Similarity
@@ -88,20 +102,23 @@ function formatTimestamp(dateString: string): string {
                                 v-if="
                                     sort === 'similarity' && direction === 'asc'
                                 "
-                                class="size-3 text-primary"
+                                class="size-3"
                             />
                             <ChevronDown
                                 v-else-if="
                                     sort === 'similarity' &&
                                     direction === 'desc'
                                 "
-                                class="size-3 text-primary"
+                                class="size-3"
                             />
                         </button>
                     </TableHead>
-                    <TableHead class="w-[160px]">
+                    <TableHead
+                        class="w-[160px] px-2 py-1 text-xs font-semibold tracking-wider text-muted-foreground uppercase"
+                    >
                         <button
                             class="inline-flex items-center gap-1"
+                            :class="{ 'text-primary': sort === 'captured_at' }"
                             @click="toggleSort('captured_at')"
                         >
                             Time
@@ -110,14 +127,14 @@ function formatTimestamp(dateString: string): string {
                                     sort === 'captured_at' &&
                                     direction === 'asc'
                                 "
-                                class="size-3 text-primary"
+                                class="size-3"
                             />
                             <ChevronDown
                                 v-else-if="
                                     sort === 'captured_at' &&
                                     direction === 'desc'
                                 "
-                                class="size-3 text-primary"
+                                class="size-3"
                             />
                         </button>
                     </TableHead>
@@ -127,13 +144,13 @@ function formatTimestamp(dateString: string): string {
                 <TableRow
                     v-for="event in events"
                     :key="event.id"
-                    class="cursor-pointer hover:bg-muted/50"
+                    class="cursor-pointer border-b border-border/50 hover:bg-accent/50"
                     :class="{ 'opacity-60': !event.is_real_time }"
                     tabindex="0"
                     @click="emit('select', event)"
                     @keydown.enter="emit('select', event)"
                 >
-                    <TableCell class="w-[48px] py-2">
+                    <TableCell class="w-[40px] px-2 py-1">
                         <Avatar class="size-8">
                             <AvatarImage
                                 v-if="event.face_image_url"
@@ -145,33 +162,35 @@ function formatTimestamp(dateString: string): string {
                             </AvatarFallback>
                         </Avatar>
                     </TableCell>
-                    <TableCell class="min-w-[140px]">
-                        <div class="text-sm">{{ personName(event) }}</div>
+                    <TableCell class="min-w-[140px] px-2 py-1 text-xs">
+                        <div>{{ personName(event) }}</div>
                         <div
                             v-if="personCustomId(event)"
-                            class="text-xs text-muted-foreground"
+                            class="font-mono text-muted-foreground"
                         >
                             {{ personCustomId(event) }}
                         </div>
                     </TableCell>
-                    <TableCell class="w-[140px] text-sm">
+                    <TableCell class="w-[140px] px-2 py-1 text-xs">
                         {{ event.camera?.name ?? 'Unknown' }}
                     </TableCell>
-                    <TableCell class="w-[100px]">
+                    <TableCell class="w-[100px] px-2 py-1">
                         <div class="flex items-center gap-1">
                             <SeverityBadge :severity="event.severity" />
                             <span
                                 v-if="!event.is_real_time"
-                                class="rounded bg-muted px-1.5 py-0.5 text-[12px] text-muted-foreground"
+                                class="rounded bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground"
                             >
                                 Replay
                             </span>
                         </div>
                     </TableCell>
-                    <TableCell class="w-[90px] font-mono text-xs">
+                    <TableCell
+                        class="w-[90px] px-2 py-1 text-right font-mono text-xs"
+                    >
                         {{ event.similarity.toFixed(1) }}%
                     </TableCell>
-                    <TableCell class="w-[160px] text-sm">
+                    <TableCell class="w-[160px] px-2 py-1 font-mono text-xs">
                         {{ formatTimestamp(event.captured_at) }}
                     </TableCell>
                 </TableRow>

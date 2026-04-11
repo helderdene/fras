@@ -87,7 +87,14 @@ function handleDismiss(): void {
         :open="open"
         @update:open="(value: boolean) => emit('update:open', value)"
     >
-        <DialogContent class="max-w-2xl">
+        <DialogContent
+            class="max-w-2xl"
+            :class="{
+                'border-t-2 border-t-red-500': event?.severity === 'critical',
+                'border-t-2 border-t-amber-500': event?.severity === 'warning',
+                'border-t-2 border-t-emerald-500': event?.severity === 'info',
+            }"
+        >
             <DialogHeader>
                 <DialogTitle>Alert Detail</DialogTitle>
                 <DialogDescription class="sr-only">
@@ -140,7 +147,7 @@ function handleDismiss(): void {
                     </div>
                     <div>
                         <p class="text-xs text-muted-foreground">Custom ID</p>
-                        <p class="text-sm">
+                        <p class="font-mono text-xs">
                             {{
                                 event.personnel?.custom_id ||
                                 event.custom_id ||
@@ -156,7 +163,7 @@ function handleDismiss(): void {
                     </div>
                     <div>
                         <p class="text-xs text-muted-foreground">Similarity</p>
-                        <p class="text-sm">
+                        <p class="font-mono text-xs">
                             {{ event.similarity.toFixed(1) }}%
                         </p>
                     </div>
@@ -168,7 +175,7 @@ function handleDismiss(): void {
                     </div>
                     <div>
                         <p class="text-xs text-muted-foreground">Captured</p>
-                        <p class="text-sm">
+                        <p class="font-mono text-xs">
                             {{ formatAbsoluteTime(event.captured_at) }}
                         </p>
                     </div>
