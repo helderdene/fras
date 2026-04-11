@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/button';
 import { useAlertSound } from '@/composables/useAlertSound';
 import { useAppearance } from '@/composables/useAppearance';
 import type { DashboardCamera } from '@/composables/useDashboardMap';
+import { queueDepth as queueDepthRoute } from '@/routes';
 import {
     acknowledge as acknowledgeRoute,
     dismiss as dismissRoute,
@@ -278,7 +279,7 @@ let queuePollInterval: ReturnType<typeof setInterval> | null = null;
 
 async function fetchQueueDepth() {
     try {
-        const res = await fetch('/api/queue-depth');
+        const res = await fetch(queueDepthRoute.url());
         const data = await res.json();
         queueDepth.value = data.depth;
     } catch {
