@@ -65,14 +65,14 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **REC-02**: Handler parses RecPush payload with firmware quirk handling (personName/persionName fallback, string-to-int casting, empty customId)
 - [ ] **REC-03**: Handler decodes and saves base64 face crop image to storage; scene image saved if present (nullable)
 - [ ] **REC-04**: Handler inserts recognition_events row with all fields and full raw payload for forensics
-- [ ] **REC-05**: Events are classified into three severity levels: critical (block-list match), warning (refused), info (allowed)
+- [x] **REC-05**: Events are classified into three severity levels: critical (block-list match), warning (refused), info (allowed)
 - [ ] **REC-06**: Manual replay events (PushType=2) are stored but not surfaced as alerts
-- [ ] **REC-07**: Recognition events are broadcast in real time via Laravel Reverb WebSocket to all connected browsers
+- [x] **REC-07**: Recognition events are broadcast in real time via Laravel Reverb WebSocket to all connected browsers
 - [ ] **REC-08**: Live alert feed shows reverse-chronological events with avatar, person name, camera, severity tag, similarity score, and timestamp
 - [ ] **REC-09**: Critical alerts have red left border and subtle red background; warnings use amber; info uses green
 - [ ] **REC-10**: Clicking an alert opens a detail modal with face crop, scene image with bounding box overlay, and full event metadata
 - [ ] **REC-11**: Critical (block-list) events trigger an audible alert sound in the browser
-- [ ] **REC-12**: Each alert displays the confidence/similarity score from the camera
+- [x] **REC-12**: Each alert displays the confidence/similarity score from the camera
 - [ ] **REC-13**: Operator can acknowledge or dismiss an alert, recording who handled it and when
 
 ### Event History
@@ -181,14 +181,14 @@ Which phases cover which requirements. Updated during roadmap creation.
 | REC-02 | Phase 5 | Pending |
 | REC-03 | Phase 5 | Pending |
 | REC-04 | Phase 5 | Pending |
-| REC-05 | Phase 5 | Pending |
+| REC-05 | Phase 5 | Complete |
 | REC-06 | Phase 5 | Pending |
-| REC-07 | Phase 5 | Pending |
+| REC-07 | Phase 5 | Complete |
 | REC-08 | Phase 5 | Pending |
 | REC-09 | Phase 5 | Pending |
 | REC-10 | Phase 5 | Pending |
 | REC-11 | Phase 5 | Pending |
-| REC-12 | Phase 5 | Pending |
+| REC-12 | Phase 5 | Complete |
 | REC-13 | Phase 5 | Pending |
 | HIST-01 | Phase 7 | Pending |
 | HIST-02 | Phase 7 | Pending |

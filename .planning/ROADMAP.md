@@ -108,7 +108,7 @@ Plans:
 **UI hint**: yes
 
 Plans:
-- [ ] 05-01-PLAN.md -- AlertSeverity enum, RecognitionEvent model/factory, acknowledgment migration, RecognitionAlert broadcast event, TypeScript types
+- [x] 05-01-PLAN.md -- AlertSeverity enum, RecognitionEvent model/factory, acknowledgment migration, RecognitionAlert broadcast event, TypeScript types
 - [ ] 05-02-PLAN.md -- RecognitionHandler full implementation with payload parsing, image storage, severity classification, broadcast dispatch
 - [ ] 05-03-PLAN.md -- AlertController (feed page, acknowledge, dismiss, image serving), routes, sidebar/header nav update
 - [ ] 05-04-PLAN.md -- Alert feed page, AlertFeedItem, SeverityBadge, AlertDetailModal, SceneImageOverlay, useAlertSound composable

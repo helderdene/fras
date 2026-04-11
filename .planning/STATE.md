@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: verifying
-stopped_at: Phase 5 context gathered
-last_updated: "2026-04-11T01:02:23.800Z"
-last_activity: 2026-04-10
+status: executing
+stopped_at: Completed 05-01-PLAN.md
+last_updated: "2026-04-11T02:03:07.797Z"
+last_activity: 2026-04-11
 progress:
   total_phases: 7
   completed_phases: 4
-  total_plans: 13
-  completed_plans: 13
-  percent: 100
+  total_plans: 17
+  completed_plans: 14
+  percent: 82
 ---
 
 # Project State
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-10)
 
 **Core value:** Operators see every matched-face recognition event in real time on a map-based dashboard with severity-classified alerts, so critical events are never missed.
-**Current focus:** Phase 04 — Enrollment Sync
+**Current focus:** Phase 05 — recognition-alerting
 
 ## Current Position
 
-Phase: 04 (Enrollment Sync) — EXECUTING
-Plan: 4 of 4
-Status: Phase complete — ready for verification
-Last activity: 2026-04-10
+Phase: 05 (recognition-alerting) — EXECUTING
+Plan: 2 of 4
+Status: Ready to execute
+Last activity: 2026-04-11
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -67,6 +67,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 04-enrollment-sync P02 | 5min | 2 tasks | 7 files |
 | Phase 04-enrollment-sync PP03 | 6min | 2 tasks | 10 files |
 | Phase 04-enrollment-sync P04 | 3min | 2 tasks | 6 files |
+| Phase 05-recognition-alerting P01 | 3min | 2 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -108,6 +109,9 @@ Recent decisions affecting current work:
 - [Phase 04-enrollment-sync]: MQTT::shouldReceive (Mockery) for delete MQTT tests matching existing pattern; facade lacks fake()
 - [Phase 04-enrollment-sync]: SyncStatusDot labels prop override pattern: map 'enrolled' to 'synced' internally, display 'Enrolled' via labels
 - [Phase 04-enrollment-sync]: withCount conditional subqueries for enrollment summary (efficient single query per camera count)
+- [Phase 05-recognition-alerting]: AlertSeverity::fromEvent uses int params matching camera firmware types for direct handler usage
+- [Phase 05-recognition-alerting]: Image URL accessors return auth-protected paths (/alerts/{id}/face) not storage paths (T-5-03 mitigation)
+- [Phase 05-recognition-alerting]: RecognitionAlert::fromEvent() uses loadMissing to avoid duplicate queries when relationships already loaded
 
 ### Pending Todos
 
@@ -119,6 +123,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-11T01:02:23.791Z
-Stopped at: Phase 5 context gathered
-Resume file: .planning/phases/05-recognition-alerting/05-CONTEXT.md
+Last session: 2026-04-11T02:03:07.793Z
+Stopped at: Completed 05-01-PLAN.md
+Resume file: None
