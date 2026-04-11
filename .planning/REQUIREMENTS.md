@@ -29,8 +29,8 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **DASH-01**: Dashboard displays all cameras as markers on a Mapbox GL JS map with GPS positioning
 - [ ] **DASH-02**: Camera markers are colored by status: green for online, gray for offline
 - [ ] **DASH-03**: When a recognition event fires, the corresponding camera marker pulses with a red expanding ring animation for ~3 seconds
-- [ ] **DASH-04**: Dashboard has three-panel layout: camera list rail (left), map (center), alert feed (right)
-- [ ] **DASH-05**: Status bar shows MQTT connection status, Reverb WebSocket status, and queue depth
+- [x] **DASH-04**: Dashboard has three-panel layout: camera list rail (left), map (center), alert feed (right)
+- [x] **DASH-05**: Status bar shows MQTT connection status, Reverb WebSocket status, and queue depth
 - [ ] **DASH-06**: Map supports toggle between dark and light custom Mapbox Studio styles
 - [ ] **DASH-07**: Left rail shows camera list with online/offline indicators and per-camera recognition counts
 - [ ] **DASH-08**: Left rail includes "Today" statistics panel (total recognitions, critical events, warnings, enrolled personnel count)
@@ -154,8 +154,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DASH-01 | Phase 6 | Pending |
 | DASH-02 | Phase 6 | Pending |
 | DASH-03 | Phase 6 | Pending |
-| DASH-04 | Phase 6 | Pending |
-| DASH-05 | Phase 6 | Pending |
+| DASH-04 | Phase 6 | Complete |
+| DASH-05 | Phase 6 | Complete |
 | DASH-06 | Phase 6 | Pending |
 | DASH-07 | Phase 6 | Pending |
 | DASH-08 | Phase 6 | Pending |
