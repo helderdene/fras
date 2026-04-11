@@ -67,7 +67,13 @@ const connectionStatus = useConnectionStatus();
 const isReverbConnected = computed(
     () => connectionStatus.value === 'connected',
 );
-const isMqttConnected = isReverbConnected;
+
+// MQTT liveness: consider connected if a CameraStatusChanged event arrived
+// within the last 60 seconds (events are MQTT-bridged via Reverb).
+const lastMqttActivity = ref<number>(Date.now());
+const isMqttConnected = computed(
+    () => Date.now() - lastMqttActivity.value < 60_000,
+);
 
 // Map ref
 const mapRef = ref<InstanceType<typeof DashboardMap> | null>(null);
@@ -197,6 +203,8 @@ useEcho(
     'fras.alerts',
     '.CameraStatusChanged',
     (payload: CameraStatusPayload) => {
+        lastMqttActivity.value = Date.now();
+
         const cam = cameras.value.find((c) => c.id === payload.camera_id);
 
         if (cam) {
