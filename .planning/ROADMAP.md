@@ -111,7 +111,7 @@ Plans:
 - [x] 05-01-PLAN.md -- AlertSeverity enum, RecognitionEvent model/factory, acknowledgment migration, RecognitionAlert broadcast event, TypeScript types
 - [x] 05-02-PLAN.md -- RecognitionHandler full implementation with payload parsing, image storage, severity classification, broadcast dispatch
 - [x] 05-03-PLAN.md -- AlertController (feed page, acknowledge, dismiss, image serving), routes, sidebar/header nav update
-- [ ] 05-04-PLAN.md -- Alert feed page, AlertFeedItem, SeverityBadge, AlertDetailModal, SceneImageOverlay, useAlertSound composable
+- [x] 05-04-PLAN.md -- Alert feed page, AlertFeedItem, SeverityBadge, AlertDetailModal, SceneImageOverlay, useAlertSound composable
 
 ### Phase 6: Dashboard & Map
 **Goal**: Operators have a full-viewport command center with a live map showing camera positions, real-time marker animations on recognition events, and at-a-glance system status
