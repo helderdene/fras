@@ -32,8 +32,8 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **DASH-04**: Dashboard has three-panel layout: camera list rail (left), map (center), alert feed (right)
 - [x] **DASH-05**: Status bar shows MQTT connection status, Reverb WebSocket status, and queue depth
 - [x] **DASH-06**: Map supports toggle between dark and light custom Mapbox Studio styles
-- [ ] **DASH-07**: Left rail shows camera list with online/offline indicators and per-camera recognition counts
-- [ ] **DASH-08**: Left rail includes "Today" statistics panel (total recognitions, critical events, warnings, enrolled personnel count)
+- [x] **DASH-07**: Left rail shows camera list with online/offline indicators and per-camera recognition counts
+- [x] **DASH-08**: Left rail includes "Today" statistics panel (total recognitions, critical events, warnings, enrolled personnel count)
 
 ### Personnel Management
 
@@ -157,8 +157,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DASH-04 | Phase 6 | Complete |
 | DASH-05 | Phase 6 | Complete |
 | DASH-06 | Phase 6 | Complete |
-| DASH-07 | Phase 6 | Pending |
-| DASH-08 | Phase 6 | Pending |
+| DASH-07 | Phase 6 | Complete |
+| DASH-08 | Phase 6 | Complete |
 | PERS-01 | Phase 3 | Complete |
 | PERS-02 | Phase 3 | Complete |
 | PERS-03 | Phase 3 | Complete |
