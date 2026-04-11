@@ -105,7 +105,7 @@ defineProps<{
             v-if="canRegister"
         >
             Don't have an account?
-            <TextLink :href="register()" :tabindex="5">Sign up</TextLink>
+            <TextLink :href="register()" :tabindex="6">Sign up</TextLink>
         </div>
     </Form>
 </template>
