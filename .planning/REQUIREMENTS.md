@@ -77,15 +77,15 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Event History
 
-- [ ] **HIST-01**: Event history page shows a searchable, filterable log of all recognition events
-- [ ] **HIST-02**: Filters include date range, camera, person, severity level
+- [x] **HIST-01**: Event history page shows a searchable, filterable log of all recognition events
+- [x] **HIST-02**: Filters include date range, camera, person, severity level
 - [ ] **HIST-03**: Each event row shows face crop thumbnail, person name, camera, severity, similarity, and timestamp
 
 ### Operations
 
-- [ ] **OPS-01**: Scheduled job deletes scene images older than 30 days while keeping recognition_events row and face crop
-- [ ] **OPS-02**: Scheduled job deletes face crops older than 90 days while keeping recognition_events row
-- [ ] **OPS-03**: Retention windows are configurable in config/hds.php
+- [x] **OPS-01**: Scheduled job deletes scene images older than 30 days while keeping recognition_events row and face crop
+- [x] **OPS-02**: Scheduled job deletes face crops older than 90 days while keeping recognition_events row
+- [x] **OPS-03**: Retention windows are configurable in config/hds.php
 - [x] **OPS-04**: MQTT listener handles Online/Offline messages to update camera is_online state
 - [x] **OPS-05**: MQTT listener handles HeartBeat messages to update camera last_seen_at
 
@@ -190,12 +190,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | REC-11 | Phase 5 | Complete |
 | REC-12 | Phase 5 | Complete |
 | REC-13 | Phase 5 | Complete |
-| HIST-01 | Phase 7 | Pending |
-| HIST-02 | Phase 7 | Pending |
+| HIST-01 | Phase 7 | Complete |
+| HIST-02 | Phase 7 | Complete |
 | HIST-03 | Phase 7 | Pending |
-| OPS-01 | Phase 7 | Pending |
-| OPS-02 | Phase 7 | Pending |
-| OPS-03 | Phase 7 | Pending |
+| OPS-01 | Phase 7 | Complete |
+| OPS-02 | Phase 7 | Complete |
+| OPS-03 | Phase 7 | Complete |
 | OPS-04 | Phase 2 | Complete |
 | OPS-05 | Phase 2 | Complete |
 

@@ -144,7 +144,7 @@ Plans:
 **UI hint**: yes
 
 Plans:
-- [ ] 07-01-PLAN.md -- EventHistoryController with server-side filtered pagination, CleanupRetentionImagesCommand, migration, routes, schedule, tests
+- [x] 07-01-PLAN.md -- EventHistoryController with server-side filtered pagination, CleanupRetentionImagesCommand, migration, routes, schedule, tests
 - [ ] 07-02-PLAN.md -- Event history page (table, filters, pagination), navigation integration, visual verification
 
 ## Progress
