@@ -22,9 +22,10 @@ defineProps<{
     >
         <div class="flex w-full max-w-[400px] flex-col gap-6">
             <Link :href="home()" class="flex items-center gap-2 self-center">
-                <div class="flex h-9 w-9 items-center justify-center">
-                    <AppLogoIcon class="size-9 fill-current text-primary" />
+                <div class="flex h-9 w-9 items-center justify-center rounded-md bg-primary text-primary-foreground">
+                    <AppLogoIcon class="text-lg" />
                 </div>
+                <span class="text-lg font-semibold">FRAS</span>
             </Link>
 
             <div class="flex flex-col gap-6">
