@@ -4,6 +4,7 @@ use App\Http\Controllers\AlertController;
 use App\Http\Controllers\CameraController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EnrollmentController;
+use App\Http\Controllers\EventHistoryController;
 use App\Http\Controllers\PersonnelController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
@@ -24,6 +25,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('alerts/{event}/dismiss', [AlertController::class, 'dismiss'])->name('alerts.dismiss');
     Route::get('alerts/{event}/face', [AlertController::class, 'faceImage'])->name('alerts.face-image');
     Route::get('alerts/{event}/scene', [AlertController::class, 'sceneImage'])->name('alerts.scene-image');
+    Route::get('events', [EventHistoryController::class, 'index'])->name('events.index');
 });
 
 require __DIR__.'/settings.php';
