@@ -164,7 +164,7 @@ function handleDismiss(): void {
                     <div>
                         <p class="text-xs text-muted-foreground">Similarity</p>
                         <p class="font-mono text-xs">
-                            {{ event.similarity.toFixed(1) }}%
+                            {{ (event.similarity ?? 0).toFixed(1) }}%
                         </p>
                     </div>
                     <div>

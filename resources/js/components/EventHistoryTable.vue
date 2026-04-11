@@ -188,7 +188,7 @@ function formatTimestamp(dateString: string): string {
                     <TableCell
                         class="w-[90px] px-2 py-1 text-right font-mono text-xs"
                     >
-                        {{ event.similarity.toFixed(1) }}%
+                        {{ (event.similarity ?? 0).toFixed(1) }}%
                     </TableCell>
                     <TableCell class="w-[160px] px-2 py-1 font-mono text-xs">
                         {{ formatTimestamp(event.captured_at) }}

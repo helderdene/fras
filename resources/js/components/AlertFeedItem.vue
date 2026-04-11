@@ -161,7 +161,7 @@ function handleDismiss(e: Event): void {
 
         <!-- Similarity score -->
         <span class="shrink-0 font-mono text-xs text-muted-foreground">
-            {{ event.similarity.toFixed(1) }}%
+            {{ (event.similarity ?? 0).toFixed(1) }}%
         </span>
 
         <!-- Relative timestamp -->
