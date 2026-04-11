@@ -20,6 +20,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 6: Dashboard & Map** - Mapbox map with camera markers, three-panel layout, status bar, live animations (completed 2026-04-11)
 - [ ] **Phase 7: Event History & Operations** - Searchable event log, storage retention cleanup, configurable retention
 - [ ] **Phase 8: Redesign** - Full visual redesign: slate/steel blue palette, Inter font, glassmorphism, glow effects, dense data grids, FRAS branding
+- [ ] **Phase 9: User Management** - Disable public registration, admin-only user creation and management
 
 ## Phase Details
 
@@ -170,10 +171,28 @@ Plans:
 - [x] 08-04-PLAN.md -- Dashboard Tier 1 ops center styling, Camera and Personnel admin page Tier 2 styling
 - [x] 08-05-PLAN.md -- Welcome page rewrite, auth pages, alerts/events/settings styling, font-medium sweep, visual checkpoint
 
+### Phase 9: Disable user registration, only admin can create a user
+**Goal**: Public user registration is disabled and only authenticated admins can create, edit, and delete user accounts through a full admin user management panel
+**Depends on**: Phase 8
+**Requirements**: REG-DISABLE, USER-CRUD, USER-CRUD-UI, USER-NAV
+**Success Criteria** (what must be TRUE):
+  1. GET and POST /register return 404 (registration disabled via Fortify config)
+  2. Register.vue and CreateNewUser action preserved as dead code
+  3. Admin can list, create, edit, and delete user accounts from users section
+  4. Edit page allows setting new password for any user (optional, confirmed)
+  5. Admin cannot delete their own account (self-delete prevention)
+  6. Users appears as a nav item in sidebar and dashboard top nav
+**Plans**: 2 plans
+**UI hint**: yes
+
+Plans:
+- [ ] 09-01-PLAN.md -- Disable registration, UserController CRUD, form requests, routes, tests
+- [ ] 09-02-PLAN.md -- User management Vue pages (Index, Create, Edit), sidebar and top nav update
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 Note: Phases 2 and 3 share only a Phase 1 dependency and could theoretically overlap, but sequential execution is simpler for a solo workflow.
 
 | Phase | Plans Complete | Status | Completed |
@@ -186,3 +205,4 @@ Note: Phases 2 and 3 share only a Phase 1 dependency and could theoretically ove
 | 6. Dashboard & Map | 3/3 | Complete | 2026-04-11 |
 | 7. Event History & Operations | 0/2 | Not started | - |
 | 8. Redesign | 0/5 | Not started | - |
+| 9. User Management | 0/2 | Not started | - |
