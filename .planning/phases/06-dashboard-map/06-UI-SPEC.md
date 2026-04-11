@@ -48,13 +48,14 @@ Exceptions: Left rail width fixed at 280px (D-01). Right alert feed width fixed 
 | Role | Size | Weight | Line Height |
 |------|------|--------|-------------|
 | Body | 14px | 400 (regular) | 1.5 |
-| Label | 12px | 500 (medium) | 1.33 |
+| Label | 12px | 400 (regular) | 1.33 |
 | Heading | 16px | 600 (semibold) | 1.25 |
 | Stat Value | 24px | 600 (semibold) | 1.2 |
 
 Notes:
+- Two weights only: 400 (regular) for body and label text, 600 (semibold) for headings and stat values. Label hierarchy is achieved through smaller size (12px) and `text-muted-foreground` coloring, not a distinct weight.
 - Body at 14px (not 16px) for information density -- this is a command center, not a content page. Matches existing `text-sm` usage in AlertFeedItem and camera table rows.
-- Label at 12px for status bar indicators, stat labels, camera recognition count badges. Maps to `text-xs`.
+- Label at 12px for status bar indicators, stat labels, camera recognition count badges. Maps to `text-xs text-muted-foreground`.
 - Heading at 16px for panel headers ("Cameras", "Live Alerts", stat panel title). Maps to `text-base font-semibold`.
 - Stat Value at 24px for the four "Today" statistics numbers in the 2x2 grid. Maps to `text-2xl font-semibold`.
 
@@ -133,7 +134,7 @@ The expanding ring animation uses `rgba(239, 68, 68, 0.6)` (red-500 at 60% opaci
 
 **"Today" Statistics Panel (D-12):**
 - 2x2 grid at top of left rail
-- Each cell: stat value (24px semibold) over label (12px medium muted-foreground)
+- Each cell: stat value (24px semibold) over label (12px regular muted-foreground)
 - Grid gap: 8px
 - Cells:
   1. Total recognitions today (number)
@@ -169,7 +170,7 @@ The expanding ring animation uses `rgba(239, 68, 68, 0.6)` (red-500 at 60% opaci
 | Queue | Number + "pending" label | Shows count of pending queue jobs |
 
 - Layout: `flex items-center gap-6 px-4`
-- All text at 12px medium weight
+- All text at 12px regular weight
 - Dots: `size-1.5 rounded-full`
 
 ### Connection Loss Banner (D-09)
