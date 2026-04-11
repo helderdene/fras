@@ -175,20 +175,34 @@ export function useDashboardMap(
         map.fitBounds(bounds, { padding: 48 });
     }
 
-    function triggerPulse(cameraId: number): void {
+    function triggerPulse(
+        cameraId: number,
+        onIteration?: () => void,
+    ): void {
         const entry = markers.get(cameraId);
 
         if (!entry) {
             return;
         }
 
-        const ring = document.createElement('div');
-        ring.className = 'pulse-ring';
-        entry.element.appendChild(ring);
+        const pulseCount = 3;
+        const interval = 1500; // ms between pulses
 
-        ring.addEventListener('animationend', () => {
-            ring.remove();
-        });
+        for (let i = 0; i < pulseCount; i++) {
+            setTimeout(() => {
+                const ring = document.createElement('div');
+                ring.className = 'pulse-ring';
+                entry.element.appendChild(ring);
+
+                ring.addEventListener('animationend', () => {
+                    ring.remove();
+                });
+
+                if (onIteration) {
+                    onIteration();
+                }
+            }, i * interval);
+        }
     }
 
     function updateMarkerStatus(

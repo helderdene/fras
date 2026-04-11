@@ -176,19 +176,19 @@ useEcho(
             todayStats.value.warnings++;
         }
 
-        // Trigger pulse ring on camera marker
-        mapRef.value?.triggerPulse(payload.camera_id);
+        // Trigger pulse ring on camera marker with chime on each pulse
+        mapRef.value?.triggerPulse(
+            payload.camera_id,
+            payload.severity === 'critical'
+                ? () => playAlertSound()
+                : undefined,
+        );
 
         // Update camera recognition count in local state
         const cam = cameras.value.find((c) => c.id === payload.camera_id);
 
         if (cam) {
             cam.today_recognition_count++;
-        }
-
-        // Play sound for critical events
-        if (payload.severity === 'critical') {
-            playAlertSound();
         }
 
         // Highlight flash
