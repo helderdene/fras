@@ -5,6 +5,7 @@ import {
     Camera,
     FolderGit2,
     LayoutGrid,
+    ShieldAlert,
     Users,
 } from 'lucide-vue-next';
 import AppLogo from '@/components/AppLogo.vue';
@@ -21,6 +22,7 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
+import { index as alertsIndex } from '@/routes/alerts';
 import { index as camerasIndex } from '@/routes/cameras';
 import { index as personnelIndex } from '@/routes/personnel';
 import type { NavItem } from '@/types';
@@ -40,6 +42,11 @@ const mainNavItems: NavItem[] = [
         title: 'Personnel',
         href: personnelIndex(),
         icon: Users,
+    },
+    {
+        title: 'Live Alerts',
+        href: alertsIndex(),
+        icon: ShieldAlert,
     },
 ];
 

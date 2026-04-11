@@ -6,6 +6,7 @@ import {
     LayoutGrid,
     Menu,
     Search,
+    ShieldAlert,
     Users,
 } from 'lucide-vue-next';
 import { computed } from 'vue';
@@ -43,6 +44,7 @@ import { useCurrentUrl } from '@/composables/useCurrentUrl';
 import { getInitials } from '@/composables/useInitials';
 import { toUrl } from '@/lib/utils';
 import { dashboard } from '@/routes';
+import { index as alertsIndex } from '@/routes/alerts';
 import { index as personnelIndex } from '@/routes/personnel';
 import type { BreadcrumbItem, NavItem } from '@/types';
 
@@ -71,6 +73,11 @@ const mainNavItems: NavItem[] = [
         title: 'Personnel',
         href: personnelIndex(),
         icon: Users,
+    },
+    {
+        title: 'Live Alerts',
+        href: alertsIndex(),
+        icon: ShieldAlert,
     },
 ];
 
