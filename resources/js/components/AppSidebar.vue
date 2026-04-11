@@ -4,6 +4,7 @@ import {
     BookOpen,
     Camera,
     FolderGit2,
+    History,
     LayoutGrid,
     ShieldAlert,
     Users,
@@ -24,6 +25,7 @@ import {
 import { dashboard } from '@/routes';
 import { index as alertsIndex } from '@/routes/alerts';
 import { index as camerasIndex } from '@/routes/cameras';
+import { index as eventsIndex } from '@/routes/events';
 import { index as personnelIndex } from '@/routes/personnel';
 import type { NavItem } from '@/types';
 
@@ -47,6 +49,11 @@ const mainNavItems: NavItem[] = [
         title: 'Live Alerts',
         href: alertsIndex(),
         icon: ShieldAlert,
+    },
+    {
+        title: 'Event History',
+        href: eventsIndex(),
+        icon: History,
     },
 ];
 

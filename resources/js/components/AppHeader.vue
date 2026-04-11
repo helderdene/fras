@@ -3,6 +3,7 @@ import { Link, usePage } from '@inertiajs/vue3';
 import {
     BookOpen,
     Folder,
+    History,
     LayoutGrid,
     Menu,
     Search,
@@ -45,6 +46,7 @@ import { getInitials } from '@/composables/useInitials';
 import { toUrl } from '@/lib/utils';
 import { dashboard } from '@/routes';
 import { index as alertsIndex } from '@/routes/alerts';
+import { index as eventsIndex } from '@/routes/events';
 import { index as personnelIndex } from '@/routes/personnel';
 import type { BreadcrumbItem, NavItem } from '@/types';
 
@@ -78,6 +80,11 @@ const mainNavItems: NavItem[] = [
         title: 'Live Alerts',
         href: alertsIndex(),
         icon: ShieldAlert,
+    },
+    {
+        title: 'Event History',
+        href: eventsIndex(),
+        icon: History,
     },
 ];
 
