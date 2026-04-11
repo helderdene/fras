@@ -34,9 +34,12 @@ function getLabel(status: string): string {
         <span
             class="size-1.5 rounded-full"
             :class="{
-                'bg-emerald-500': status === 'synced',
-                'bg-amber-500': status === 'pending',
-                'bg-red-500': status === 'failed',
+                'bg-emerald-500 dark:shadow-[0_0_6px_rgba(16,185,129,0.4)]':
+                    status === 'synced',
+                'bg-amber-500 dark:shadow-[0_0_6px_rgba(245,158,11,0.35)]':
+                    status === 'pending',
+                'bg-red-500 dark:shadow-[0_0_6px_rgba(239,68,68,0.4)]':
+                    status === 'failed',
                 'bg-neutral-400 dark:bg-neutral-500': status === 'not-synced',
             }"
             :aria-label="`Sync status: ${getLabel(status)}`"
