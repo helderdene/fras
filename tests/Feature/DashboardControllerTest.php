@@ -66,31 +66,33 @@ test('dashboard todayStats has keys: recognitions, critical, warnings, enrolled'
 test('dashboard todayStats counts only is_real_time=true events from today', function () {
     $user = User::factory()->create();
     $camera = Camera::factory()->online()->create();
+    $personnel = Personnel::factory()->create();
 
-    // Real-time today events
-    RecognitionEvent::factory()->critical()->for($camera)->create([
+    // Real-time today events (share one personnel to avoid inflating enrolled count)
+    RecognitionEvent::factory()->critical()->for($camera)->for($personnel)->create([
         'captured_at' => today(),
         'is_real_time' => true,
     ]);
-    RecognitionEvent::factory()->warning()->for($camera)->create([
+    RecognitionEvent::factory()->warning()->for($camera)->for($personnel)->create([
         'captured_at' => today(),
         'is_real_time' => true,
     ]);
-    RecognitionEvent::factory()->info()->for($camera)->create([
+    RecognitionEvent::factory()->info()->for($camera)->for($personnel)->create([
         'captured_at' => today(),
         'is_real_time' => true,
     ]);
     // Replay event (should not be counted)
-    RecognitionEvent::factory()->critical()->replay()->for($camera)->create([
+    RecognitionEvent::factory()->critical()->replay()->for($camera)->for($personnel)->create([
         'captured_at' => today(),
     ]);
     // Yesterday's event (should not be counted)
-    RecognitionEvent::factory()->critical()->for($camera)->create([
+    RecognitionEvent::factory()->critical()->for($camera)->for($personnel)->create([
         'captured_at' => today()->subDay(),
         'is_real_time' => true,
     ]);
 
-    Personnel::factory()->count(5)->create();
+    // 4 more personnel (total 5 with the one above)
+    Personnel::factory()->count(4)->create();
 
     $this->actingAs($user)
         ->get(route('dashboard'))

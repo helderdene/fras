@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AlertController;
 use App\Http\Controllers\CameraController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\PersonnelController;
 use Illuminate\Support\Facades\Route;
@@ -12,7 +13,8 @@ Route::inertia('/', 'Welcome', [
 ])->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::inertia('dashboard', 'Dashboard')->name('dashboard');
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('api/queue-depth', [DashboardController::class, 'queueDepth'])->name('queue-depth');
     Route::resource('cameras', CameraController::class);
     Route::resource('personnel', PersonnelController::class);
     Route::post('personnel/{personnel}/enrollment/{camera}/retry', [EnrollmentController::class, 'retry'])->name('enrollment.retry');

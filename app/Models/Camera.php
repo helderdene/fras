@@ -36,6 +36,12 @@ class Camera extends Model
         return $this->hasMany(CameraEnrollment::class);
     }
 
+    /** Get all recognition events from this camera. */
+    public function recognitionEvents(): HasMany
+    {
+        return $this->hasMany(RecognitionEvent::class);
+    }
+
     /** Get all personnel enrolled to this camera. */
     public function enrolledPersonnel(): BelongsToMany
     {
