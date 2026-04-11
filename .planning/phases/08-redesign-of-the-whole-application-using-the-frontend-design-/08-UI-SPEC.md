@@ -55,7 +55,7 @@ Exceptions:
 
 | Role | Size | Weight | Line Height | Usage |
 |------|------|--------|-------------|-------|
-| Caption | 12px | 400 (regular) | 1.33 | Status bar text, table metadata, timestamps, similarity scores |
+| Caption | 12px | 400 (regular) | 1.33 | Status bar text, table metadata, timestamps, similarity scores, sidebar group labels, dense data grid cells |
 | Body | 14px | 400 (regular) | 1.5 | Default text, form labels, table cells, alert feed items, nav items |
 | Heading | 20px | 600 (semibold) | 1.2 | Page headings, card titles, section headers |
 | Display | 28px | 600 (semibold) | 1.2 | Welcome page title, dashboard "Today" stat numbers |
@@ -199,6 +199,7 @@ html.dark { background-color: hsl(222 47% 6%); }
 - No whitespace padding around map -- edge-to-edge
 - Camera rail and alert feed use compact row height (40px)
 - Monospace for all numeric data (similarity, counts, timestamps)
+- **Primary visual anchor:** severity-badged alert items in the alert feed -- critical glow draws peripheral attention so operators notice block-list matches without actively scanning
 
 ### Tier 2: Admin Pages (Professional Dark)
 - Slightly lighter card surfaces (`--card` value)
@@ -247,7 +248,7 @@ Applied to: `EventHistoryTable`, camera list table, personnel list table, enroll
 |----------|-------|
 | Row height | 40px |
 | Cell padding | 8px horizontal, 4px vertical |
-| Font size (data cells) | 13px (between caption and body, Tailwind `text-[13px]`) |
+| Font size (data cells) | 12px (`text-xs`) |
 | Numeric columns | Monospace, 12px, right-aligned |
 | Header background | `bg-muted/50` in dark, `bg-muted` in light |
 | Header font | 12px, `font-semibold`, `uppercase`, `tracking-wider`, `text-muted-foreground` |
@@ -318,7 +319,7 @@ Rationale: The current `AuthSimpleLayout` renders forms directly on the backgrou
 - Active item: left accent border (3px, `border-primary`), `bg-sidebar-accent` background
 - Item text: 14px regular weight, `text-sidebar-foreground`
 - Active item text: 14px semibold weight, `text-sidebar-primary-foreground`
-- Section group labels: 11px, uppercase, `tracking-widest`, `text-muted-foreground/60`
+- Section group labels: 12px, uppercase, `tracking-widest`, `text-muted-foreground/60`
 - Icon size: 18px (`size-[18px]`), stroke width 1.75
 - Item spacing: 4px between items, 16px between groups
 - Hover: `bg-sidebar-accent/60` with 150ms transition
@@ -379,8 +380,8 @@ Admin pages below `md`:
 | Primary CTA (Dashboard) | "View Dashboard" |
 | Primary CTA (Camera) | "Add Camera" |
 | Primary CTA (Personnel) | "Add Personnel" |
-| Primary CTA (Alert Acknowledge) | "Acknowledge" |
-| Primary CTA (Alert Dismiss) | "Dismiss" |
+| Primary CTA (Alert Acknowledge) | "Acknowledge Alert" |
+| Primary CTA (Alert Dismiss) | "Dismiss Alert" |
 | Empty state heading (Cameras) | "No cameras registered" |
 | Empty state body (Cameras) | "Register your first camera to start monitoring. Camera heartbeats will appear automatically once connected." |
 | Empty state heading (Personnel) | "No personnel enrolled" |
