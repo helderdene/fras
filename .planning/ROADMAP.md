@@ -18,9 +18,9 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 4: Enrollment Sync** - Push personnel to cameras via MQTT, ACK correlation, retry, delete sync (completed 2026-04-10)
 - [x] **Phase 5: Recognition & Alerting** - RecPush processing, event classification, real-time broadcast, alert feed UI (completed 2026-04-11)
 - [x] **Phase 6: Dashboard & Map** - Mapbox map with camera markers, three-panel layout, status bar, live animations (completed 2026-04-11)
-- [ ] **Phase 7: Event History & Operations** - Searchable event log, storage retention cleanup, configurable retention
-- [ ] **Phase 8: Redesign** - Full visual redesign: slate/steel blue palette, Inter font, glassmorphism, glow effects, dense data grids, FRAS branding
-- [ ] **Phase 9: User Management** - Disable public registration, admin-only user creation and management
+- [x] **Phase 7: Event History & Operations** - Searchable event log, storage retention cleanup, configurable retention (completed 2026-04-11)
+- [x] **Phase 8: Redesign** - Full visual redesign: slate/steel blue palette, Inter font, glassmorphism, glow effects, dense data grids, FRAS branding (completed 2026-04-11)
+- [x] **Phase 9: User Management** - Disable public registration, admin-only user creation and management (completed 2026-04-11)
 
 ## Phase Details
 
@@ -203,6 +203,6 @@ Note: Phases 2 and 3 share only a Phase 1 dependency and could theoretically ove
 | 4. Enrollment Sync | 4/4 | Complete | 2026-04-10 |
 | 5. Recognition & Alerting | 4/4 | Complete | 2026-04-11 |
 | 6. Dashboard & Map | 3/3 | Complete | 2026-04-11 |
-| 7. Event History & Operations | 0/2 | Not started | - |
-| 8. Redesign | 0/5 | Not started | - |
-| 9. User Management | 0/2 | Not started | - |
+| 7. Event History & Operations | 2/2 | Complete | 2026-04-11 |
+| 8. Redesign | 5/5 | Complete | 2026-04-11 |
+| 9. User Management | 2/2 | Complete | 2026-04-11 |
