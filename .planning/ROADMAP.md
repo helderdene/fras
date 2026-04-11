@@ -17,7 +17,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 3: Personnel Management** - Personnel CRUD with photo upload, preprocessing, list and detail pages (completed 2026-04-10)
 - [x] **Phase 4: Enrollment Sync** - Push personnel to cameras via MQTT, ACK correlation, retry, delete sync (completed 2026-04-10)
 - [x] **Phase 5: Recognition & Alerting** - RecPush processing, event classification, real-time broadcast, alert feed UI (completed 2026-04-11)
-- [ ] **Phase 6: Dashboard & Map** - Mapbox map with camera markers, three-panel layout, status bar, live animations
+- [x] **Phase 6: Dashboard & Map** - Mapbox map with camera markers, three-panel layout, status bar, live animations (completed 2026-04-11)
 - [ ] **Phase 7: Event History & Operations** - Searchable event log, storage retention cleanup, configurable retention
 
 ## Phase Details
@@ -140,13 +140,12 @@ Plans:
   2. Filters for date range, camera, person, and severity level narrow results correctly
   3. Scheduled job deletes scene images older than 30 days and face crops older than 90 days while preserving recognition_events rows
   4. Retention windows are configurable in config/hds.php and changes take effect on the next scheduled run
-**Plans**: TBD
+**Plans**: 2 plans
 **UI hint**: yes
 
 Plans:
-- [ ] 07-01: TBD
-- [ ] 07-02: TBD
-- [ ] 07-03: TBD
+- [ ] 07-01-PLAN.md -- EventHistoryController with server-side filtered pagination, CleanupRetentionImagesCommand, migration, routes, schedule, tests
+- [ ] 07-02-PLAN.md -- Event history page (table, filters, pagination), navigation integration, visual verification
 
 ## Progress
 
@@ -161,5 +160,5 @@ Note: Phases 2 and 3 share only a Phase 1 dependency and could theoretically ove
 | 3. Personnel Management | 3/3 | Complete | 2026-04-10 |
 | 4. Enrollment Sync | 4/4 | Complete | 2026-04-10 |
 | 5. Recognition & Alerting | 4/4 | Complete | 2026-04-11 |
-| 6. Dashboard & Map | 0/3 | Not started | - |
-| 7. Event History & Operations | 0/3 | Not started | - |
+| 6. Dashboard & Map | 3/3 | Complete | 2026-04-11 |
+| 7. Event History & Operations | 0/2 | Not started | - |
