@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import { Link, usePage } from '@inertiajs/vue3';
-import { Moon, PanelLeft, PanelRight, Settings, Sun } from 'lucide-vue-next';
+import {
+    Bell,
+    BellRing,
+    Moon,
+    PanelLeft,
+    PanelRight,
+    Settings,
+    Sun,
+} from 'lucide-vue-next';
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
 import { Button } from '@/components/ui/button';
 import {
@@ -8,6 +16,12 @@ import {
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from '@/components/ui/tooltip';
 import UserMenuContent from '@/components/UserMenuContent.vue';
 import { useAppearance } from '@/composables/useAppearance';
 import { dashboard } from '@/routes';
@@ -17,6 +31,7 @@ import type { Auth } from '@/types';
 type Props = {
     leftRailOpen: boolean;
     rightFeedOpen: boolean;
+    soundEnabled: boolean;
 };
 
 defineProps<Props>();
@@ -24,6 +39,7 @@ defineProps<Props>();
 const emit = defineEmits<{
     'toggle-left-rail': [];
     'toggle-right-feed': [];
+    'toggle-sound': [];
 }>();
 
 const page = usePage<{ auth: Auth }>();
@@ -68,15 +84,61 @@ function toggleTheme() {
             >
                 <PanelRight class="size-4" />
             </Button>
-            <Button
-                variant="ghost"
-                size="icon-sm"
-                aria-label="Toggle theme"
-                @click="toggleTheme"
-            >
-                <Sun v-if="resolvedAppearance === 'dark'" class="size-4" />
-                <Moon v-else class="size-4" />
-            </Button>
+            <TooltipProvider>
+                <Tooltip>
+                    <TooltipTrigger as-child>
+                        <Button
+                            variant="ghost"
+                            size="icon-sm"
+                            :aria-label="
+                                resolvedAppearance === 'dark'
+                                    ? 'Switch to light mode'
+                                    : 'Switch to dark mode'
+                            "
+                            @click="toggleTheme"
+                        >
+                            <Sun
+                                v-if="resolvedAppearance === 'dark'"
+                                class="size-4"
+                            />
+                            <Moon v-else class="size-4" />
+                        </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        {{
+                            resolvedAppearance === 'dark'
+                                ? 'Switch to light mode'
+                                : 'Switch to dark mode'
+                        }}
+                    </TooltipContent>
+                </Tooltip>
+            </TooltipProvider>
+            <TooltipProvider>
+                <Tooltip>
+                    <TooltipTrigger as-child>
+                        <Button
+                            variant="ghost"
+                            size="icon-sm"
+                            :aria-label="
+                                soundEnabled
+                                    ? 'Mute alert sounds'
+                                    : 'Enable alert sounds'
+                            "
+                            @click="emit('toggle-sound')"
+                        >
+                            <BellRing v-if="soundEnabled" class="size-4" />
+                            <Bell v-else class="size-4" />
+                        </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        {{
+                            soundEnabled
+                                ? 'Mute alert sounds'
+                                : 'Enable alert sounds'
+                        }}
+                    </TooltipContent>
+                </Tooltip>
+            </TooltipProvider>
             <Button variant="ghost" size="icon-sm" :as-child="true">
                 <Link :href="edit()" aria-label="Settings" prefetch>
                     <Settings class="size-4" />

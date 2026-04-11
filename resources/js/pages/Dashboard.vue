@@ -1,14 +1,17 @@
 <script setup lang="ts">
-import { Head } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import { useConnectionStatus, useEcho } from '@laravel/echo-vue';
+import { Camera as CameraIcon } from 'lucide-vue-next';
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import ConnectionBanner from '@/components/ConnectionBanner.vue';
 import DashboardMap from '@/components/DashboardMap.vue';
 import DashboardTopNav from '@/components/DashboardTopNav.vue';
 import StatusBar from '@/components/StatusBar.vue';
+import { Button } from '@/components/ui/button';
 import { useAlertSound } from '@/composables/useAlertSound';
 import { useAppearance } from '@/composables/useAppearance';
 import type { DashboardCamera } from '@/composables/useDashboardMap';
+import { create as camerasCreate } from '@/routes/cameras';
 import type {
     CameraStatusPayload,
     RecognitionAlertPayload,
@@ -179,9 +182,29 @@ onUnmounted(() => {
         >
             <!-- CameraRail will go here in Plan 03 -->
         </aside>
-        <!-- Center map -->
+        <!-- Center map or empty state -->
         <main class="flex-1 overflow-hidden">
+            <div
+                v-if="cameras.length === 0"
+                class="flex h-full items-center justify-center"
+            >
+                <div class="text-center">
+                    <CameraIcon
+                        class="mx-auto size-16 text-muted-foreground/50"
+                    />
+                    <h3 class="mt-4 text-lg font-semibold">
+                        No cameras registered
+                    </h3>
+                    <p class="mt-1 text-sm text-muted-foreground">
+                        Add your first camera to start monitoring.
+                    </p>
+                    <Button as-child class="mt-4">
+                        <Link :href="camerasCreate()">Add Camera</Link>
+                    </Button>
+                </div>
+            </div>
             <DashboardMap
+                v-else
                 ref="mapRef"
                 :cameras="cameras"
                 :access-token="props.mapbox.token"
