@@ -164,7 +164,7 @@ Plans:
 **UI hint**: yes
 
 Plans:
-- [ ] 08-01-PLAN.md -- Foundation: Inter font swap, slate/steel blue CSS palette, app.blade.php background, Inertia progress color
+- [x] 08-01-PLAN.md -- Foundation: Inter font swap, slate/steel blue CSS palette, app.blade.php background, Inertia progress color
 - [ ] 08-02-PLAN.md -- Component polish: glow effects on severity/status indicators, dense data grid tables, shadcn-vue UI enhancements
 - [ ] 08-03-PLAN.md -- Layout rework: AuthCardLayout switch, glassmorphism sidebar, FRAS branding, navigation polish, DashboardTopNav
 - [ ] 08-04-PLAN.md -- Dashboard Tier 1 ops center styling, Camera and Personnel admin page Tier 2 styling
