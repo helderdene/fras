@@ -59,8 +59,8 @@ const personTypeVariant = computed(() => {
         : ('secondary' as const);
 });
 
-const isAcknowledged = computed(() => props.event?.acknowledged_at !== null);
-const isDismissed = computed(() => props.event?.dismissed_at !== null);
+const isAcknowledged = computed(() => !!props.event?.acknowledged_at);
+const isDismissed = computed(() => !!props.event?.dismissed_at);
 
 function formatAbsoluteTime(dateString: string): string {
     return new Intl.DateTimeFormat('en-US', {

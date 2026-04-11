@@ -56,8 +56,8 @@ const severityBgClass = computed(() => {
     }
 });
 
-const isDismissed = computed(() => props.event.dismissed_at !== null);
-const isAcknowledged = computed(() => props.event.acknowledged_at !== null);
+const isDismissed = computed(() => !!props.event.dismissed_at);
+const isAcknowledged = computed(() => !!props.event.acknowledged_at);
 
 function formatRelativeTime(dateString: string): string {
     const date = new Date(dateString);
