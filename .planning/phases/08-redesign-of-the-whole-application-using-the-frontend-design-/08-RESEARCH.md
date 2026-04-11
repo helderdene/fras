@@ -475,27 +475,23 @@ const classes = computed(() => {
 |---|-------|---------|---------------|
 | A1 | Target browser is Chrome-based on command center monitors | Pitfall 3 | Glow effects might render differently; need to test in actual target browser |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **AppLogo branding text**
+1. **AppLogo branding text** -- RESOLVED: Use "FRAS" (Plan 03, Task 2)
    - What we know: Currently says "Laravel Starter Kit" in AppLogo.vue
-   - What's unclear: Should it say "FRAS", "HDS-FRAS", or something else?
-   - Recommendation: Use "FRAS" (consistent with DashboardTopNav which already shows "FRAS")
+   - Resolution: Use "FRAS" (consistent with DashboardTopNav which already shows "FRAS")
 
-2. **Inertia progress bar color**
+2. **Inertia progress bar color** -- RESOLVED: Update to #3B82F6 (Plan 01, Task 2)
    - What we know: Currently `#4B5563` (gray-600) in `app.ts` progress config
-   - What's unclear: Should it match the new accent blue (`hsl(217 91% 60%)` = approximately `#3B82F6`)?
-   - Recommendation: Update to accent blue for consistency with new palette
+   - Resolution: Update to accent blue for consistency with new palette
 
-3. **Welcome page complete rewrite vs restyle**
+3. **Welcome page complete rewrite vs restyle** -- RESOLVED: Complete visual rewrite (Plan 05, Task 1)
    - What we know: The Welcome page is the default Laravel starter kit page with hardcoded colors, starter kit documentation links, and separate font loading. It needs to become an ops portal.
-   - What's unclear: How much of the existing content to preserve vs replace
-   - Recommendation: Complete visual rewrite. Remove starter kit content, create dark portal with FRAS branding and login/register navigation per D-06
+   - Resolution: Complete visual rewrite. Remove starter kit content, create dark portal with FRAS branding and login/register navigation per D-06
 
-4. **Camera marker dark mode border color**
+4. **Camera marker dark mode border color** -- RESOLVED: Update to hsl(222 20% 16%) (Plan 01, Task 1)
    - What we know: Currently uses hardcoded `#171717` (neutral-900) for dark mode marker border
-   - What's unclear: Should this use the new palette's dark background or stay as-is?
-   - Recommendation: Update to match new palette's border color (`hsl(222 20% 16%)`)
+   - Resolution: Update to match new palette's border color (`hsl(222 20% 16%)`)
 
 ## Validation Architecture
 
