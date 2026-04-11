@@ -27,7 +27,13 @@ class AlertController extends Controller
         ]);
     }
 
-    /** Acknowledge an alert event. */
+    /**
+     * Acknowledge an alert event.
+     *
+     * Authorization: All authenticated users may acknowledge any event.
+     * This is intentional for a single command center with trusted operators.
+     * If role-based access is needed later, add a RecognitionEventPolicy.
+     */
     public function acknowledge(RecognitionEvent $event): RedirectResponse
     {
         $event->update([
@@ -40,7 +46,12 @@ class AlertController extends Controller
         return back();
     }
 
-    /** Dismiss an alert event. */
+    /**
+     * Dismiss an alert event.
+     *
+     * Authorization: All authenticated users may dismiss any event.
+     * Single command center with trusted operators -- see acknowledge() note.
+     */
     public function dismiss(RecognitionEvent $event): RedirectResponse
     {
         $event->update([
@@ -52,7 +63,12 @@ class AlertController extends Controller
         return back();
     }
 
-    /** Serve face crop image from local storage (auth-protected). */
+    /**
+     * Serve face crop image from local storage (auth-protected).
+     *
+     * Authorization: All authenticated users may access any event image.
+     * Single command center with trusted operators -- see acknowledge() note.
+     */
     public function faceImage(RecognitionEvent $event): StreamedResponse
     {
         if (! $event->face_image_path) {
@@ -62,7 +78,12 @@ class AlertController extends Controller
         return Storage::disk('local')->response($event->face_image_path);
     }
 
-    /** Serve scene image from local storage (auth-protected). */
+    /**
+     * Serve scene image from local storage (auth-protected).
+     *
+     * Authorization: All authenticated users may access any event image.
+     * Single command center with trusted operators -- see acknowledge() note.
+     */
     public function sceneImage(RecognitionEvent $event): StreamedResponse
     {
         if (! $event->scene_image_path) {
