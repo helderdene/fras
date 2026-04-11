@@ -186,7 +186,7 @@ Plans:
 **UI hint**: yes
 
 Plans:
-- [ ] 09-01-PLAN.md -- Disable registration, UserController CRUD, form requests, routes, tests
+- [x] 09-01-PLAN.md -- Disable registration, UserController CRUD, form requests, routes, tests
 - [ ] 09-02-PLAN.md -- User management Vue pages (Index, Create, Edit), sidebar and top nav update
 
 ## Progress
