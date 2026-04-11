@@ -123,13 +123,13 @@ Plans:
   3. When a recognition event fires, the corresponding camera marker pulses with a red expanding ring animation for approximately 3 seconds
   4. Status bar shows MQTT connection status, Reverb WebSocket status, and queue depth; map toggle switches between dark and light Mapbox Studio styles
   5. Left rail shows camera list with online/offline indicators, per-camera recognition counts, and a "Today" statistics panel
-**Plans**: TBD
+**Plans**: 3 plans
 **UI hint**: yes
 
 Plans:
-- [ ] 06-01: TBD
-- [ ] 06-02: TBD
-- [ ] 06-03: TBD
+- [ ] 06-01-PLAN.md -- DashboardController, DashboardLayout, DashboardTopNav, StatusBar, ConnectionBanner, layout resolver, route update
+- [ ] 06-02-PLAN.md -- DashboardMap with multi-marker, popups, pulse ring animation, theme-to-map style toggle, alert sound
+- [ ] 06-03-PLAN.md -- CameraRail with TodayStats, CameraRailItem, DashboardAlertFeed with camera filtering, full wiring
 
 ### Phase 7: Event History & Operations
 **Goal**: Operators can search and filter past recognition events, and the system automatically manages storage growth through scheduled retention cleanup
