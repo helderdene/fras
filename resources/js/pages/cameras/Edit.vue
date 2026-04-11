@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Form, Head, setLayoutProps } from '@inertiajs/vue3';
-import { ref, watch } from 'vue';
+import { onUnmounted, ref, watch } from 'vue';
 import CameraController from '@/actions/App/Http/Controllers/CameraController';
 import Heading from '@/components/Heading.vue';
 import InputError from '@/components/InputError.vue';
@@ -60,6 +60,12 @@ watch([latitude, longitude], ([newLat, newLng]) => {
             mapLongitude.value = lng;
         }
     }, 300);
+});
+
+onUnmounted(() => {
+    if (debounceTimer) {
+        clearTimeout(debounceTimer);
+    }
 });
 
 function onMapCoordinatesUpdate(lat: number, lng: number): void {
