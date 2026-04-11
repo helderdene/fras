@@ -78,7 +78,7 @@ function handleSelect(event: RecognitionEvent): void {
 </script>
 
 <template>
-    <div class="flex h-full flex-col">
+    <div class="flex h-full flex-col dark:bg-card/70 dark:backdrop-blur-md">
         <!-- Header with filter info -->
         <div class="border-b border-border px-4 py-2">
             <h3 class="text-base font-semibold">Live Alerts</h3>

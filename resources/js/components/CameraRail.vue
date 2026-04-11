@@ -30,11 +30,11 @@ function handleCameraSelect(cameraId: number): void {
 </script>
 
 <template>
-    <div class="flex h-full flex-col">
+    <div class="flex h-full flex-col dark:bg-card/70 dark:backdrop-blur-md">
         <TodayStats v-bind="todayStats" />
         <div class="flex-1 overflow-y-auto">
             <div
-                class="cursor-pointer px-4 py-2 text-xs font-medium text-muted-foreground hover:text-foreground"
+                class="cursor-pointer px-4 py-2 text-xs font-semibold text-muted-foreground hover:text-foreground"
                 @click="$emit('camera-select', null)"
             >
                 All Cameras

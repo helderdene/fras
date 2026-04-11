@@ -33,11 +33,11 @@ const personName = computed(() => {
 const severityBorderClass = computed(() => {
     switch (props.event.severity) {
         case 'critical':
-            return 'border-l-red-500';
+            return 'border-l-red-500 dark:shadow-[inset_3px_0_6px_-3px_rgba(239,68,68,0.3)]';
         case 'warning':
-            return 'border-l-amber-500';
+            return 'border-l-amber-500 dark:shadow-[inset_3px_0_6px_-3px_rgba(245,158,11,0.3)]';
         case 'info':
-            return 'border-l-emerald-500';
+            return 'border-l-emerald-500 dark:shadow-[inset_3px_0_6px_-3px_rgba(16,185,129,0.3)]';
         default:
             return 'border-l-muted';
     }
@@ -115,7 +115,7 @@ function handleDismiss(e: Event): void {
 
 <template>
     <div
-        class="group flex cursor-pointer items-center gap-3 border-l-4 px-4 py-3 transition-colors duration-300 hover:bg-muted/50"
+        class="group flex cursor-pointer items-center gap-3 border-l-2 px-4 py-3 transition-colors duration-150 hover:bg-accent/50"
         :class="[
             severityBorderClass,
             severityBgClass,
@@ -140,7 +140,7 @@ function handleDismiss(e: Event): void {
         <!-- Person name and camera -->
         <div class="min-w-0 flex-1">
             <div class="flex items-center gap-2">
-                <span class="truncate text-sm font-medium">
+                <span class="truncate text-sm font-semibold">
                     {{ personName }}
                 </span>
                 <span
@@ -166,7 +166,7 @@ function handleDismiss(e: Event): void {
 
         <!-- Relative timestamp -->
         <span
-            class="shrink-0 text-xs text-muted-foreground"
+            class="shrink-0 font-mono text-xs text-muted-foreground"
             :title="formatAbsoluteTime(event.captured_at)"
         >
             {{ formatRelativeTime(event.captured_at) }}
