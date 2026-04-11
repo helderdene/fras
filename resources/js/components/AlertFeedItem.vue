@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Check, X } from 'lucide-vue-next';
-import { computed } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 
 import SeverityBadge from '@/components/SeverityBadge.vue';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -59,10 +59,18 @@ const severityBgClass = computed(() => {
 const isDismissed = computed(() => !!props.event.dismissed_at);
 const isAcknowledged = computed(() => !!props.event.acknowledged_at);
 
+const now = ref(Date.now());
+let nowTimer: ReturnType<typeof setInterval>;
+onMounted(() => {
+    nowTimer = setInterval(() => {
+        now.value = Date.now();
+    }, 30_000);
+});
+onUnmounted(() => clearInterval(nowTimer));
+
 function formatRelativeTime(dateString: string): string {
     const date = new Date(dateString);
-    const now = new Date();
-    const diffSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+    const diffSeconds = Math.floor((now.value - date.getTime()) / 1000);
 
     if (diffSeconds < 60) {
         return 'Just now';
