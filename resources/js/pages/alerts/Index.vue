@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, useHttp } from '@inertiajs/vue3';
+import { Head, useHttp, usePage } from '@inertiajs/vue3';
 import { useEcho } from '@laravel/echo-vue';
 import { Bell, BellRing, ShieldAlert } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
@@ -32,6 +32,8 @@ type Props = {
 };
 
 const props = defineProps<Props>();
+
+const page = usePage();
 
 defineOptions({
     layout: {
@@ -162,7 +164,7 @@ function handleAcknowledge(event: RecognitionEvent): void {
 
             if (alert) {
                 alert.acknowledged_at = new Date().toISOString();
-                alert.acknowledged_by = 1;
+                alert.acknowledged_by = page.props.auth.user.id;
             }
         },
     });
