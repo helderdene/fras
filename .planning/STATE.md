@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 06-01-PLAN.md
-last_updated: "2026-04-11T05:26:56.353Z"
+stopped_at: Completed 06-02-PLAN.md
+last_updated: "2026-04-11T05:36:10.698Z"
 last_activity: 2026-04-11
 progress:
   total_phases: 7
   completed_phases: 5
   total_plans: 20
-  completed_plans: 18
-  percent: 90
+  completed_plans: 19
+  percent: 95
 ---
 
 # Project State
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-04-10)
 ## Current Position
 
 Phase: 06 (dashboard-map) — EXECUTING
-Plan: 2 of 3
+Plan: 3 of 3
 Status: Ready to execute
 Last activity: 2026-04-11
 
@@ -73,6 +73,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 05-recognition-alerting P03 | 4min | 2 tasks | 6 files |
 | Phase 05-recognition-alerting PP04 | 6min | 3 tasks | 7 files |
 | Phase 06-dashboard-map P01 | 7min | 2 tasks | 10 files |
+| Phase 06-dashboard-map P02 | 6min | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -126,6 +127,9 @@ Recent decisions affecting current work:
 - [Phase 06-dashboard-map]: DashboardLayout minimal wrapper; Dashboard.vue orchestrates all sub-components directly to avoid prop drilling
 - [Phase 06-dashboard-map]: Queue depth polled via setInterval+fetch (not usePoll) for lightweight JSON endpoints
 - [Phase 06-dashboard-map]: MQTT status inferred from Reverb connection (both share pipeline); granular MQTT health check deferred
+- [Phase 06-dashboard-map]: Custom HTML markers (not GeoJSON) for persistence across Mapbox setStyle dark/light toggle
+- [Phase 06-dashboard-map]: setDOMContent for popup content (XSS-safe DOM API) instead of setHTML
+- [Phase 06-dashboard-map]: flyTo uses getPopup().addTo(map) not togglePopup to guarantee popup opens
 
 ### Pending Todos
 
@@ -137,6 +141,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-11T05:26:56.349Z
-Stopped at: Completed 06-01-PLAN.md
+Last session: 2026-04-11T05:36:10.694Z
+Stopped at: Completed 06-02-PLAN.md
 Resume file: None

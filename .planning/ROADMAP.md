@@ -128,7 +128,7 @@ Plans:
 
 Plans:
 - [x] 06-01-PLAN.md -- DashboardController, DashboardLayout, DashboardTopNav, StatusBar, ConnectionBanner, layout resolver, route update
-- [ ] 06-02-PLAN.md -- DashboardMap with multi-marker, popups, pulse ring animation, theme-to-map style toggle, alert sound
+- [x] 06-02-PLAN.md -- DashboardMap with multi-marker, popups, pulse ring animation, theme-to-map style toggle, alert sound
 - [ ] 06-03-PLAN.md -- CameraRail with TodayStats, CameraRailItem, DashboardAlertFeed with camera filtering, full wiring
 
 ### Phase 7: Event History & Operations
