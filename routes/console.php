@@ -10,3 +10,4 @@ Artisan::command('inspire', function () {
 
 Schedule::command('fras:check-offline-cameras')->everyThirtySeconds();
 Schedule::command('enrollment:check-timeouts')->everyMinute();
+Schedule::command('fras:cleanup-retention-images')->dailyAt('02:00')->withoutOverlapping();
