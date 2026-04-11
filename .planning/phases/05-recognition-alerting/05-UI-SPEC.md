@@ -35,13 +35,14 @@ Declared values (must be multiples of 4):
 |-------|-------|-------|
 | xs | 4px | Icon gaps, inline padding, severity border-left width |
 | sm | 8px | Compact alert row internal padding, badge padding |
-| md | 16px | Alert feed row padding, modal section gaps |
+| compact | 12px | Alert feed row vertical padding (py-3) — project-approved extension for D-01 density requirement |
+| md | 16px | Alert feed row horizontal padding, modal section gaps |
 | lg | 24px | Section padding within detail modal |
 | xl | 32px | Page-level content gaps |
 | 2xl | 48px | Empty state vertical padding |
 | 3xl | 64px | Not used in this phase |
 
-Exceptions: Alert feed rows use compact 12px vertical padding (py-3) to maximize density per D-01. Touch targets for Ack/Dismiss icon buttons are 32px minimum (size-8).
+Exceptions: Touch targets for Ack/Dismiss icon buttons are 32px minimum (size-8). The `compact: 12px` token is a project-approved extension to the standard 8-point scale, justified by the command-center density requirement (D-01) where 8px vertical padding is too tight for readability and 16px wastes vertical space in a monitoring feed.
 
 ---
 
@@ -50,15 +51,16 @@ Exceptions: Alert feed rows use compact 12px vertical padding (py-3) to maximize
 | Role | Size | Weight | Line Height |
 |------|------|--------|-------------|
 | Body | 14px (text-sm) | 400 (normal) | 1.43 (20px) |
-| Label | 12px (text-xs) | 500 (medium) | 1.33 (16px) |
+| Label | 12px (text-xs) | 400 (normal) | 1.33 (16px) |
 | Heading | 18px (text-lg) | 600 (semibold) | 1.33 (24px) |
 | Display | 24px (text-2xl) | 600 (semibold) | 1.2 (28.8px) |
 
 Phase-specific notes:
 - Alert feed rows use 14px body for person name and camera, 12px label for similarity score and timestamp
-- Severity badge text uses 12px (text-xs) with medium weight per existing Badge variant (font-medium)
+- Severity badge text uses 12px (text-xs) at 400 weight in the type scale; the Badge component applies `font-medium` internally as a shadcn component style, which is not a declared type scale weight
 - Modal metadata labels use 12px (text-xs) muted-foreground, values use 14px (text-sm)
 - "No alerts yet" empty state heading uses 18px (text-lg) semibold
+- Filter pill counts use 12px (text-xs) at 400 weight
 
 Source: Matches existing codebase patterns (cameras/Index.vue uses text-sm body, text-xs for device IDs, text-lg for empty state headings)
 
@@ -274,6 +276,8 @@ Source: D-01 through D-13, REC-08 through REC-13, existing copywriting patterns 
 |-------------|----------------|
 | Feed row keyboard navigation | Rows are focusable (`tabindex="0"`), Enter opens detail modal |
 | Ack/Dismiss keyboard access | Icon buttons receive focus on Tab within row, Enter/Space triggers action |
+| Ack button aria-label | `aria-label="Acknowledge alert"` on inline Check icon button |
+| Dismiss button aria-label | `aria-label="Dismiss alert"` on inline X icon button |
 | Severity announcement | `aria-label` on severity badge: "Severity: Critical" |
 | Alert sound status | `aria-live="polite"` region announces "Alert sounds enabled" / "Alert sounds muted" |
 | New alert announcement | `aria-live="polite"` region announces "New critical alert from [camera]" for critical events |
