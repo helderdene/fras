@@ -256,7 +256,7 @@ export function useDashboardMap(
 
     function initMap(): void {
         if (!options.container.value || !options.accessToken) {
-            hasError.value = !options.accessToken;
+            hasError.value = true;
 
             return;
         }
