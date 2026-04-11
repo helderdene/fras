@@ -20,7 +20,7 @@ defineProps<{
             class="block w-56 shrink-0"
         >
             <Card
-                class="cursor-pointer p-4 transition-colors hover:bg-muted/50"
+                class="cursor-pointer p-4 transition-colors hover:bg-muted/50 dark:border-border/50"
             >
                 <div class="flex items-center justify-between gap-2">
                     <span

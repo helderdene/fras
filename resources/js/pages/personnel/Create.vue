@@ -38,7 +38,7 @@ defineOptions({
 
         <Form
             v-bind="PersonnelController.store.form()"
-            class="space-y-6"
+            class="grid gap-6"
             v-slot="{ errors, processing }"
         >
             <!-- Section 1: Photo -->

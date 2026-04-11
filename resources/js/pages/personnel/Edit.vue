@@ -42,7 +42,7 @@ setLayoutProps({
 
         <Form
             v-bind="PersonnelController.update.form(props.personnel)"
-            class="space-y-6"
+            class="grid gap-6"
             v-slot="{ errors, processing }"
         >
             <!-- Section 1: Photo -->

@@ -191,7 +191,7 @@ function formatDate(dateString: string | null): string {
 
         <div class="grid grid-cols-1 gap-6 lg:grid-cols-5">
             <!-- Personnel Information (left, 3/5 width) -->
-            <Card class="lg:col-span-3">
+            <Card class="lg:col-span-3 dark:border-border/50">
                 <CardContent class="space-y-4 pt-6">
                     <!-- Large photo -->
                     <div class="flex justify-center">
@@ -212,19 +212,25 @@ function formatDate(dateString: string | null): string {
 
                     <!-- Identity section -->
                     <div>
-                        <p class="text-sm text-muted-foreground">Name</p>
+                        <p class="text-xs font-semibold text-muted-foreground">
+                            Name
+                        </p>
                         <p class="text-sm text-foreground">
                             {{ props.personnel.name }}
                         </p>
                     </div>
                     <div>
-                        <p class="text-sm text-muted-foreground">Custom ID</p>
-                        <p class="font-mono text-sm text-foreground">
+                        <p class="text-xs font-semibold text-muted-foreground">
+                            Custom ID
+                        </p>
+                        <p class="font-mono text-xs text-foreground">
                             {{ props.personnel.custom_id }}
                         </p>
                     </div>
                     <div>
-                        <p class="text-sm text-muted-foreground">Person Type</p>
+                        <p class="text-xs font-semibold text-muted-foreground">
+                            Person Type
+                        </p>
                         <Badge
                             :variant="
                                 props.personnel.person_type === 1
@@ -244,20 +250,26 @@ function formatDate(dateString: string | null): string {
 
                     <!-- Details section -->
                     <div>
-                        <p class="text-sm text-muted-foreground">Gender</p>
+                        <p class="text-xs font-semibold text-muted-foreground">
+                            Gender
+                        </p>
                         <p class="text-sm text-foreground">
                             {{ formatGender(props.personnel.gender) }}
                         </p>
                     </div>
                     <div>
-                        <p class="text-sm text-muted-foreground">Birthday</p>
-                        <p class="text-sm text-foreground">
+                        <p class="text-xs font-semibold text-muted-foreground">
+                            Birthday
+                        </p>
+                        <p class="font-mono text-xs text-foreground">
                             {{ formatDate(props.personnel.birthday) }}
                         </p>
                     </div>
                     <div>
-                        <p class="text-sm text-muted-foreground">ID Card</p>
-                        <p class="text-sm text-foreground">
+                        <p class="text-xs font-semibold text-muted-foreground">
+                            ID Card
+                        </p>
+                        <p class="font-mono text-xs text-foreground">
                             {{ props.personnel.id_card || '-' }}
                         </p>
                     </div>
@@ -266,13 +278,17 @@ function formatDate(dateString: string | null): string {
 
                     <!-- Contact section -->
                     <div>
-                        <p class="text-sm text-muted-foreground">Phone</p>
-                        <p class="text-sm text-foreground">
+                        <p class="text-xs font-semibold text-muted-foreground">
+                            Phone
+                        </p>
+                        <p class="font-mono text-xs text-foreground">
                             {{ props.personnel.phone || '-' }}
                         </p>
                     </div>
                     <div>
-                        <p class="text-sm text-muted-foreground">Address</p>
+                        <p class="text-xs font-semibold text-muted-foreground">
+                            Address
+                        </p>
                         <p class="text-sm text-foreground">
                             {{ props.personnel.address || '-' }}
                         </p>
@@ -299,7 +315,7 @@ function formatDate(dateString: string | null): string {
                                         {{ props.personnel.name }} and all
                                         associated enrollment records. This
                                         action cannot be undone. <br /><br />
-                                        <span class="font-medium">
+                                        <span class="font-semibold">
                                             This person will also be removed
                                             from all enrolled cameras.
                                         </span>
@@ -335,7 +351,7 @@ function formatDate(dateString: string | null): string {
             </Card>
 
             <!-- Enrollment sidebar (right, 2/5 width) -->
-            <Card class="lg:col-span-2">
+            <Card class="lg:col-span-2 dark:border-border/50">
                 <CardHeader
                     class="flex flex-row items-center justify-between space-y-0"
                 >

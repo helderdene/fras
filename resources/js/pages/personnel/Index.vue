@@ -93,34 +93,34 @@ const filtered = computed(() => {
             />
 
             <div class="overflow-x-auto">
-                <table class="w-full text-sm">
+                <table class="w-full text-xs">
                     <thead>
-                        <tr class="border-b border-border">
+                        <tr class="border-b border-border bg-muted/50">
                             <th
                                 scope="col"
-                                class="w-12 px-4 py-3 text-left text-muted-foreground"
+                                class="w-12 px-2 py-1 text-left"
                             ></th>
                             <th
                                 scope="col"
-                                class="px-4 py-3 text-left text-muted-foreground"
+                                class="px-2 py-1 text-left font-semibold tracking-wider text-muted-foreground uppercase"
                             >
                                 Name
                             </th>
                             <th
                                 scope="col"
-                                class="px-4 py-3 text-left text-muted-foreground"
+                                class="px-2 py-1 text-left font-semibold tracking-wider text-muted-foreground uppercase"
                             >
                                 Custom ID
                             </th>
                             <th
                                 scope="col"
-                                class="px-4 py-3 text-left text-muted-foreground"
+                                class="px-2 py-1 text-left font-semibold tracking-wider text-muted-foreground uppercase"
                             >
                                 Type
                             </th>
                             <th
                                 scope="col"
-                                class="px-4 py-3 text-left text-muted-foreground"
+                                class="px-2 py-1 text-left font-semibold tracking-wider text-muted-foreground uppercase"
                             >
                                 Sync Status
                             </th>
@@ -139,10 +139,10 @@ const filtered = computed(() => {
                             v-for="p in filtered"
                             v-else
                             :key="p.id"
-                            class="border-b border-border hover:bg-muted/50"
+                            class="border-b border-border/50 transition-colors duration-150 hover:bg-accent/50"
                         >
-                            <td class="w-12 px-4 py-3">
-                                <Avatar class="size-8">
+                            <td class="w-12 px-2 py-1">
+                                <Avatar class="size-7">
                                     <AvatarImage
                                         v-if="p.photo_url"
                                         :src="p.photo_url"
@@ -153,20 +153,20 @@ const filtered = computed(() => {
                                     }}</AvatarFallback>
                                 </Avatar>
                             </td>
-                            <td class="px-4 py-3">
+                            <td class="px-2 py-1">
                                 <Link
                                     :href="show(p)"
-                                    class="text-foreground hover:underline"
+                                    class="font-semibold text-foreground hover:underline"
                                 >
                                     {{ p.name }}
                                 </Link>
                             </td>
                             <td
-                                class="px-4 py-3 font-mono text-xs text-muted-foreground"
+                                class="px-2 py-1 font-mono text-muted-foreground"
                             >
                                 {{ p.custom_id }}
                             </td>
-                            <td class="px-4 py-3">
+                            <td class="px-2 py-1">
                                 <Badge
                                     :variant="
                                         p.person_type === 1
@@ -179,7 +179,7 @@ const filtered = computed(() => {
                                     }}
                                 </Badge>
                             </td>
-                            <td class="px-4 py-3">
+                            <td class="px-2 py-1">
                                 <SyncStatusDot
                                     :status="p.sync_status"
                                     :labels="{ synced: 'Enrolled' }"
