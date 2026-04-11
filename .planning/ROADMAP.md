@@ -19,6 +19,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 5: Recognition & Alerting** - RecPush processing, event classification, real-time broadcast, alert feed UI (completed 2026-04-11)
 - [x] **Phase 6: Dashboard & Map** - Mapbox map with camera markers, three-panel layout, status bar, live animations (completed 2026-04-11)
 - [ ] **Phase 7: Event History & Operations** - Searchable event log, storage retention cleanup, configurable retention
+- [ ] **Phase 8: Redesign** - Full visual redesign: slate/steel blue palette, Inter font, glassmorphism, glow effects, dense data grids, FRAS branding
 
 ## Phase Details
 
@@ -147,10 +148,32 @@ Plans:
 - [x] 07-01-PLAN.md -- EventHistoryController with server-side filtered pagination, CleanupRetentionImagesCommand, migration, routes, schedule, tests
 - [x] 07-02-PLAN.md -- Event history page (table, filters, pagination), navigation integration, visual verification
 
+### Phase 8: Redesign of the whole application using the frontend design skill
+**Goal**: All 22 pages across 6 sections are visually redesigned with a security operations center aesthetic -- slate/steel blue palette, Inter font, glassmorphism effects, glow severity indicators, dense data grids, and FRAS branding -- creating a distinctive, production-grade monitoring UI
+**Depends on**: Phase 7
+**Requirements**: UI-01, UI-02, UI-03, UI-04, UI-05, UI-06, UI-07, UI-08, UI-09, UI-10, UI-11, UI-12, UI-13, UI-14, UI-15
+**Success Criteria** (what must be TRUE):
+  1. Application uses Inter font and slate/steel blue palette in both dark and light modes
+  2. Dashboard has glassmorphism panels, glow severity badges, and dense monitoring data
+  3. Auth pages display in centered glassmorphism card layout with FRAS branding
+  4. Camera, personnel, alerts, and events pages use dense data grid tables with monospace data
+  5. All severity indicators (badges, dots) have dark mode glow effects
+  6. Welcome page is a dark ops portal with FRAS branding (not starter kit content)
+  7. Zero font-medium occurrences remain -- all replaced with font-semibold or font-normal
+**Plans**: 5 plans
+**UI hint**: yes
+
+Plans:
+- [ ] 08-01-PLAN.md -- Foundation: Inter font swap, slate/steel blue CSS palette, app.blade.php background, Inertia progress color
+- [ ] 08-02-PLAN.md -- Component polish: glow effects on severity/status indicators, dense data grid tables, shadcn-vue UI enhancements
+- [ ] 08-03-PLAN.md -- Layout rework: AuthCardLayout switch, glassmorphism sidebar, FRAS branding, navigation polish, DashboardTopNav
+- [ ] 08-04-PLAN.md -- Dashboard Tier 1 ops center styling, Camera and Personnel admin page Tier 2 styling
+- [ ] 08-05-PLAN.md -- Welcome page rewrite, auth pages, alerts/events/settings styling, font-medium sweep, visual checkpoint
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 Note: Phases 2 and 3 share only a Phase 1 dependency and could theoretically overlap, but sequential execution is simpler for a solo workflow.
 
 | Phase | Plans Complete | Status | Completed |
@@ -162,3 +185,4 @@ Note: Phases 2 and 3 share only a Phase 1 dependency and could theoretically ove
 | 5. Recognition & Alerting | 4/4 | Complete | 2026-04-11 |
 | 6. Dashboard & Map | 3/3 | Complete | 2026-04-11 |
 | 7. Event History & Operations | 0/2 | Not started | - |
+| 8. Redesign | 0/5 | Not started | - |
