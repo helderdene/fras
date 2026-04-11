@@ -71,7 +71,7 @@ class AlertController extends Controller
      */
     public function faceImage(RecognitionEvent $event): StreamedResponse
     {
-        if (! $event->face_image_path) {
+        if (! $event->face_image_path || ! Storage::disk('local')->exists($event->face_image_path)) {
             abort(404);
         }
 
@@ -86,7 +86,7 @@ class AlertController extends Controller
      */
     public function sceneImage(RecognitionEvent $event): StreamedResponse
     {
-        if (! $event->scene_image_path) {
+        if (! $event->scene_image_path || ! Storage::disk('local')->exists($event->scene_image_path)) {
             abort(404);
         }
 
