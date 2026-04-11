@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 05-01-PLAN.md
-last_updated: "2026-04-11T02:03:07.797Z"
+stopped_at: Completed 05-02-PLAN.md
+last_updated: "2026-04-11T02:10:10.977Z"
 last_activity: 2026-04-11
 progress:
   total_phases: 7
   completed_phases: 4
   total_plans: 17
-  completed_plans: 14
-  percent: 82
+  completed_plans: 15
+  percent: 88
 ---
 
 # Project State
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-04-10)
 ## Current Position
 
 Phase: 05 (recognition-alerting) — EXECUTING
-Plan: 2 of 4
+Plan: 3 of 4
 Status: Ready to execute
 Last activity: 2026-04-11
 
@@ -68,6 +68,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 04-enrollment-sync PP03 | 6min | 2 tasks | 10 files |
 | Phase 04-enrollment-sync P04 | 3min | 2 tasks | 6 files |
 | Phase 05-recognition-alerting P01 | 3min | 2 tasks | 9 files |
+| Phase 05-recognition-alerting P02 | 4min | 1 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -112,6 +113,8 @@ Recent decisions affecting current work:
 - [Phase 05-recognition-alerting]: AlertSeverity::fromEvent uses int params matching camera firmware types for direct handler usage
 - [Phase 05-recognition-alerting]: Image URL accessors return auth-protected paths (/alerts/{id}/face) not storage paths (T-5-03 mitigation)
 - [Phase 05-recognition-alerting]: RecognitionAlert::fromEvent() uses loadMissing to avoid duplicate queries when relationships already loaded
+- [Phase 05-recognition-alerting]: is_real_time considers both Sendintime AND PushType: real-time only when Sendintime=1 AND PushType!=2
+- [Phase 05-recognition-alerting]: Insert event first then save images using event ID for deterministic filenames
 
 ### Pending Todos
 
@@ -123,6 +126,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-11T02:03:07.793Z
-Stopped at: Completed 05-01-PLAN.md
+Last session: 2026-04-11T02:10:10.973Z
+Stopped at: Completed 05-02-PLAN.md
 Resume file: None
