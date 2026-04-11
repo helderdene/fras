@@ -79,7 +79,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [x] **HIST-01**: Event history page shows a searchable, filterable log of all recognition events
 - [x] **HIST-02**: Filters include date range, camera, person, severity level
-- [ ] **HIST-03**: Each event row shows face crop thumbnail, person name, camera, severity, similarity, and timestamp
+- [x] **HIST-03**: Each event row shows face crop thumbnail, person name, camera, severity, similarity, and timestamp
 
 ### Operations
 
@@ -192,7 +192,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | REC-13 | Phase 5 | Complete |
 | HIST-01 | Phase 7 | Complete |
 | HIST-02 | Phase 7 | Complete |
-| HIST-03 | Phase 7 | Pending |
+| HIST-03 | Phase 7 | Complete |
 | OPS-01 | Phase 7 | Complete |
 | OPS-02 | Phase 7 | Complete |
 | OPS-03 | Phase 7 | Complete |
