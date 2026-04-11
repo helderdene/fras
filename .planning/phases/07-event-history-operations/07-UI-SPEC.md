@@ -48,13 +48,15 @@ Exceptions: 44px touch target minimum on filter controls and pagination buttons 
 | Role | Size | Weight | Line Height |
 |------|------|--------|-------------|
 | Body | 14px | 400 (regular) | 1.5 |
-| Label | 12px | 500 (medium) | 1.5 |
+| Label | 12px | 600 (semibold) | 1.5 |
 | Heading | 20px | 600 (semibold) | 1.2 |
 | Display | 28px | 600 (semibold) | 1.2 |
 
+**Weight scale:** 2 weights only -- 400 (regular) for body text, 600 (semibold) for labels, headings, and display.
+
 **Phase-specific usage:**
 - **Body (14px/400):** Table cell text (person name, camera name, timestamp), filter input text, pagination labels
-- **Label (12px/500):** Table column headers, filter labels, "Replay" badge text, muted-foreground metadata, similarity percentage (monospace)
+- **Label (12px/600):** Table column headers, filter labels, "Replay" badge text, muted-foreground metadata, similarity percentage (monospace)
 - **Heading (20px/600):** Page title "Event History" via existing `Heading` component
 - **Display (28px/600):** Not used in this phase (no hero sections)
 
