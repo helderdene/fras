@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, useHttp, usePage } from '@inertiajs/vue3';
 import { useConnectionStatus, useEcho } from '@laravel/echo-vue';
 import { Camera as CameraIcon } from 'lucide-vue-next';
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
+
+import CameraRail from '@/components/CameraRail.vue';
 import ConnectionBanner from '@/components/ConnectionBanner.vue';
+import DashboardAlertFeed from '@/components/DashboardAlertFeed.vue';
 import DashboardMap from '@/components/DashboardMap.vue';
 import DashboardTopNav from '@/components/DashboardTopNav.vue';
 import StatusBar from '@/components/StatusBar.vue';
@@ -11,6 +14,10 @@ import { Button } from '@/components/ui/button';
 import { useAlertSound } from '@/composables/useAlertSound';
 import { useAppearance } from '@/composables/useAppearance';
 import type { DashboardCamera } from '@/composables/useDashboardMap';
+import {
+    acknowledge as acknowledgeRoute,
+    dismiss as dismissRoute,
+} from '@/routes/alerts';
 import { create as camerasCreate } from '@/routes/cameras';
 import type {
     CameraStatusPayload,
@@ -40,13 +47,20 @@ type Props = {
 
 const props = defineProps<Props>();
 
+const page = usePage();
+
 const leftRailOpen = ref(true);
 const rightFeedOpen = ref(true);
 const queueDepth = ref(0);
 const selectedCameraId = ref<number | null>(null);
 
-// Local reactive copy for real-time updates
+// Local reactive copies for real-time updates
 const cameras = ref<DashboardCamera[]>([...props.cameras]);
+const alerts = ref<RecognitionEvent[]>([...props.recentEvents]);
+const todayStats = ref<TodayStats>({ ...props.todayStats });
+
+// Highlight animation tracking
+const highlightedAlertId = ref<number | null>(null);
 
 // Connection status
 const connectionStatus = useConnectionStatus();
@@ -91,11 +105,70 @@ function toggleSound(): void {
     }
 }
 
+// Map broadcast payload to RecognitionEvent shape
+function mapPayloadToEvent(payload: RecognitionAlertPayload): RecognitionEvent {
+    return {
+        id: payload.id,
+        camera_id: payload.camera_id,
+        personnel_id: payload.personnel_id,
+        severity: payload.severity,
+        similarity: payload.similarity,
+        person_type: payload.person_type,
+        face_image_url: payload.face_image_url,
+        scene_image_url: payload.scene_image_url,
+        target_bbox: payload.target_bbox,
+        captured_at: payload.captured_at,
+        created_at: payload.created_at,
+        custom_id: payload.custom_id ?? null,
+        camera_person_id: null,
+        record_id: 0,
+        verify_status: 0,
+        is_real_time: true,
+        name_from_camera: payload.person_name,
+        updated_at: payload.created_at,
+        acknowledged_by: null,
+        acknowledged_at: null,
+        dismissed_at: null,
+        camera: {
+            id: payload.camera_id,
+            name: payload.camera_name,
+        },
+        personnel: payload.personnel_id
+            ? {
+                  id: payload.personnel_id,
+                  name: payload.person_name ?? 'Unknown',
+                  custom_id: payload.custom_id ?? '',
+                  person_type: payload.person_type,
+                  photo_url: null,
+              }
+            : null,
+    };
+}
+
 // Echo listener for RecognitionAlert
 useEcho(
     'fras.alerts',
     '.RecognitionAlert',
     (payload: RecognitionAlertPayload) => {
+        // Map payload to event and prepend to alerts
+        const event = mapPayloadToEvent(payload);
+        alerts.value.unshift(event);
+
+        if (alerts.value.length > 50) {
+            alerts.value = alerts.value.slice(0, 50);
+        }
+
+        // Update today stats
+        todayStats.value.recognitions++;
+
+        if (payload.severity === 'critical') {
+            todayStats.value.critical++;
+        }
+
+        if (payload.severity === 'warning') {
+            todayStats.value.warnings++;
+        }
+
         // Trigger pulse ring on camera marker
         mapRef.value?.triggerPulse(payload.camera_id);
 
@@ -110,6 +183,12 @@ useEcho(
         if (payload.severity === 'critical') {
             playAlertSound();
         }
+
+        // Highlight flash
+        highlightedAlertId.value = event.id;
+        setTimeout(() => {
+            highlightedAlertId.value = null;
+        }, 300);
     },
 );
 
@@ -133,9 +212,57 @@ useEcho(
     },
 );
 
-// Camera click handler
+// Camera selection handler
+function handleCameraSelect(cameraId: number | null): void {
+    selectedCameraId.value = cameraId;
+
+    if (cameraId !== null) {
+        mapRef.value?.flyTo(cameraId);
+    }
+}
+
+// Selected camera name (computed)
+const selectedCameraName = computed(() => {
+    if (!selectedCameraId.value) {
+        return null;
+    }
+
+    return (
+        cameras.value.find((c) => c.id === selectedCameraId.value)?.name ?? null
+    );
+});
+
+// Camera click from map marker
 function handleCameraClick(cameraId: number): void {
     selectedCameraId.value = cameraId;
+}
+
+// Acknowledge/Dismiss via useHttp
+const http = useHttp();
+
+function handleAcknowledge(event: RecognitionEvent): void {
+    http.submit(acknowledgeRoute.post(event), {
+        onSuccess: () => {
+            const alert = alerts.value.find((a) => a.id === event.id);
+
+            if (alert) {
+                alert.acknowledged_at = new Date().toISOString();
+                alert.acknowledged_by = page.props.auth.user.id;
+            }
+        },
+    });
+}
+
+function handleDismiss(event: RecognitionEvent): void {
+    http.submit(dismissRoute.post(event), {
+        onSuccess: () => {
+            const alert = alerts.value.find((a) => a.id === event.id);
+
+            if (alert) {
+                alert.dismissed_at = new Date().toISOString();
+            }
+        },
+    });
 }
 
 // Queue depth polling
@@ -175,12 +302,17 @@ onUnmounted(() => {
     />
     <ConnectionBanner :visible="!isReverbConnected" />
     <div class="flex flex-1 overflow-hidden">
-        <!-- Left rail placeholder (Plan 03 fills this) -->
+        <!-- Left rail: camera list + today stats -->
         <aside
             v-show="leftRailOpen"
             class="w-[280px] shrink-0 overflow-y-auto border-r border-border bg-muted/50 transition-all duration-200"
         >
-            <!-- CameraRail will go here in Plan 03 -->
+            <CameraRail
+                :cameras="cameras"
+                :selected-camera-id="selectedCameraId"
+                :today-stats="todayStats"
+                @camera-select="handleCameraSelect"
+            />
         </aside>
         <!-- Center map or empty state -->
         <main class="flex-1 overflow-hidden">
@@ -212,12 +344,20 @@ onUnmounted(() => {
                 @camera-click="handleCameraClick"
             />
         </main>
-        <!-- Right alert feed placeholder (Plan 03 fills this) -->
+        <!-- Right alert feed -->
         <aside
             v-show="rightFeedOpen"
-            class="w-[360px] shrink-0 overflow-y-auto border-l border-border transition-all duration-200"
+            class="w-[360px] shrink-0 overflow-hidden border-l border-border transition-all duration-200"
         >
-            <!-- DashboardAlertFeed will go here in Plan 03 -->
+            <DashboardAlertFeed
+                :events="alerts"
+                :selected-camera-id="selectedCameraId"
+                :selected-camera-name="selectedCameraName"
+                :highlighted-alert-id="highlightedAlertId"
+                @acknowledge="handleAcknowledge"
+                @dismiss="handleDismiss"
+                @camera-select="handleCameraSelect"
+            />
         </aside>
     </div>
     <StatusBar
