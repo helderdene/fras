@@ -26,25 +26,27 @@ Operators see every matched-face recognition event in real time on a map-based d
 - ✓ Camera liveness: track online/offline state via MQTT heartbeat and Online/Offline events — Validated in Phase 2
 - ✓ Camera map view: display cameras as pins on a Mapbox GL JS map with status indicators — Validated in Phase 2
 - ✓ Camera offline detection: mark cameras offline when heartbeat absent >90 seconds — Validated in Phase 2
+- ✓ Personnel CRUD: create, edit, delete personnel with photo, custom ID, person type (allow/block) — Validated in Phase 3
+- ✓ Photo preprocessing: resize to 1080p max, compress to <1MB JPEG, compute MD5 hash — Validated in Phase 3
+- ✓ Personnel admin: list with sync status dots, detail with per-camera enrollment status — Validated in Phase 3
+- ✓ Enrollment sync: push personnel to all cameras via MQTT EditPersonsNew, track per-camera status — Validated in Phase 4
+- ✓ Enrollment ACK handling: correlate EditPersonsNew-Ack responses, update camera_enrollments — Validated in Phase 4
+- ✓ Delete sync: remove personnel from cameras via MQTT DeletePersons — Validated in Phase 4
+- ✓ RecPush event processing: parse recognition events, save face/scene images, insert recognition_events rows — Validated in Phase 5
+- ✓ Alert classification: critical (block-list), warning (refused), info (normal allowed) — Validated in Phase 5
+- ✓ Real-time broadcast: push RecognitionAlert events to browsers via Laravel Reverb WebSocket — Validated in Phase 5
+- ✓ Alert feed: reverse-chronological with severity coloring, click for detail modal with face crop and metadata — Validated in Phase 5
+- ✓ Audio alert: play sound on critical (block-list) recognition events — Validated in Phase 5
+- ✓ Dashboard: full-viewport layout with camera list rail, map center, live alert feed rail, status bar — Validated in Phase 6
+- ✓ Map interaction: camera markers pulse/flash on recognition events, dark/light map style toggle — Validated in Phase 6
+- ✓ Event history: searchable, filterable recognition log page — Validated in Phase 7
+- ✓ Storage retention: scheduled cleanup — scene images after 30 days, face crops after 90 days — Validated in Phase 7
+- ✓ Full visual redesign: slate/steel blue palette, Inter font, glassmorphism, glow effects, dense data grids, FRAS branding — Validated in Phase 8
+- ✓ Public registration disabled, admin-only user creation and management — Validated in Phase 9
 
 ### Active
-- [x] Personnel CRUD: create, edit, delete personnel with photo, custom ID, person type (allow/block) — Validated in Phase 3: Personnel Management
-- [x] Photo preprocessing: resize to 1080p max, compress to <1MB JPEG, compute MD5 hash — Validated in Phase 3
-- [ ] Enrollment sync: push personnel to all cameras via MQTT EditPersonsNew, track per-camera status
-- [ ] Enrollment ACK handling: correlate EditPersonsNew-Ack responses, update camera_enrollments with success/failure
-- [ ] Delete sync: remove personnel from cameras via MQTT DeletePersons
-- [x] MQTT listener: long-running artisan command subscribing to camera topics (Rec, Ack, basic, heartbeat) — handlers implemented in Phase 2
-- [ ] RecPush event processing: parse recognition events, save face/scene images, insert recognition_events rows
-- [ ] Alert classification: critical (block-list), warning (refused), info (normal allowed)
-- [ ] Real-time broadcast: push RecognitionAlert events to browsers via Laravel Reverb WebSocket
-- [ ] Dashboard: full-viewport layout with camera list rail, map center, live alert feed rail, status bar
-- [ ] Map interaction: camera markers pulse/flash on recognition events, dark/light map style toggle
-- [ ] Alert feed: reverse-chronological with severity coloring, click for detail modal with face crop and metadata
-- [ ] Audio alert: play sound on critical (block-list) recognition events
-- [x] Personnel admin: list with sync status dots, detail with per-camera enrollment status — Validated in Phase 3 (retry enrollment is Phase 4)
-- [x] Event history: searchable, filterable recognition log page — Validated in Phase 7: Event History & Operations
-- [x] Storage retention: scheduled cleanup — scene images after 30 days, face crops after 90 days — Validated in Phase 7
-- [ ] Camera offline detection: mark cameras offline when heartbeat absent >90 seconds
+
+All v1 requirements validated. No active items remaining.
 
 ### Out of Scope
 
@@ -55,7 +57,7 @@ Operators see every matched-face recognition event in real time on a map-based d
 - Bulk personnel import via CSV/Excel — deferred to v1.1
 - Temporary visitor passes with auto-expiry — deferred to v2
 - Continuous transmission ACK loop (PushAck) — cameras configured with ResumefromBreakpoint disabled
-- Multiple user roles or permissions — single admin user for v1
+- Multiple user roles or permissions — all users are admins for v1; admin user management added in Phase 9
 - Audit logs of admin actions — deferred to v1.1
 - MQTT TLS (mqtts://) — plain MQTT on internal network only
 - Encrypted at-rest storage — not required for v1
@@ -84,13 +86,13 @@ Operators see every matched-face recognition event in real time on a map-based d
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Build into existing Laravel+Vue app | Reuse auth, theming, UI components, CI pipeline | -- Pending |
-| Vue 3 (not React) | Existing codebase is Vue 3; spec aligns | -- Pending |
-| Mapbox GL JS (not MapLibre) | Custom HelderDene styles already authored; free tier sufficient | -- Pending |
-| MySQL for production | FRAS needs relational integrity, JSON columns, and scale beyond SQLite | -- Pending |
-| EditPersonsNew over AddPersons | Upsert semantics — simpler enrollment logic | -- Pending |
-| Single admin user for v1 | Minimal security model appropriate for single-site internal network | -- Pending |
-| Public personnel photos (no auth) | Camera must fetch via HTTP URL; accepted trade-off for v1 | -- Pending |
+| Build into existing Laravel+Vue app | Reuse auth, theming, UI components, CI pipeline | Validated |
+| Vue 3 (not React) | Existing codebase is Vue 3; spec aligns | Validated |
+| Mapbox GL JS (not MapLibre) | Custom HelderDene styles already authored; free tier sufficient | Validated |
+| MySQL for production | FRAS needs relational integrity, JSON columns, and scale beyond SQLite | Validated |
+| EditPersonsNew over AddPersons | Upsert semantics — simpler enrollment logic | Validated |
+| Single admin user for v1 | Minimal security model appropriate for single-site internal network | Validated |
+| Public personnel photos (no auth) | Camera must fetch via HTTP URL; accepted trade-off for v1 | Validated |
 
 ## Evolution
 
@@ -110,4 +112,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-11 after Phase 5 completion*
+*Last updated: 2026-04-11 after Phase 9 completion — all v1.0 milestone phases complete*
