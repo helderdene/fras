@@ -104,14 +104,14 @@ Plans:
   3. Recognition events broadcast via Reverb WebSocket and appear in the browser alert feed within seconds of camera capture
   4. Alert feed shows reverse-chronological events with severity coloring (red/amber/green), and clicking an alert opens a detail modal with face crop, scene image, and full metadata
   5. Critical (block-list) events trigger an audible browser alert sound, and operators can acknowledge or dismiss alerts
-**Plans**: TBD
+**Plans**: 4 plans
 **UI hint**: yes
 
 Plans:
-- [ ] 05-01: TBD
-- [ ] 05-02: TBD
-- [ ] 05-03: TBD
-- [ ] 05-04: TBD
+- [ ] 05-01-PLAN.md -- AlertSeverity enum, RecognitionEvent model/factory, acknowledgment migration, RecognitionAlert broadcast event, TypeScript types
+- [ ] 05-02-PLAN.md -- RecognitionHandler full implementation with payload parsing, image storage, severity classification, broadcast dispatch
+- [ ] 05-03-PLAN.md -- AlertController (feed page, acknowledge, dismiss, image serving), routes, sidebar/header nav update
+- [ ] 05-04-PLAN.md -- Alert feed page, AlertFeedItem, SeverityBadge, AlertDetailModal, SceneImageOverlay, useAlertSound composable
 
 ### Phase 6: Dashboard & Map
 **Goal**: Operators have a full-viewport command center with a live map showing camera positions, real-time marker animations on recognition events, and at-a-glance system status
