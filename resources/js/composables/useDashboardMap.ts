@@ -106,7 +106,7 @@ function buildPopupContent(camera: DashboardCamera): HTMLDivElement {
     const link = document.createElement('a');
     link.href = show.url(camera);
     link.className =
-        'mt-1 inline-block text-xs font-medium text-primary underline underline-offset-2';
+        'mt-1 inline-block text-xs font-semibold text-primary underline underline-offset-2';
     link.textContent = 'View Details';
     container.appendChild(link);
 
@@ -175,10 +175,7 @@ export function useDashboardMap(
         map.fitBounds(bounds, { padding: 48 });
     }
 
-    function triggerPulse(
-        cameraId: number,
-        onIteration?: () => void,
-    ): void {
+    function triggerPulse(cameraId: number, onIteration?: () => void): void {
         const entry = markers.get(cameraId);
 
         if (!entry) {
