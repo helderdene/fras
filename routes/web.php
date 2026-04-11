@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\EventHistoryController;
 use App\Http\Controllers\PersonnelController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 
@@ -18,6 +19,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('api/queue-depth', [DashboardController::class, 'queueDepth'])->name('queue-depth');
     Route::resource('cameras', CameraController::class);
     Route::resource('personnel', PersonnelController::class);
+    Route::resource('users', UserController::class)->except(['show']);
     Route::post('personnel/{personnel}/enrollment/{camera}/retry', [EnrollmentController::class, 'retry'])->name('enrollment.retry');
     Route::post('personnel/{personnel}/enrollment/resync', [EnrollmentController::class, 'resyncAll'])->name('enrollment.resync-all');
     Route::get('alerts', [AlertController::class, 'index'])->name('alerts.index');
