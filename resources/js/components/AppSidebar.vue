@@ -72,7 +72,11 @@ const footerNavItems: NavItem[] = [
 </script>
 
 <template>
-    <Sidebar collapsible="icon" variant="inset">
+    <Sidebar
+        collapsible="icon"
+        variant="inset"
+        class="dark:bg-sidebar/80 dark:backdrop-blur-xl"
+    >
         <SidebarHeader>
             <SidebarMenu>
                 <SidebarMenuItem>

@@ -54,13 +54,12 @@ function toggleTheme() {
 
 <template>
     <header
-        class="flex h-12 shrink-0 items-center justify-between border-b border-border bg-muted px-3"
+        class="flex h-12 shrink-0 items-center justify-between border-b border-border bg-transparent px-3 dark:bg-background/80 dark:backdrop-blur-sm"
     >
         <div class="flex items-center gap-2">
             <Link :href="dashboard()" class="flex items-center gap-2">
-                <AppLogoIcon class="size-5 text-foreground" />
-                <span
-                    class="text-sm font-semibold tracking-wide text-foreground"
+                <AppLogoIcon class="size-5 text-primary" />
+                <span class="text-sm font-semibold tracking-wide text-primary"
                     >FRAS</span
                 >
             </Link>
