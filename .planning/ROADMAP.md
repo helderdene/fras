@@ -21,7 +21,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 7: Event History & Operations** - Searchable event log, storage retention cleanup, configurable retention (completed 2026-04-11)
 - [x] **Phase 8: Redesign** - Full visual redesign: slate/steel blue palette, Inter font, glassmorphism, glow effects, dense data grids, FRAS branding (completed 2026-04-11)
 - [x] **Phase 9: User Management** - Disable public registration, admin-only user creation and management (completed 2026-04-11)
-- [ ] **Phase 10: Milestone Gap Closure** - Fix CameraStatusChanged broadcastAs, Pusher config drift, REC-13 acknowledged-by display
+- [x] **Phase 10: Milestone Gap Closure** - Fix CameraStatusChanged broadcastAs, Pusher config drift, REC-13 acknowledged-by display (completed 2026-04-14)
 
 ## Phase Details
 
@@ -203,7 +203,7 @@ Plans:
 
 Plans:
 - [x] 10-01-PLAN.md -- CameraStatusChanged broadcastAs fix, .env.example Pusher config, global.d.ts type declarations
-- [ ] 10-02-PLAN.md -- REC-13 acknowledger name: backend eager-loading, response enhancement, frontend display
+- [x] 10-02-PLAN.md -- REC-13 acknowledger name: backend eager-loading, response enhancement, frontend display
 
 ## Progress
 
@@ -222,4 +222,4 @@ Note: Phases 2 and 3 share only a Phase 1 dependency and could theoretically ove
 | 7. Event History & Operations | 2/2 | Complete | 2026-04-11 |
 | 8. Redesign | 5/5 | Complete | 2026-04-11 |
 | 9. User Management | 2/2 | Complete | 2026-04-11 |
-| 10. Milestone Gap Closure | 1/2 | In Progress|  |
+| 10. Milestone Gap Closure | 2/2 | Complete   | 2026-04-14 |

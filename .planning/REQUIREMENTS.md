@@ -73,7 +73,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **REC-10**: Clicking an alert opens a detail modal with face crop, scene image with bounding box overlay, and full event metadata
 - [x] **REC-11**: Critical (block-list) events trigger an audible alert sound in the browser
 - [x] **REC-12**: Each alert displays the confidence/similarity score from the camera
-- [ ] **REC-13**: Operator can acknowledge or dismiss an alert, recording who handled it and when
+- [x] **REC-13**: Operator can acknowledge or dismiss an alert, recording who handled it and when
 
 ### Event History
 
@@ -189,7 +189,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | REC-10 | Phase 5 | Complete |
 | REC-11 | Phase 5 | Complete |
 | REC-12 | Phase 5 | Complete |
-| REC-13 | Phase 10 | Pending |
+| REC-13 | Phase 10 | Complete |
 | HIST-01 | Phase 7 | Complete |
 | HIST-02 | Phase 7 | Complete |
 | HIST-03 | Phase 7 | Complete |
