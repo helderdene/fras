@@ -40,4 +40,10 @@ class CameraStatusChanged implements ShouldBroadcast
             'last_seen_at' => $this->last_seen_at,
         ];
     }
+
+    /** Get the event's broadcast name. */
+    public function broadcastAs(): string
+    {
+        return 'CameraStatusChanged';
+    }
 }

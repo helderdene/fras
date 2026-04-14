@@ -93,6 +93,17 @@ test('camera status changed event broadcastWith returns expected data', function
         ->and($data['last_seen_at'])->toBe($timestamp);
 });
 
+test('camera status changed broadcastAs returns CameraStatusChanged', function () {
+    $event = new CameraStatusChanged(
+        camera_id: 1,
+        camera_name: 'Test Camera',
+        is_online: true,
+        last_seen_at: now()->toIso8601String(),
+    );
+
+    expect($event->broadcastAs())->toBe('CameraStatusChanged');
+});
+
 test('store camera request validates required fields', function () {
     $user = User::factory()->create();
 
