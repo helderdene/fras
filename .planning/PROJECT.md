@@ -112,4 +112,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-11 after Phase 9 completion — all v1.0 milestone phases complete*
+*Last updated: 2026-04-14 after Phase 10 completion — v1.0 milestone gap closure complete (broadcastAs fix, .env Pusher docs, REC-13 acknowledger display)*
