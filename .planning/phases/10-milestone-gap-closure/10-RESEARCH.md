@@ -384,17 +384,19 @@ This phase makes no security-relevant changes. The broadcastAs fix, env template
 | A1 | Laravel serializes `acknowledgedBy` relationship as `acknowledged_by` in JSON, replacing the FK column value when loaded | Gap 3 analysis | Frontend type mismatch; acknowledged_by field behavior differs from expected. Medium risk -- verify with a tinker test. |
 | A2 | The project intends to keep Reverb as the default development broadcaster and use Pusher only for production | Gap 2 analysis | If user wants to fully switch to Pusher, the fix approach changes (would need to update app.ts broadcaster). Low risk -- deployment docs confirm Reverb. |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Relationship serialization collision:**
    - What we know: `acknowledgedBy` relationship name serializes to `acknowledged_by`, same as the FK column
    - What's unclear: Whether this causes issues with the existing `#[Hidden]` or `#[Fillable]` attributes
    - Recommendation: Test with tinker: `RecognitionEvent::with('acknowledgedBy:id,name')->first()->toArray()` to verify serialized structure before implementing
+   - RESOLVED: Used `acknowledgerName` computed accessor with `$appends` to expose operator name as a separate `acknowledger_name` field, avoiding the FK column collision entirely.
 
 2. **Pusher vs Reverb production intent:**
    - What we know: Committed code uses Reverb; `.env` on dev machine uses Pusher; deployment docs show Reverb
    - What's unclear: Whether the user plans to use Pusher cloud in production going forward
    - Recommendation: Add Pusher as a documented alternative in `.env.example` without changing the default. The audit's recommendation is based on an incorrect premise.
+   - RESOLVED: Added Pusher as a commented-out alternative in `.env.example`, kept Reverb as the default. Matches committed codebase and deployment docs.
 
 ## Sources
 
