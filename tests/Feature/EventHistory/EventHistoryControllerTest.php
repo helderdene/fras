@@ -345,6 +345,24 @@ test('events include ignored severity events', function () {
         );
 });
 
+test('event history events include acknowledger_name when acknowledged', function () {
+    $user = User::factory()->create();
+    $acknowledger = User::factory()->create(['name' => 'Operator Beta']);
+
+    RecognitionEvent::factory()->info()->create([
+        'captured_at' => now(),
+        'acknowledged_by' => $acknowledger->id,
+        'acknowledged_at' => now(),
+    ]);
+
+    $this->actingAs($user)
+        ->get(route('events.index'))
+        ->assertSuccessful()
+        ->assertInertia(fn ($page) => $page
+            ->where('events.data.0.acknowledger_name', 'Operator Beta')
+        );
+});
+
 test('event history route requires authentication', function () {
     $this->get(route('events.index'))
         ->assertRedirect(route('login'));

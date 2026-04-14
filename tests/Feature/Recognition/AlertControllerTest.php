@@ -92,12 +92,31 @@ test('acknowledge records user and timestamp', function () {
     $this->actingAs($user)
         ->postJson(route('alerts.acknowledge', $event))
         ->assertOk()
-        ->assertJsonStructure(['acknowledged_at', 'acknowledged_by']);
+        ->assertJsonStructure(['acknowledged_at', 'acknowledged_by', 'acknowledger_name'])
+        ->assertJsonPath('acknowledger_name', $user->name);
 
     $event->refresh();
 
     expect($event->acknowledged_by)->toBe($user->id)
         ->and($event->acknowledged_at)->not->toBeNull();
+});
+
+test('alert feed events include acknowledger_name when acknowledged', function () {
+    $user = User::factory()->create();
+    $acknowledger = User::factory()->create(['name' => 'Operator Alpha']);
+
+    $event = RecognitionEvent::factory()->info()->create([
+        'captured_at' => now(),
+        'acknowledged_by' => $acknowledger->id,
+        'acknowledged_at' => now(),
+    ]);
+
+    $this->actingAs($user)
+        ->get(route('alerts.index'))
+        ->assertSuccessful()
+        ->assertInertia(fn ($page) => $page
+            ->where('events.0.acknowledger_name', 'Operator Alpha')
+        );
 });
 
 test('dismiss records timestamp', function () {

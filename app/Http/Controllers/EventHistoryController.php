@@ -25,7 +25,7 @@ class EventHistoryController extends Controller
         $dateTo = $request->input('date_to', now()->format('Y-m-d'));
 
         $events = RecognitionEvent::query()
-            ->with(['camera:id,name', 'personnel:id,name,custom_id,person_type,photo_path'])
+            ->with(['camera:id,name', 'personnel:id,name,custom_id,person_type,photo_path', 'acknowledgedBy:id,name'])
             ->whereDate('captured_at', '>=', $dateFrom)
             ->whereDate('captured_at', '<=', $dateTo)
             ->when($request->input('camera_id'), fn ($q, $id) => $q->where('camera_id', $id))

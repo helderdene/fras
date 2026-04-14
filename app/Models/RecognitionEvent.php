@@ -43,7 +43,7 @@ class RecognitionEvent extends Model
     use HasFactory;
 
     /** @var list<string> */
-    protected $appends = ['face_image_url', 'scene_image_url'];
+    protected $appends = ['face_image_url', 'scene_image_url', 'acknowledger_name'];
 
     /**
      * Get the attributes that should be cast.
@@ -99,6 +99,15 @@ class RecognitionEvent extends Model
     {
         return Attribute::get(fn () => $this->scene_image_path
             ? "/alerts/{$this->id}/scene"
+            : null
+        );
+    }
+
+    /** Get the name of the user who acknowledged this event. */
+    protected function acknowledgerName(): Attribute
+    {
+        return Attribute::get(fn () => $this->relationLoaded('acknowledgedBy')
+            ? $this->acknowledgedBy?->name
             : null
         );
     }

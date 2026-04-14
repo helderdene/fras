@@ -15,7 +15,7 @@ class AlertController extends Controller
     /** Display the live alert feed page. */
     public function index(): Response
     {
-        $events = RecognitionEvent::with(['camera:id,name', 'personnel:id,name,custom_id,person_type,photo_path'])
+        $events = RecognitionEvent::with(['camera:id,name', 'personnel:id,name,custom_id,person_type,photo_path', 'acknowledgedBy:id,name'])
             ->whereIn('severity', [AlertSeverity::Critical, AlertSeverity::Warning, AlertSeverity::Info])
             ->where('is_real_time', true)
             ->latest('captured_at')
@@ -44,6 +44,7 @@ class AlertController extends Controller
         return response()->json([
             'acknowledged_at' => $event->acknowledged_at->toISOString(),
             'acknowledged_by' => auth()->id(),
+            'acknowledger_name' => auth()->user()->name,
         ]);
     }
 
