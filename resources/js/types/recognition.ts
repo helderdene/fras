@@ -19,6 +19,7 @@ export interface RecognitionEvent {
     captured_at: string;
     acknowledged_by: number | null;
     acknowledged_at: string | null;
+    acknowledger_name: string | null;
     dismissed_at: string | null;
     created_at: string;
     updated_at: string;

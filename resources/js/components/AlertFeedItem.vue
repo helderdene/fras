@@ -159,7 +159,11 @@ function handleDismiss(e: Event): void {
                 </span>
             </div>
             <div v-if="isAcknowledged" class="text-xs text-muted-foreground">
-                Acknowledged at
+                Acknowledged
+                <template v-if="event.acknowledger_name">
+                    by {{ event.acknowledger_name }}
+                </template>
+                at
                 {{ formatAbsoluteTime(event.acknowledged_at!) }}
             </div>
         </div>

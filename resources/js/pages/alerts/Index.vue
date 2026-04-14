@@ -108,6 +108,7 @@ function mapPayloadToEvent(payload: RecognitionAlertPayload): RecognitionEvent {
         // New events are never acknowledged or dismissed
         acknowledged_by: null,
         acknowledged_at: null,
+        acknowledger_name: null,
         dismissed_at: null,
         // Map flat fields into nested relationship objects
         camera: {
@@ -165,6 +166,7 @@ function handleAcknowledge(event: RecognitionEvent): void {
             if (alert) {
                 alert.acknowledged_at = new Date().toISOString();
                 alert.acknowledged_by = page.props.auth.user.id;
+                alert.acknowledger_name = page.props.auth.user.name;
             }
         },
     });

@@ -135,6 +135,7 @@ function mapPayloadToEvent(payload: RecognitionAlertPayload): RecognitionEvent {
         updated_at: payload.created_at,
         acknowledged_by: null,
         acknowledged_at: null,
+        acknowledger_name: null,
         dismissed_at: null,
         camera: {
             id: payload.camera_id,
@@ -257,6 +258,7 @@ function handleAcknowledge(event: RecognitionEvent): void {
             if (alert) {
                 alert.acknowledged_at = new Date().toISOString();
                 alert.acknowledged_by = page.props.auth.user.id;
+                alert.acknowledger_name = page.props.auth.user.name;
             }
         },
     });

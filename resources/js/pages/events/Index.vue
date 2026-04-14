@@ -110,6 +110,7 @@ function handleAcknowledge(event: RecognitionEvent): void {
             if (found) {
                 found.acknowledged_at = new Date().toISOString();
                 found.acknowledged_by = page.props.auth.user.id;
+                found.acknowledger_name = page.props.auth.user.name;
             }
 
             if (selectedEvent.value?.id === event.id) {
@@ -117,6 +118,7 @@ function handleAcknowledge(event: RecognitionEvent): void {
                     ...selectedEvent.value,
                     acknowledged_at: new Date().toISOString(),
                     acknowledged_by: page.props.auth.user.id,
+                    acknowledger_name: page.props.auth.user.name,
                 };
             }
         },
