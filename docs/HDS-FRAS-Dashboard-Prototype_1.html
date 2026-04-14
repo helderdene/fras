@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HDS Face Recognition Alert System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.js"></script>
+<style>
+  :root {
+    --bg-0: #0a0e14;
+    --bg-1: #0f141b;
+    --bg-2: #161c25;
+    --bg-3: #1d242f;
+    --border: #252d3a;
+    --border-strong: #323b4a;
+    --text-0: #e6edf5;
+    --text-1: #9ba8bd;
+    --text-2: #5d6878;
+    --accent: #4d9fff;
+    --ok: #3dd68c;
+    --warn: #f5b544;
+    --crit: #ff5160;
+    --crit-glow: rgba(255, 81, 96, 0.35);
+    --font-sans: 'DM Sans', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; overflow: hidden; }
+  body {
+    background: var(--bg-0);
+    color: var(--text-0);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+  }
+  button { font-family: inherit; cursor: pointer; }
+
+  /* ============ Layout ============ */
+  .app {
+    display: grid;
+    grid-template-rows: 56px 1fr 28px;
+    height: 100vh;
+  }
+
+  /* ============ Top bar ============ */
+  .topbar {
+    background: var(--bg-1);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 24px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .brand-mark {
+    width: 24px;
+    height: 24px;
+    border: 1.5px solid var(--accent);
+    border-radius: 4px;
+    display: grid;
+    place-items: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .brand-text { font-size: 14px; }
+  .brand-text small {
+    display: block;
+    font-size: 10px;
+    color: var(--text-2);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 400;
+    margin-top: 1px;
+  }
+  .nav {
+    display: flex;
+    gap: 4px;
+    margin-left: 12px;
+  }
+  .nav a {
+    padding: 8px 14px;
+    color: var(--text-1);
+    text-decoration: none;
+    font-size: 13px;
+    border-radius: 6px;
+    transition: all 0.15s;
+  }
+  .nav a:hover { background: var(--bg-2); color: var(--text-0); }
+  .nav a.active { background: var(--bg-2); color: var(--text-0); }
+
+  .topbar-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .clock {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-1);
+    letter-spacing: 0.05em;
+  }
+  .clock-date { color: var(--text-2); margin-right: 8px; }
+  .system-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 12px;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 11px;
+    font-family: var(--font-mono);
+    color: var(--text-1);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .system-status .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--ok);
+    box-shadow: 0 0 8px var(--ok);
+    animation: heartbeat 2s ease-in-out infinite;
+  }
+  @keyframes heartbeat {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* ============ Main grid ============ */
+  .main {
+    display: grid;
+    grid-template-columns: 280px 1fr 380px;
+    overflow: hidden;
+  }
+
+  /* ============ Left rail: cameras ============ */
+  .rail {
+    background: var(--bg-1);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .rail-section {
+    border-bottom: 1px solid var(--border);
+  }
+  .rail-header {
+    padding: 14px 16px 8px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-2);
+    font-weight: 500;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .rail-header .count {
+    font-family: var(--font-mono);
+    color: var(--text-1);
+  }
+
+  .camera-list {
+    padding: 4px 8px 12px;
+  }
+  .camera {
+    padding: 10px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.15s;
+    margin-bottom: 2px;
+  }
+  .camera:hover { background: var(--bg-2); }
+  .camera.active { background: var(--bg-2); }
+  .camera-status {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .camera-status.online { background: var(--ok); box-shadow: 0 0 6px var(--ok); }
+  .camera-status.offline { background: var(--text-2); }
+  .camera-info { flex: 1; min-width: 0; }
+  .camera-name { font-size: 13px; font-weight: 500; color: var(--text-0); }
+  .camera-meta {
+    font-size: 10px;
+    color: var(--text-2);
+    font-family: var(--font-mono);
+    margin-top: 2px;
+  }
+  .camera-count {
+    font-size: 10px;
+    font-family: var(--font-mono);
+    color: var(--text-1);
+    background: var(--bg-3);
+    padding: 2px 6px;
+    border-radius: 3px;
+  }
+
+  .stats {
+    padding: 12px 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .stat {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    padding: 10px;
+    border-radius: 6px;
+  }
+  .stat-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-2);
+    margin-bottom: 4px;
+  }
+  .stat-value {
+    font-family: var(--font-mono);
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-0);
+  }
+  .stat-value.crit { color: var(--crit); }
+  .stat-value.warn { color: var(--warn); }
+
+  /* ============ Map ============ */
+  .map-container {
+    position: relative;
+    background: var(--bg-0);
+  }
+  #map {
+    position: absolute;
+    inset: 0;
+  }
+  .map-overlay {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background: rgba(15, 20, 27, 0.92);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-1);
+    pointer-events: none;
+  }
+  .map-overlay-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .map-overlay-row + .map-overlay-row { margin-top: 4px; }
+  .map-overlay strong { color: var(--text-0); font-weight: 500; }
+
+  .map-controls {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    display: flex;
+    gap: 8px;
+  }
+  .map-btn {
+    background: rgba(15, 20, 27, 0.92);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    color: var(--text-1);
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: all 0.15s;
+  }
+  .map-btn:hover {
+    background: var(--bg-2);
+    color: var(--text-0);
+    border-color: var(--border-strong);
+  }
+  .map-btn.primary {
+    background: var(--accent);
+    color: #0a0e14;
+    border-color: var(--accent);
+    font-weight: 600;
+  }
+  .map-btn.primary:hover {
+    background: #6cb0ff;
+    border-color: #6cb0ff;
+  }
+
+  /* Camera markers (rendered via Mapbox HTML markers) */
+  /* Mapbox sets position:absolute and transform on the marker root via inline styles.
+     Do NOT add position, transform, or margin to .marker. */
+  .marker {
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+  }
+  .marker-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-1);
+    border: 1.5px solid var(--ok);
+    border-radius: 50%;
+    color: var(--ok);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.6), 0 0 12px rgba(61, 214, 140, 0.35);
+    box-sizing: border-box;
+    transition: all 0.2s;
+  }
+  .marker-icon svg {
+    width: 18px;
+    height: 18px;
+    display: block;
+  }
+  .marker:hover .marker-icon {
+    transform: scale(1.1);
+  }
+  .marker.offline .marker-icon {
+    border-color: var(--text-2);
+    color: var(--text-2);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.6);
+  }
+  .marker-label {
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    width: max-content;
+    transform: translateX(-50%);
+    background: rgba(15, 20, 27, 0.95);
+    border: 1px solid var(--border);
+    color: var(--text-0);
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-family: var(--font-mono);
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+  .marker:hover .marker-label { opacity: 1; }
+  .marker.flash .marker-icon {
+    background: var(--crit);
+    border-color: var(--crit);
+    color: #fff;
+    box-shadow: 0 0 0 1px var(--crit), 0 0 24px var(--crit-glow);
+  }
+  .marker.flash .marker-label { opacity: 1; }
+  .marker.flash::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 32px;
+    height: 32px;
+    margin: -16px 0 0 -16px;
+    border-radius: 50%;
+    border: 2px solid var(--crit);
+    animation: ring-expand 1.5s ease-out infinite;
+    pointer-events: none;
+  }
+  @keyframes ring-expand {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(2.5); opacity: 0; }
+  }
+
+  /* ============ Right rail: alert feed ============ */
+  .feed {
+    background: var(--bg-1);
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .feed-header {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .feed-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-1);
+    font-weight: 500;
+  }
+  .feed-live {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ok);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .feed-live .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--ok);
+    animation: heartbeat 1.5s ease-in-out infinite;
+  }
+  .feed-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px;
+  }
+  .feed-empty {
+    padding: 32px 16px;
+    text-align: center;
+    color: var(--text-2);
+    font-size: 12px;
+    font-family: var(--font-mono);
+  }
+
+  .alert {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--ok);
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 8px;
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 12px;
+    cursor: pointer;
+    animation: alert-in 0.4s ease-out;
+    transition: border-color 0.15s;
+  }
+  .alert:hover { border-color: var(--border-strong); }
+  .alert.warn { border-left-color: var(--warn); }
+  .alert.crit {
+    border-left-color: var(--crit);
+    background: linear-gradient(90deg, rgba(255, 81, 96, 0.08), var(--bg-2) 60%);
+  }
+  @keyframes alert-in {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .alert-face {
+    width: 48px;
+    height: 48px;
+    border-radius: 4px;
+    background: var(--bg-3);
+    display: grid;
+    place-items: center;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-1);
+    border: 1px solid var(--border);
+  }
+  .alert.crit .alert-face { background: rgba(255, 81, 96, 0.15); color: var(--crit); border-color: var(--crit); }
+  .alert.warn .alert-face { background: rgba(245, 181, 68, 0.15); color: var(--warn); border-color: var(--warn); }
+
+  .alert-body { min-width: 0; }
+  .alert-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-0);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .alert-meta {
+    font-size: 11px;
+    color: var(--text-1);
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .alert-camera {
+    font-family: var(--font-mono);
+    color: var(--text-1);
+  }
+  .alert-tag {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-weight: 600;
+    font-family: var(--font-mono);
+    background: rgba(61, 214, 140, 0.15);
+    color: var(--ok);
+  }
+  .alert.warn .alert-tag { background: rgba(245, 181, 68, 0.15); color: var(--warn); }
+  .alert.crit .alert-tag { background: rgba(255, 81, 96, 0.18); color: var(--crit); }
+  .alert-bottom {
+    margin-top: 6px;
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-2);
+  }
+
+  /* ============ Status bar ============ */
+  .statusbar {
+    background: var(--bg-1);
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 16px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-2);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .statusbar > * { display: flex; align-items: center; gap: 6px; }
+  .statusbar .sep { color: var(--border-strong); }
+  .statusbar .ok { color: var(--ok); }
+  .statusbar .right { margin-left: auto; }
+
+  /* ============ Modal ============ */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 14, 20, 0.75);
+    backdrop-filter: blur(4px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  .modal-backdrop.show { display: flex; }
+  .modal {
+    background: var(--bg-1);
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    width: 540px;
+    max-width: 90vw;
+    overflow: hidden;
+  }
+  .modal-header {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .modal-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-1);
+    font-weight: 500;
+  }
+  .modal-close {
+    background: none;
+    border: none;
+    color: var(--text-1);
+    font-size: 18px;
+    line-height: 1;
+    padding: 4px 8px;
+  }
+  .modal-close:hover { color: var(--text-0); }
+  .modal-body { padding: 20px; }
+  .modal-grid {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 20px;
+    margin-bottom: 16px;
+  }
+  .modal-face {
+    width: 120px;
+    height: 120px;
+    border-radius: 6px;
+    background: var(--bg-3);
+    border: 1px solid var(--border);
+    display: grid;
+    place-items: center;
+    font-family: var(--font-mono);
+    font-size: 32px;
+    font-weight: 500;
+    color: var(--text-1);
+  }
+  .modal-details {
+    display: grid;
+    gap: 10px;
+    align-content: start;
+  }
+  .modal-row {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    font-size: 12px;
+  }
+  .modal-row dt {
+    color: var(--text-2);
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    align-self: center;
+  }
+  .modal-row dd {
+    color: var(--text-0);
+    font-family: var(--font-mono);
+  }
+  .modal-name {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-0);
+    margin-bottom: 12px;
+    font-family: var(--font-sans);
+  }
+  .modal-scene {
+    width: 100%;
+    height: 200px;
+    border-radius: 6px;
+    background: var(--bg-3);
+    border: 1px solid var(--border);
+    display: grid;
+    place-items: center;
+    color: var(--text-2);
+    font-size: 11px;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    position: relative;
+    overflow: hidden;
+  }
+  .scene-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  .scene-bbox {
+    position: absolute;
+    border: 1.5px solid var(--accent);
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.5);
+  }
+  .scene-bbox::before {
+    content: 'FACE 94.2%';
+    position: absolute;
+    top: -18px;
+    left: 0;
+    background: var(--accent);
+    color: var(--bg-0);
+    font-size: 9px;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    padding: 2px 6px;
+    letter-spacing: 0.05em;
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">FR</div>
+      <div class="brand-text">
+        HDS Face Recognition
+        <small>Alert system · v1.0</small>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="#" class="active">Dashboard</a>
+      <a href="#">Personnel</a>
+      <a href="#">Cameras</a>
+      <a href="#">Events</a>
+      <a href="#">Settings</a>
+    </nav>
+    <div class="topbar-right">
+      <div class="clock"><span class="clock-date" id="date"></span><span id="time"></span></div>
+      <div class="system-status"><div class="dot"></div>System nominal</div>
+    </div>
+  </header>
+
+  <!-- Main 3-column -->
+  <main class="main">
+
+    <!-- Left rail -->
+    <aside class="rail">
+      <div class="rail-section">
+        <div class="rail-header">
+          <span>Cameras</span>
+          <span class="count">4 / 4</span>
+        </div>
+        <div class="camera-list" id="camera-list"></div>
+      </div>
+      <div class="rail-section">
+        <div class="rail-header">Today</div>
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-label">Recognitions</div>
+            <div class="stat-value" id="stat-total">0</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Critical</div>
+            <div class="stat-value crit" id="stat-crit">0</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Warnings</div>
+            <div class="stat-value warn" id="stat-warn">0</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Personnel</div>
+            <div class="stat-value">42</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Map -->
+    <section class="map-container">
+      <div id="map"></div>
+      <div class="map-overlay">
+        <div class="map-overlay-row">SITE <strong>HDS Main Compound</strong></div>
+        <div class="map-overlay-row">8.9475°N · 125.5406°E</div>
+        <div class="map-overlay-row">CAMERAS <strong style="color:var(--ok)">4 ONLINE</strong></div>
+      </div>
+      <div class="map-controls">
+        <button class="map-btn" id="btn-style">Light mode</button>
+        <button class="map-btn" id="btn-info">Info recognition</button>
+        <button class="map-btn" id="btn-warn">Warning recognition</button>
+        <button class="map-btn primary" id="btn-crit">Block-list match</button>
+      </div>
+    </section>
+
+    <!-- Right rail: alert feed -->
+    <aside class="feed">
+      <div class="feed-header">
+        <div class="feed-title">Live alert feed</div>
+        <div class="feed-live"><div class="dot"></div>Live</div>
+      </div>
+      <div class="feed-list" id="feed">
+        <div class="feed-empty" id="feed-empty">Waiting for events...</div>
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- Status bar -->
+  <footer class="statusbar">
+    <div><span>MQTT</span><span class="ok">CONNECTED</span></div>
+    <div class="sep">│</div>
+    <div><span>BROKER</span><span>tcp://10.0.1.4:1883</span></div>
+    <div class="sep">│</div>
+    <div><span>REVERB</span><span class="ok">WS OPEN</span></div>
+    <div class="sep">│</div>
+    <div><span>QUEUE</span><span id="queue-depth">0 PENDING</span></div>
+    <div class="right"><span>HDSYSTEM · BUTUAN CITY</span></div>
+  </footer>
+
+</div>
+
+<!-- Modal -->
+<div class="modal-backdrop" id="modal">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-title">Recognition event</div>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-name" id="modal-name">—</div>
+      <div class="modal-grid">
+        <div class="modal-face" id="modal-face">—</div>
+        <div class="modal-details">
+          <div class="modal-row"><dt>Camera</dt><dd id="modal-camera">—</dd></div>
+          <div class="modal-row"><dt>Confidence</dt><dd id="modal-sim">—</dd></div>
+          <div class="modal-row"><dt>Custom ID</dt><dd id="modal-cid">—</dd></div>
+          <div class="modal-row"><dt>Captured</dt><dd id="modal-time">—</dd></div>
+          <div class="modal-row"><dt>List type</dt><dd id="modal-type">—</dd></div>
+          <div class="modal-row"><dt>Status</dt><dd id="modal-status">—</dd></div>
+        </div>
+      </div>
+      <div class="modal-scene">
+        <div class="scene-grid"></div>
+        <div class="scene-bbox" id="scene-bbox" style="left:42%;top:25%;width:18%;height:50%;"></div>
+        <span style="position:relative;z-index:1;">Scene image · 1920×1080</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============ Mock data ============
+const cameras = [
+  { id: 1, deviceId: '005a213b000b93cc', name: 'Main gate',  lng: 125.5406, lat: 8.9478, online: true, recogCount: 0 },
+  { id: 2, deviceId: '005a213b000b93cd', name: 'Lobby',      lng: 125.5410, lat: 8.9475, online: true, recogCount: 0 },
+  { id: 3, deviceId: '005a213b000b93ce', name: 'Parking',    lng: 125.5402, lat: 8.9472, online: true, recogCount: 0 },
+  { id: 4, deviceId: '005a213b000b93cf', name: 'Rear exit',  lng: 125.5414, lat: 8.9479, online: true, recogCount: 0 },
+];
+
+const personnel = [
+  { customId: 'hds-staff-00001', name: 'Maria Santos',     initials: 'MS', personType: 0 },
+  { customId: 'hds-staff-00002', name: 'Juan dela Cruz',   initials: 'JD', personType: 0 },
+  { customId: 'hds-staff-00003', name: 'Lea Villanueva',   initials: 'LV', personType: 0 },
+  { customId: 'hds-staff-00004', name: 'Pedro Garcia',     initials: 'PG', personType: 0 },
+  { customId: 'hds-staff-00005', name: 'Ana Reyes',        initials: 'AR', personType: 0 },
+  { customId: 'hds-block-00007', name: 'Roberto Aquino',   initials: 'RA', personType: 1 },
+];
+
+let stats = { total: 0, crit: 0, warn: 0 };
+let alerts = [];
+const markers = {};
+
+// ============ Clock ============
+function updateClock() {
+  const d = new Date();
+  document.getElementById('time').textContent = d.toTimeString().slice(0, 8) + ' UTC' + (-d.getTimezoneOffset() / 60 >= 0 ? '+' : '') + (-d.getTimezoneOffset() / 60);
+  document.getElementById('date').textContent = d.toISOString().slice(0, 10);
+}
+setInterval(updateClock, 1000); updateClock();
+
+// ============ Camera list ============
+function renderCameras() {
+  const list = document.getElementById('camera-list');
+  list.innerHTML = cameras.map(c => `
+    <div class="camera" data-id="${c.id}">
+      <div class="camera-status ${c.online ? 'online' : 'offline'}"></div>
+      <div class="camera-info">
+        <div class="camera-name">${c.name}</div>
+        <div class="camera-meta">${c.deviceId.slice(0, 16)}...</div>
+      </div>
+      <div class="camera-count">${c.recogCount}</div>
+    </div>
+  `).join('');
+}
+renderCameras();
+
+// ============ Map ============
+// Mapbox GL JS with your custom style.
+// Get an access token at https://account.mapbox.com/access-tokens/
+mapboxgl.accessToken = 'pk.eyJ1IjoiaGVsZGVyZGVuZSIsImEiOiJjbWw5aTJldmwwMzlqM2VzN3dqYjhkcDB3In0.fi2hg9_Q-qoaG4UHihTepw';
+
+const STYLES = {
+  dark:  'mapbox://styles/helderdene/cmns76cer001z01rf393w4jew',
+  light: 'mapbox://styles/helderdene/cmmq06eqr005j01skbwodfq08',
+};
+let currentStyle = 'dark';
+
+const map = new mapboxgl.Map({
+  container: 'map',
+  style: STYLES[currentStyle],
+  center: [125.5408, 8.9476],
+  zoom: 17,
+  pitch: 45,
+  attributionControl: false,
+});
+map.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-left');
+map.on('load', () => {
+  cameras.forEach(c => {
+    const el = document.createElement('div');
+    el.className = 'marker' + (c.online ? '' : ' offline');
+    el.innerHTML = `
+      <div class="marker-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 7h13a2 2 0 0 1 2 2v3l4-2v8l-4-2v3a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7z"/>
+          <circle cx="9" cy="13" r="2"/>
+          <path d="M12 19v2"/>
+        </svg>
+      </div>
+      <div class="marker-label">${c.name}</div>
+    `;
+    el.addEventListener('click', () => {
+      map.flyTo({ center: [c.lng, c.lat], zoom: 18, duration: 600 });
+    });
+    const marker = new mapboxgl.Marker({
+      element: el,
+      anchor: 'center',
+      rotationAlignment: 'viewport',
+      pitchAlignment: 'viewport',
+    })
+      .setLngLat([c.lng, c.lat])
+      .addTo(map);
+    markers[c.id] = { marker, el };
+  });
+});
+
+// ============ Event simulation ============
+function fireEvent(severity) {
+  const cam = cameras[Math.floor(Math.random() * cameras.length)];
+
+  let person, finalSev = severity;
+  if (severity === 'crit') {
+    person = personnel.find(p => p.personType === 1);
+  } else {
+    const allowed = personnel.filter(p => p.personType === 0);
+    person = allowed[Math.floor(Math.random() * allowed.length)];
+  }
+
+  const similarity = +(88 + Math.random() * 11.5).toFixed(1);
+  const now = new Date();
+  const captured = now.toTimeString().slice(0, 8);
+
+  // Update camera count
+  cam.recogCount++;
+  renderCameras();
+
+  // Flash marker
+  const m = markers[cam.id];
+  if (m) {
+    m.el.classList.remove('flash');
+    void m.el.offsetWidth;
+    m.el.classList.add('flash');
+    setTimeout(() => m.el.classList.remove('flash'), 3500);
+  }
+
+  // Stats
+  stats.total++;
+  if (finalSev === 'crit') stats.crit++;
+  if (finalSev === 'warn') stats.warn++;
+  updateStats();
+
+  // Build alert
+  const alert = {
+    id: Date.now() + Math.random(),
+    severity: finalSev,
+    person,
+    camera: cam,
+    similarity,
+    captured,
+    capturedFull: now.toISOString().replace('T', ' ').slice(0, 19),
+  };
+  alerts.unshift(alert);
+  if (alerts.length > 30) alerts.pop();
+
+  renderFeed();
+
+  // Subtle audio for critical
+  if (finalSev === 'crit') {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.frequency.value = 880;
+      g.gain.setValueAtTime(0.0001, ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.15, ctx.currentTime + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.3);
+      o.start(); o.stop(ctx.currentTime + 0.3);
+    } catch (e) {}
+  }
+}
+
+function updateStats() {
+  document.getElementById('stat-total').textContent = stats.total;
+  document.getElementById('stat-crit').textContent = stats.crit;
+  document.getElementById('stat-warn').textContent = stats.warn;
+}
+
+function renderFeed() {
+  const feed = document.getElementById('feed');
+  if (alerts.length === 0) {
+    feed.innerHTML = '<div class="feed-empty">Waiting for events...</div>';
+    return;
+  }
+  feed.innerHTML = alerts.map(a => {
+    const tag = a.severity === 'crit' ? 'BLOCK LIST' : a.severity === 'warn' ? 'REFUSED' : 'ALLOW';
+    return `
+      <div class="alert ${a.severity}" data-id="${a.id}">
+        <div class="alert-face">${a.person.initials}</div>
+        <div class="alert-body">
+          <div class="alert-name">${a.person.name}</div>
+          <div class="alert-meta">
+            <span class="alert-camera">${a.camera.name}</span>
+            <span class="alert-tag">${tag}</span>
+          </div>
+          <div class="alert-bottom">
+            <span>${a.similarity}% MATCH</span>
+            <span>${a.captured}</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+  // Click handlers
+  feed.querySelectorAll('.alert').forEach(el => {
+    el.addEventListener('click', () => openModal(el.dataset.id));
+  });
+}
+
+function openModal(id) {
+  const a = alerts.find(x => String(x.id) === String(id));
+  if (!a) return;
+  document.getElementById('modal-name').textContent = a.person.name;
+  document.getElementById('modal-face').textContent = a.person.initials;
+  document.getElementById('modal-camera').textContent = a.camera.name + ' · ' + a.camera.deviceId.slice(0, 12);
+  document.getElementById('modal-sim').textContent = a.similarity + '%';
+  document.getElementById('modal-cid').textContent = a.person.customId;
+  document.getElementById('modal-time').textContent = a.capturedFull;
+  document.getElementById('modal-type').textContent = a.person.personType === 1 ? 'BLOCK LIST' : 'ALLOW LIST';
+  const statusMap = { crit: 'BLOCK-LIST MATCH', warn: 'REFUSED ENTRY', info: 'ALLOWED ENTRY' };
+  document.getElementById('modal-status').textContent = statusMap[a.severity];
+  document.getElementById('modal').classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('show');
+}
+
+document.getElementById('modal').addEventListener('click', closeModal);
+
+// Buttons
+document.getElementById('btn-info').addEventListener('click', () => fireEvent('info'));
+document.getElementById('btn-warn').addEventListener('click', () => fireEvent('warn'));
+document.getElementById('btn-crit').addEventListener('click', () => fireEvent('crit'));
+
+// Style toggle — HTML markers automatically persist across setStyle
+document.getElementById('btn-style').addEventListener('click', (e) => {
+  currentStyle = currentStyle === 'dark' ? 'light' : 'dark';
+  map.setStyle(STYLES[currentStyle]);
+  e.target.textContent = currentStyle === 'dark' ? 'Light mode' : 'Dark mode';
+});
+
+// Auto-fire some events at startup so it doesn't look empty
+setTimeout(() => fireEvent('info'), 1200);
+setTimeout(() => fireEvent('info'), 2800);
+setTimeout(() => fireEvent('warn'), 4500);
+
+// Periodic background events
+setInterval(() => {
+  const r = Math.random();
+  if (r < 0.7) fireEvent('info');
+  else if (r < 0.95) fireEvent('warn');
+  else fireEvent('crit');
+}, 8000);
+</script>
+</body>
+</html>
