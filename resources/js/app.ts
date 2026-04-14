@@ -31,12 +31,15 @@ createInertiaApp({
     },
 });
 
-// Configure Laravel Echo for Pusher WebSocket broadcasting...
+// Configure Laravel Echo for Reverb WebSocket broadcasting...
 configureEcho({
-    broadcaster: 'pusher',
-    key: import.meta.env.VITE_PUSHER_APP_KEY,
-    cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
-    forceTLS: true,
+    broadcaster: 'reverb',
+    key: import.meta.env.VITE_REVERB_APP_KEY,
+    wsHost: import.meta.env.VITE_REVERB_HOST,
+    wsPort: Number(import.meta.env.VITE_REVERB_PORT),
+    wssPort: Number(import.meta.env.VITE_REVERB_PORT),
+    forceTLS: import.meta.env.VITE_REVERB_SCHEME === 'https',
+    enabledTransports: ['ws', 'wss'],
     Pusher,
 });
 
