@@ -8,6 +8,9 @@ declare module 'vite/client' {
         readonly VITE_REVERB_HOST: string;
         readonly VITE_REVERB_PORT: string;
         readonly VITE_REVERB_SCHEME: string;
+        // Pusher (alternative for production)
+        readonly VITE_PUSHER_APP_KEY: string;
+        readonly VITE_PUSHER_APP_CLUSTER: string;
         [key: string]: string | boolean | undefined;
     }
 
