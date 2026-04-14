@@ -11,7 +11,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [x] **INFRA-01**: Application uses MySQL database for all FRAS data (cameras, personnel, events, enrollments)
 - [x] **INFRA-02**: MQTT broker (Mosquitto) is accessible from Laravel and camera subnet
-- [x] **INFRA-03**: Laravel Reverb WebSocket server runs and broadcasts events to connected browsers
+- [ ] **INFRA-03**: Laravel Reverb WebSocket server runs and broadcasts events to connected browsers
 - [x] **INFRA-04**: Long-running processes (MQTT listener, Reverb, queue worker) are managed by Supervisor with autostart/autorestart
 - [x] **INFRA-05**: Development environment orchestrates all processes via concurrently
 
@@ -19,18 +19,18 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [x] **CAM-01**: Admin can register a camera with device ID, name, location label, and GPS coordinates
 - [x] **CAM-02**: Admin can edit and delete camera records
-- [x] **CAM-03**: System tracks camera online/offline state via MQTT heartbeat messages
+- [ ] **CAM-03**: System tracks camera online/offline state via MQTT heartbeat messages
 - [x] **CAM-04**: System marks camera offline when heartbeat absent for more than 90 seconds
-- [x] **CAM-05**: Camera list page shows all cameras with online/offline state and last seen time
+- [ ] **CAM-05**: Camera list page shows all cameras with online/offline state and last seen time
 - [x] **CAM-06**: Camera detail page shows camera configuration and list of enrolled personnel
 
 ### Map & Dashboard
 
 - [x] **DASH-01**: Dashboard displays all cameras as markers on a Mapbox GL JS map with GPS positioning
-- [x] **DASH-02**: Camera markers are colored by status: green for online, gray for offline
+- [ ] **DASH-02**: Camera markers are colored by status: green for online, gray for offline
 - [x] **DASH-03**: When a recognition event fires, the corresponding camera marker pulses with a red expanding ring animation for ~3 seconds
 - [x] **DASH-04**: Dashboard has three-panel layout: camera list rail (left), map (center), alert feed (right)
-- [x] **DASH-05**: Status bar shows MQTT connection status, Reverb WebSocket status, and queue depth
+- [ ] **DASH-05**: Status bar shows MQTT connection status, Reverb WebSocket status, and queue depth
 - [x] **DASH-06**: Map supports toggle between dark and light custom Mapbox Studio styles
 - [x] **DASH-07**: Left rail shows camera list with online/offline indicators and per-camera recognition counts
 - [x] **DASH-08**: Left rail includes "Today" statistics panel (total recognitions, critical events, warnings, enrolled personnel count)
@@ -73,7 +73,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **REC-10**: Clicking an alert opens a detail modal with face crop, scene image with bounding box overlay, and full event metadata
 - [x] **REC-11**: Critical (block-list) events trigger an audible alert sound in the browser
 - [x] **REC-12**: Each alert displays the confidence/similarity score from the camera
-- [x] **REC-13**: Operator can acknowledge or dismiss an alert, recording who handled it and when
+- [ ] **REC-13**: Operator can acknowledge or dismiss an alert, recording who handled it and when
 
 ### Event History
 
@@ -86,7 +86,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **OPS-01**: Scheduled job deletes scene images older than 30 days while keeping recognition_events row and face crop
 - [x] **OPS-02**: Scheduled job deletes face crops older than 90 days while keeping recognition_events row
 - [x] **OPS-03**: Retention windows are configurable in config/hds.php
-- [x] **OPS-04**: MQTT listener handles Online/Offline messages to update camera is_online state
+- [ ] **OPS-04**: MQTT listener handles Online/Offline messages to update camera is_online state
 - [x] **OPS-05**: MQTT listener handles HeartBeat messages to update camera last_seen_at
 
 ## v2 Requirements
@@ -142,20 +142,20 @@ Which phases cover which requirements. Updated during roadmap creation.
 |-------------|-------|--------|
 | INFRA-01 | Phase 1 | Complete |
 | INFRA-02 | Phase 1 | Complete |
-| INFRA-03 | Phase 1 | Complete |
+| INFRA-03 | Phase 10 | Pending |
 | INFRA-04 | Phase 1 | Complete |
 | INFRA-05 | Phase 1 | Complete |
 | CAM-01 | Phase 2 | Complete |
 | CAM-02 | Phase 2 | Complete |
-| CAM-03 | Phase 2 | Complete |
+| CAM-03 | Phase 10 | Pending |
 | CAM-04 | Phase 2 | Complete |
-| CAM-05 | Phase 2 | Complete |
+| CAM-05 | Phase 10 | Pending |
 | CAM-06 | Phase 2 | Complete |
 | DASH-01 | Phase 6 | Complete |
-| DASH-02 | Phase 6 | Complete |
+| DASH-02 | Phase 10 | Pending |
 | DASH-03 | Phase 6 | Complete |
 | DASH-04 | Phase 6 | Complete |
-| DASH-05 | Phase 6 | Complete |
+| DASH-05 | Phase 10 | Pending |
 | DASH-06 | Phase 6 | Complete |
 | DASH-07 | Phase 6 | Complete |
 | DASH-08 | Phase 6 | Complete |
@@ -189,20 +189,41 @@ Which phases cover which requirements. Updated during roadmap creation.
 | REC-10 | Phase 5 | Complete |
 | REC-11 | Phase 5 | Complete |
 | REC-12 | Phase 5 | Complete |
-| REC-13 | Phase 5 | Complete |
+| REC-13 | Phase 10 | Pending |
 | HIST-01 | Phase 7 | Complete |
 | HIST-02 | Phase 7 | Complete |
 | HIST-03 | Phase 7 | Complete |
 | OPS-01 | Phase 7 | Complete |
 | OPS-02 | Phase 7 | Complete |
 | OPS-03 | Phase 7 | Complete |
-| OPS-04 | Phase 2 | Complete |
+| OPS-04 | Phase 10 | Pending |
 | OPS-05 | Phase 2 | Complete |
 
+| UI-01 | Phase 8 | Complete |
+| UI-02 | Phase 8 | Complete |
+| UI-03 | Phase 8 | Complete |
+| UI-04 | Phase 8 | Complete |
+| UI-05 | Phase 8 | Complete |
+| UI-06 | Phase 8 | Complete |
+| UI-07 | Phase 8 | Complete |
+| UI-08 | Phase 8 | Complete |
+| UI-09 | Phase 8 | Complete |
+| UI-10 | Phase 8 | Complete |
+| UI-11 | Phase 8 | Complete |
+| UI-12 | Phase 8 | Complete |
+| UI-13 | Phase 8 | Complete |
+| UI-14 | Phase 8 | Complete |
+| UI-15 | Phase 8 | Complete |
+| REG-DISABLE | Phase 9 | Complete |
+| USER-CRUD | Phase 9 | Complete |
+| USER-CRUD-UI | Phase 9 | Complete |
+| USER-NAV | Phase 9 | Complete |
+
 **Coverage:**
-- v1 requirements: 58 total
-- Mapped to phases: 58
+- v1 requirements: 77 total (58 original + 19 back-ported from orphaned)
+- Mapped to phases: 77
 - Unmapped: 0
+- Pending (Phase 10 gap closure): 7
 
 ---
 *Requirements defined: 2026-04-10*

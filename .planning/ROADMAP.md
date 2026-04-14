@@ -21,6 +21,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 7: Event History & Operations** - Searchable event log, storage retention cleanup, configurable retention (completed 2026-04-11)
 - [x] **Phase 8: Redesign** - Full visual redesign: slate/steel blue palette, Inter font, glassmorphism, glow effects, dense data grids, FRAS branding (completed 2026-04-11)
 - [x] **Phase 9: User Management** - Disable public registration, admin-only user creation and management (completed 2026-04-11)
+- [ ] **Phase 10: Milestone Gap Closure** - Fix CameraStatusChanged broadcastAs, Pusher config drift, REC-13 acknowledged-by display
 
 ## Phase Details
 
@@ -189,10 +190,24 @@ Plans:
 - [x] 09-01-PLAN.md -- Disable registration, UserController CRUD, form requests, routes, tests
 - [x] 09-02-PLAN.md -- User management Vue pages (Index, Create, Edit), sidebar and top nav update
 
+### Phase 10: Milestone Gap Closure
+**Goal**: Fix the 2 critical integration issues (CameraStatusChanged broadcastAs, Pusher config drift) and 1 minor UI gap (REC-13 acknowledged-by display) identified by the v1.0 milestone audit
+**Depends on**: Phase 2, Phase 5, Phase 6
+**Requirements**: CAM-03, CAM-05, DASH-02, DASH-05, OPS-04, INFRA-03, REC-13
+**Gap Closure**: Closes gaps from v1.0-MILESTONE-AUDIT.md
+**Success Criteria** (what must be TRUE):
+  1. CameraStatusChanged event broadcasts under short name and Vue Echo listeners receive it — camera status dots update in real time on Dashboard, cameras/Index, cameras/Show
+  2. .env.example contains VITE_PUSHER_APP_KEY and VITE_PUSHER_APP_CLUSTER variables; global.d.ts declares matching types; orphaned VITE_REVERB_* entries removed or marked obsolete
+  3. Alert detail and alert feed show the name of the operator who acknowledged/dismissed each alert (not just the timestamp)
+**Plans**: TBD
+
+Plans:
+- [ ] 10-01-PLAN.md -- TBD
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 Note: Phases 2 and 3 share only a Phase 1 dependency and could theoretically overlap, but sequential execution is simpler for a solo workflow.
 
 | Phase | Plans Complete | Status | Completed |
@@ -206,3 +221,4 @@ Note: Phases 2 and 3 share only a Phase 1 dependency and could theoretically ove
 | 7. Event History & Operations | 2/2 | Complete | 2026-04-11 |
 | 8. Redesign | 5/5 | Complete | 2026-04-11 |
 | 9. User Management | 2/2 | Complete | 2026-04-11 |
+| 10. Milestone Gap Closure | 0/1 | Not started | - |
