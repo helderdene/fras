@@ -199,10 +199,11 @@ Plans:
   1. CameraStatusChanged event broadcasts under short name and Vue Echo listeners receive it — camera status dots update in real time on Dashboard, cameras/Index, cameras/Show
   2. .env.example contains VITE_PUSHER_APP_KEY and VITE_PUSHER_APP_CLUSTER variables; global.d.ts declares matching types; orphaned VITE_REVERB_* entries removed or marked obsolete
   3. Alert detail and alert feed show the name of the operator who acknowledged/dismissed each alert (not just the timestamp)
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 10-01-PLAN.md -- TBD
+- [ ] 10-01-PLAN.md -- CameraStatusChanged broadcastAs fix, .env.example Pusher config, global.d.ts type declarations
+- [ ] 10-02-PLAN.md -- REC-13 acknowledger name: backend eager-loading, response enhancement, frontend display
 
 ## Progress
 
@@ -221,4 +222,4 @@ Note: Phases 2 and 3 share only a Phase 1 dependency and could theoretically ove
 | 7. Event History & Operations | 2/2 | Complete | 2026-04-11 |
 | 8. Redesign | 5/5 | Complete | 2026-04-11 |
 | 9. User Management | 2/2 | Complete | 2026-04-11 |
-| 10. Milestone Gap Closure | 0/1 | Not started | - |
+| 10. Milestone Gap Closure | 0/2 | Not started | - |
