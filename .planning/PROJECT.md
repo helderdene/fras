@@ -46,7 +46,7 @@ Operators see every matched-face recognition event in real time on a map-based d
 
 ### Active
 
-All v1 requirements validated. No active items remaining.
+(Fresh requirements will be defined with `/gsd-new-milestone`)
 
 ### Out of Scope
 
@@ -63,14 +63,22 @@ All v1 requirements validated. No active items remaining.
 - Encrypted at-rest storage — not required for v1
 - Two-factor authentication for FRAS-specific users — existing Fortify 2FA covers the single admin
 
+## Current State
+
+**v1.0 FRAS MVP shipped 2026-04-14.** 10 phases, 31 plans, 58 requirements delivered in 5 days.
+
+- ~16.9k PHP, ~11.4k Vue, ~1.8k TypeScript (30k+ LOC)
+- 293 passing tests (3 pre-existing supervisor config failures unrelated to FRAS)
+- Full SOC-aesthetic UI redesign with glassmorphism, glow effects, dense data grids
+- Real-time MQTT-to-browser pipeline: camera -> MQTT -> Laravel -> Reverb -> Echo -> Vue
+
 ## Context
 
-- **Existing codebase:** Laravel 13 + Vue 3 + Inertia v3 + Tailwind v4 + shadcn-vue, with Fortify auth, Wayfinder routes, and CI pipeline already in place.
+- **Shipped codebase:** Laravel 13 + Vue 3 + Inertia v3 + Tailwind v4 + shadcn-vue + php-mqtt/laravel-client + Intervention Image v4 + Laravel Reverb + Mapbox GL JS v3 + Laravel Echo.
 - **Camera hardware:** AI Intelligent IP Cameras with onboard face recognition, MQTT v3.1.1 protocol (QoS 0), JSON payloads. Firmware verified against test device (Cloud ID 1026700).
 - **Deployment target:** Single Linux server running Laravel, Mosquitto MQTT broker, MySQL, and Reverb. Up to 8 cameras, up to 200 enrolled personnel.
-- **Frontend adaptation:** Spec was written with Vue 3 Composition API in mind; the existing app already uses Vue 3, so no framework adaptation needed.
 - **Firmware quirks:** `personName` vs `persionName` field name discrepancy, empty `customId` for camera-UI-enrolled people, missing `scene` field, numeric fields as strings. All documented in spec Appendix C.
-- **Database:** Spec targets MySQL 8.0+; existing app defaults to SQLite. Migration to MySQL required for production.
+- **Database:** MySQL in production, SQLite for development/testing.
 
 ## Constraints
 
@@ -112,4 +120,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-14 after Phase 10 completion — v1.0 milestone gap closure complete (broadcastAs fix, .env Pusher docs, REC-13 acknowledger display)*
+*Last updated: 2026-04-14 after v1.0 milestone completion*
