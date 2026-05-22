@@ -42,6 +42,22 @@ class RecognitionEvent extends Model
     /** @use HasFactory<RecognitionEventFactory> */
     use HasFactory;
 
+    /**
+     * Columns selected for list views. Excludes `raw_payload` (avg ~300KB, max ~1.88MB) and
+     * other unused columns -- including raw_payload triggers an array cast on every row and
+     * easily blows PHP's memory_limit when hydrating 25+ rows.
+     *
+     * @var list<string>
+     */
+    public const LIST_COLUMNS = [
+        'id', 'camera_id', 'personnel_id', 'custom_id', 'camera_person_id',
+        'record_id', 'verify_status', 'person_type', 'similarity', 'is_real_time',
+        'name_from_camera', 'severity', 'target_bbox',
+        'face_image_path', 'scene_image_path',
+        'captured_at', 'acknowledged_by', 'acknowledged_at', 'dismissed_at',
+        'created_at', 'updated_at',
+    ];
+
     /** @var list<string> */
     protected $appends = ['face_image_url', 'scene_image_url', 'acknowledger_name'];
 

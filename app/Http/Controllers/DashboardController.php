@@ -29,7 +29,9 @@ class DashboardController extends Controller
             'enrolled' => Personnel::count(),
         ];
 
-        $recentEvents = RecognitionEvent::with(['camera:id,name', 'personnel:id,name,custom_id,person_type,photo_path'])
+        $recentEvents = RecognitionEvent::query()
+            ->select(RecognitionEvent::LIST_COLUMNS)
+            ->with(['camera:id,name', 'personnel:id,name,custom_id,person_type,photo_path'])
             ->whereIn('severity', [AlertSeverity::Critical, AlertSeverity::Warning, AlertSeverity::Info])
             ->where('is_real_time', true)
             ->latest('captured_at')
